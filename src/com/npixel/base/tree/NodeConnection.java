@@ -4,19 +4,19 @@ import com.npixel.base.IBaseType;
 import com.npixel.base.node.NodeSocket;
 
 public class NodeConnection {
-    private NodeSocket<IBaseType> from;
-    private NodeSocket<IBaseType> to;
+    private NodeSocket from;
+    private NodeSocket to;
 
-    NodeConnection(NodeSocket<IBaseType> from, NodeSocket<IBaseType> to) {
+    NodeConnection(NodeSocket from, NodeSocket to) {
         this.from = from;
         this.to = to;
     }
 
-    public NodeSocket<IBaseType> getOutputSocket() {
+    public NodeSocket getOutputSocket() {
         return from;
     }
 
-    public NodeSocket<IBaseType> getInputSocket() {
+    public NodeSocket getInputSocket() {
         return to;
     }
 }

@@ -11,7 +11,7 @@ public class NodeTree {
     private List<Node> nodes;
     private List<NodeConnection> connections;
 
-    NodeTree() {
+    public NodeTree() {
         nodes = new ArrayList<>();
         connections = new ArrayList<>();
     }
@@ -20,7 +20,7 @@ public class NodeTree {
         return nodes.contains(node);
     }
 
-    public NodeSocket<IBaseType> getConnectedOutput(NodeSocket<IBaseType> inputSocket) {
+    public NodeSocket getConnectedOutput(NodeSocket inputSocket) {
         for (NodeConnection conn : connections) {
             if (conn.getInputSocket() == inputSocket) {
                 return conn.getOutputSocket();
@@ -35,8 +35,8 @@ public class NodeTree {
             throw new IllegalArgumentException("Both nodes must belong to the tree.");
         }
 
-        NodeSocket<IBaseType> outputSocket = fromNode.getOutput(fromOutputId);
-        NodeSocket<IBaseType> inputSocket = toNode.getInput(toInputId);
+        NodeSocket outputSocket = fromNode.getOutput(fromOutputId);
+        NodeSocket inputSocket = toNode.getInput(toInputId);
         if (inputSocket == null || outputSocket == null) {
             throw new NullPointerException("Socket IDs must be valid.");
         }

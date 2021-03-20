@@ -3,19 +3,23 @@ package com.npixel.base.node;
 import com.npixel.base.IBaseType;
 import com.npixel.base.tree.NodeTree;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Node {
-    private List<NodeSocket<IBaseType>> inputs;
-    private List<NodeSocket<IBaseType>> outputs;
-    private NodeTree tree;
+    protected List<NodeSocket> inputs;
+    protected List<NodeSocket> outputs;
+    protected NodeTree tree;
 
-    Node(NodeTree tree) {
+    public Node(NodeTree tree) {
         this.tree = tree;
+
+        inputs = new ArrayList<>();
+        outputs = new ArrayList<>();
     }
 
-    public NodeSocket<IBaseType> getOutput(String id) {
-        for (NodeSocket<IBaseType> socket : outputs) {
+    public NodeSocket getOutput(String id) {
+        for (NodeSocket socket : outputs) {
             if (socket.getId().equals(id)) {
                 return socket;
             }
@@ -24,8 +28,8 @@ public class Node {
         return null;
     }
 
-    public NodeSocket<IBaseType> getInput(String id) {
-        for (NodeSocket<IBaseType> socket : inputs) {
+    public NodeSocket getInput(String id) {
+        for (NodeSocket socket : inputs) {
             if (socket.getId().equals(id)) {
                 return socket;
             }
@@ -34,17 +38,19 @@ public class Node {
         return null;
     }
 
-    private IBaseType getInputValue(String id) {
-        NodeSocket<IBaseType> inputSocket = getInput(id);
+    protected Object getInputValue(String id) {
+        NodeSocket inputSocket = getInput(id);
         if (inputSocket == null) {
             return null;
         }
 
-        NodeSocket<IBaseType> connectedSocket = tree.getConnectedOutput(inputSocket);
+        NodeSocket connectedSocket = tree.getConnectedOutput(inputSocket);
         if (connectedSocket != null) {
             return connectedSocket.getValue();
         }
 
         return inputSocket.getValue();
     }
+
+    public void process() {}
 }
