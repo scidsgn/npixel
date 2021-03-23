@@ -1,10 +1,10 @@
 package com.npixel.base.node;
 
-import com.npixel.base.IBaseType;
 import com.npixel.base.tree.NodeTree;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Node {
     protected List<NodeSocket> inputs;
@@ -16,6 +16,14 @@ public class Node {
 
         inputs = new ArrayList<>();
         outputs = new ArrayList<>();
+    }
+
+    public List<NodeSocket> getInputs() {
+        return inputs;
+    }
+
+    public List<NodeSocket> getOutputs() {
+        return outputs;
     }
 
     public NodeSocket getOutput(String id) {
@@ -45,11 +53,8 @@ public class Node {
         }
 
         NodeSocket connectedSocket = tree.getConnectedOutput(inputSocket);
-        if (connectedSocket != null) {
-            return connectedSocket.getValue();
-        }
 
-        return inputSocket.getValue();
+        return Objects.requireNonNullElse(connectedSocket, inputSocket).getValue();
     }
 
     public void process() {}

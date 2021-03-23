@@ -1,13 +1,13 @@
 package com.npixel.base.node;
 
 public class NodeSocket {
-    private String id;
-    private String name;
-    private Node parent;
-    private NodeSocketType type;
+    private final String id;
+    private final String name;
+    private final Node parent;
+    private final NodeSocketType type;
     private Object value;
 
-    NodeSocket(Node parent, String id, NodeSocketType type, String name, Object value) {
+    public NodeSocket(Node parent, String id, NodeSocketType type, String name, Object value) {
         this.parent = parent;
         this.id = id;
         this.type = type;
