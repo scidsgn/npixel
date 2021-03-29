@@ -11,6 +11,12 @@ public class Node {
     protected List<NodeSocket> outputs;
     protected NodeTree tree;
 
+    protected String typeString = "";
+    protected String name;
+
+    private double x = 0.0;
+    private double y = 0.0;
+
     public Node(NodeTree tree) {
         this.tree = tree;
 
@@ -58,4 +64,32 @@ public class Node {
     }
 
     public void process() {}
+
+    public double getX() {
+        return x;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public String getTypeString() {
+        return typeString;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

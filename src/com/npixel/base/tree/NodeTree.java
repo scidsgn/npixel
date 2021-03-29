@@ -117,4 +117,12 @@ public class NodeTree {
 
         return connection;
     }
+
+    public List<Node> getNodes() {
+        return nodes;
+    }
+
+    public List<NodeConnection> getConnections() {
+        return connections;
+    }
 }
