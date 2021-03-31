@@ -60,11 +60,11 @@ public class Main extends Application {
 
         NodeTree tree = createTestNodeTree();
 
-        NodeEditor nodeEditor = new NodeEditor(tree, 500, 400);
+        NodeEditor nodeEditor = new NodeEditor(tree, 800, 600);
         root.getChildren().add(nodeEditor);
 
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 500, 400));
+        primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();
 
         nodeEditor.render();

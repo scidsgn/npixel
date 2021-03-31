@@ -4,8 +4,11 @@ import com.npixel.base.node.Node;
 import com.npixel.base.node.NodeSocket;
 import com.npixel.base.tree.NodeConnection;
 import com.npixel.base.tree.NodeTree;
+import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 
 public class NodeEditor extends Canvas {
     private final NodeTree tree;
@@ -17,7 +20,25 @@ public class NodeEditor extends Canvas {
     }
 
     private void renderNode(GraphicsContext ctx, Node node) {
-        ctx.fillRect(node.getX(), node.getY(), 40, 40);
+        double xBase = node.getX();
+        double yBase = node.getY();
+
+        ctx.setFill(Color.GRAY);
+        ctx.fillRect(xBase, yBase, 150, 30);
+
+        ctx.setFill(Color.LIGHTGRAY);
+        ctx.fillRect(xBase + 2, yBase + 2, 146, 26);
+
+        ctx.setFill(Color.BLACK);
+        ctx.setTextBaseline(VPos.CENTER);
+        ctx.setTextAlign(TextAlignment.LEFT);
+        ctx.fillText(node.getName(), xBase + 8, yBase + 15);
+
+        ctx.setFill(Color.GRAY);
+        ctx.setTextBaseline(VPos.CENTER);
+        ctx.setTextAlign(TextAlignment.RIGHT);
+        ctx.fillText(node.getTypeString(), xBase + 150 - 8, yBase + 15);
+
         System.out.println(3);
     }
 
