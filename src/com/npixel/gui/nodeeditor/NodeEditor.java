@@ -7,16 +7,64 @@ import com.npixel.base.tree.NodeTree;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 
 public class NodeEditor extends Canvas {
     private final NodeTree tree;
+    private final Double[] lastMousePosition = {0.0, 0.0};
 
     public NodeEditor(NodeTree tree, double width, double height) {
         super(width, height);
 
         this.tree = tree;
+
+        this.setOnMousePressed(this::handleMouseDown);
+        this.setOnMouseDragged(this::handleDragging);
+    }
+
+    private void handleMouseDown(MouseEvent mouseEvent) {
+        Node node = hitTest(mouseEvent.getX(), mouseEvent.getY());
+
+        if (node != null) {
+            tree.bringToFront(node);
+        }
+
+        lastMousePosition[0] = mouseEvent.getX();
+        lastMousePosition[1] = mouseEvent.getY();
+    }
+
+    private void handleDragging(MouseEvent mouseEvent) {
+        Node node = hitTest(mouseEvent.getX(), mouseEvent.getY());
+        if (node == null) {
+            return;
+        }
+
+        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+            node.setX(node.getX() + mouseEvent.getX() - lastMousePosition[0]);
+            node.setY(node.getY() + mouseEvent.getY() - lastMousePosition[1]);
+
+            render();
+        }
+
+        lastMousePosition[0] = mouseEvent.getX();
+        lastMousePosition[1] = mouseEvent.getY();
+    }
+
+    private Node hitTest(double x, double y) {
+        Node hitNode = null;
+
+        for (Node node : tree.getNodes()) {
+            int nodeHeight = 32 + (node.getInputs().size() + node.getOutputs().size()) * 24;
+
+            if (x >= node.getX() && y >= node.getY() && x < node.getX() + 150 && y < node.getY() + nodeHeight) {
+                hitNode = node;
+            }
+        }
+
+        return hitNode;
     }
 
     private void renderNode(GraphicsContext ctx, Node node) {
@@ -75,8 +123,6 @@ public class NodeEditor extends Canvas {
 
             i++;
         }
-
-        System.out.println(3);
     }
 
     private void renderConnection(GraphicsContext ctx, NodeConnection conn) {
@@ -88,18 +134,18 @@ public class NodeEditor extends Canvas {
         Node toNode = to.getParentNode();
         int toYOffset = 30 + 24 * toNode.getInputs().indexOf(to);
 
-        ctx.moveTo(fromNode.getX() + 145, fromNode.getY() + fromYOffset + 12);
-        ctx.lineTo(toNode.getX() + 5, toNode.getY() + toYOffset + 12);
+        ctx.moveTo(fromNode.getX() + 149, fromNode.getY() + fromYOffset + 12);
+        ctx.bezierCurveTo(
+                fromNode.getX() + 180, fromNode.getY() + fromYOffset + 12,
+                toNode.getX() - 30, toNode.getY() + toYOffset + 12,
+                toNode.getX() + 1, toNode.getY() + toYOffset + 12
+        );
     }
 
     public void render() {
         GraphicsContext ctx = getGraphicsContext2D();
 
         ctx.clearRect(0, 0, getWidth(), getHeight());
-
-        for (Node n : tree.getNodes()) {
-            renderNode(ctx, n);
-        }
 
         ctx.beginPath();
         ctx.setStroke(Color.GRAY);
@@ -108,5 +154,9 @@ public class NodeEditor extends Canvas {
             renderConnection(ctx, conn);
         }
         ctx.stroke();
+
+        for (Node n : tree.getNodes()) {
+            renderNode(ctx, n);
+        }
     }
 }

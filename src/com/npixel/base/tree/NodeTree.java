@@ -125,4 +125,17 @@ public class NodeTree {
     public List<NodeConnection> getConnections() {
         return connections;
     }
+
+    public void bringToFront(Node node) {
+        if (!nodes.contains(node)) {
+            throw new IllegalArgumentException("Node must belong to the tree.");
+        }
+
+        if (nodes.indexOf(node) == nodes.size() - 1) {
+            return;
+        }
+
+        nodes.remove(node);
+        nodes.add(node);
+    }
 }
