@@ -31,7 +31,7 @@ public class Main extends Application {
 
         TestNode n1 = new TestNode(tree, "Test1");
         n1.setX(30);
-        n1.setY(30);
+        n1.setY(90);
         tree.addNode(n1);
         TestNode n2 = new TestNode(tree, "Test2");
         n2.setX(200);
@@ -39,7 +39,7 @@ public class Main extends Application {
         tree.addNode(n2);
         TestNode n3 = new TestNode(tree, "Test3");
         n3.setX(200);
-        n3.setY(100);
+        n3.setY(150);
         tree.addNode(n3);
         TestNode n4 = new TestNode(tree, "Test4");
         n4.setX(400);
