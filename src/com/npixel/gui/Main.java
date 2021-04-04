@@ -22,7 +22,7 @@ public class Main extends Application {
 
             inputs.add(new NodeSocket(this, "a", NodeSocketType.INPUT, "Number A", 2));
             inputs.add(new NodeSocket(this, "b", NodeSocketType.INPUT, "Number B", 2));
-            outputs.add(new NodeSocket(this, "out", NodeSocketType.OUTPUT, "Output", 0));
+            outputs.add(new NodeSocket(this, "out", NodeSocketType.OUTPUT, "Output", 0, "a"));
         }
     }
 

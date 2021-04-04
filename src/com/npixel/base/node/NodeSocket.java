@@ -6,6 +6,7 @@ public class NodeSocket {
     private final Node parent;
     private final NodeSocketType type;
     private Object value;
+    private String ghostConnectedId;
 
     public NodeSocket(Node parent, String id, NodeSocketType type, String name, Object value) {
         this.parent = parent;
@@ -13,6 +14,16 @@ public class NodeSocket {
         this.type = type;
         this.name = name;
         this.value = value;
+        this.ghostConnectedId = null;
+    }
+
+    public NodeSocket(Node parent, String id, NodeSocketType type, String name, Object value, String ghostConnectedId) {
+        this.parent = parent;
+        this.id = id;
+        this.type = type;
+        this.name = name;
+        this.value = value;
+        this.ghostConnectedId = ghostConnectedId;
     }
 
     public String getId() {
@@ -37,5 +48,9 @@ public class NodeSocket {
 
     public void setValue(Object value) {
         this.value = value;
+    }
+
+    public String getGhostConnectedId() {
+        return ghostConnectedId;
     }
 }

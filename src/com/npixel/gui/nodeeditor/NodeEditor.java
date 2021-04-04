@@ -25,6 +25,8 @@ public class NodeEditor extends Canvas {
 
     private final Double[] lastMousePosition = {0.0, 0.0};
 
+    double viewX = 0, viewY = 0;
+
     public NodeEditor(NodeTree tree, double width, double height) {
         super(width, height);
 
@@ -43,7 +45,7 @@ public class NodeEditor extends Canvas {
 
         MenuItem deleteItem = new MenuItem("Delete node");
         deleteItem.setOnAction(event -> {
-            tree.deleteNode(activeNode);
+            tree.smartDeleteNode(activeNode);
             activeNode = null;
 
             render();
@@ -64,20 +66,26 @@ public class NodeEditor extends Canvas {
     }
 
     private void handleMouseDown(MouseEvent mouseEvent) {
-        Node node = hitTest(mouseEvent.getX(), mouseEvent.getY());
+        Node node = hitTest(mouseEvent.getX() - viewX, mouseEvent.getY() - viewY);
 
         selectedNodeMenu.hide();
 
         if (node != null) {
-            double xOffset = mouseEvent.getX() - node.getX();
+            double xOffset = mouseEvent.getX() - node.getX() - viewX;
 
-            NodeSocket socket = hitTestSocket(node, mouseEvent.getX(), mouseEvent.getY());
+            NodeSocket socket = hitTestSocket(node, mouseEvent.getX() - viewX, mouseEvent.getY() - viewY);
             if (socket != null) {
-                if (
-                        (xOffset < 10 && socket.getType() == NodeSocketType.INPUT) ||
-                        (xOffset >= 140 && socket.getType() == NodeSocketType.OUTPUT)
-                ) {
+                if (xOffset >= 140 && socket.getType() == NodeSocketType.OUTPUT) {
                     activeSocket = socket;
+                } else if (xOffset < 10 && socket.getType() == NodeSocketType.INPUT) {
+                    NodeSocket outputSocket = tree.getConnectedOutput(socket);
+
+                    if (outputSocket != null) {
+                        tree.disconnect(outputSocket, socket);
+                        activeSocket = outputSocket;
+                    } else {
+                        activeSocket = socket;
+                    }
                 }
             }
 
@@ -95,8 +103,9 @@ public class NodeEditor extends Canvas {
 
     private void handleMouseRelease(MouseEvent mouseEvent) {
         if (activeSocket != null) {
-            Node node = hitTest(mouseEvent.getX(), mouseEvent.getY());
-            NodeSocket targetSocket = hitTestSocket(node, mouseEvent.getX(), mouseEvent.getY());
+            Node node = hitTest(mouseEvent.getX() - viewX, mouseEvent.getY() - viewY);
+            NodeSocket targetSocket = hitTestSocket(node, mouseEvent.getX() - viewX, mouseEvent.getY() - viewY);
+
             if (targetSocket != null) {
                 if (node != activeSocket.getParentNode()) {
                     if (
@@ -119,11 +128,14 @@ public class NodeEditor extends Canvas {
     }
 
     private void handleDragging(MouseEvent mouseEvent) {
-        Node node = hitTest(mouseEvent.getX(), mouseEvent.getY());
+        Node node = hitTest(mouseEvent.getX() - viewX, mouseEvent.getY() - viewY);
 
         if (mouseEvent.getButton() == MouseButton.PRIMARY && node != null && activeSocket == null) {
             node.setX(node.getX() + mouseEvent.getX() - lastMousePosition[0]);
             node.setY(node.getY() + mouseEvent.getY() - lastMousePosition[1]);
+        } else if (mouseEvent.getButton() == MouseButton.MIDDLE) {
+            viewX += mouseEvent.getX() - lastMousePosition[0];
+            viewY += mouseEvent.getY() - lastMousePosition[1];
         }
 
         lastMousePosition[0] = mouseEvent.getX();
@@ -153,6 +165,9 @@ public class NodeEditor extends Canvas {
 
         double yOffset = y - node.getY() - 30;
         int socketIndex = (int)(yOffset / 24);
+        if (socketIndex < 0) {
+            return null;
+        }
 
         if (socketIndex < node.getInputs().size()) {
             return node.getInputs().get(socketIndex);
@@ -259,6 +274,9 @@ public class NodeEditor extends Canvas {
 
         ctx.clearRect(0, 0, getWidth(), getHeight());
 
+        ctx.save();
+        ctx.translate(viewX, viewY);
+
         ctx.beginPath();
         ctx.setStroke(Color.GRAY);
         ctx.setLineWidth(2);
@@ -276,8 +294,10 @@ public class NodeEditor extends Canvas {
         if (activeSocket != null) {
             double[] pos = getSocketPosition(activeSocket);
             ctx.moveTo(pos[0], pos[1]);
-            ctx.lineTo(lastMousePosition[0], lastMousePosition[1]);
+            ctx.lineTo(lastMousePosition[0] - viewX, lastMousePosition[1] - viewY);
         }
         ctx.stroke();
+
+        ctx.restore();
     }
 }

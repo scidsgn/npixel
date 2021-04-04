@@ -33,6 +33,44 @@ public class NodeTree {
         nodes.remove(node);
     }
 
+    public void smartDeleteNode(Node node) {
+        if (!nodes.contains(node)) {
+            throw new IllegalArgumentException("Node must belong to the node tree.");
+        }
+
+        for (NodeSocket outputSocket : node.getOutputs()) {
+            List<NodeConnection> outputConnections = findConnectionsFrom(outputSocket);
+            if (connections.size() == 0) {
+                continue;
+            }
+
+            NodeSocket newOutputSocket = null;
+            String ghostId = outputSocket.getGhostConnectedId();
+            if (ghostId != null) {
+                NodeSocket inputSocket = node.getInput(ghostId);
+                if (inputSocket != null) {
+                    newOutputSocket = getConnectedOutput(inputSocket);
+                }
+            }
+
+            for (NodeConnection conn : outputConnections) {
+                connections.remove(conn);
+                if (newOutputSocket != null) {
+                    connections.add(new NodeConnection(newOutputSocket, conn.getInputSocket()));
+                }
+            }
+        }
+
+        for (NodeSocket inputSocket : node.getInputs()) {
+            NodeSocket connectedOutput = getConnectedOutput(inputSocket);
+            if (connectedOutput != null) {
+                disconnect(connectedOutput, inputSocket);
+            }
+        }
+
+        nodes.remove(node);
+    }
+
     public NodeSocket getConnectedOutput(NodeSocket inputSocket) {
         for (NodeConnection conn : connections) {
             if (conn.getInputSocket() == inputSocket) {
@@ -61,6 +99,18 @@ public class NodeTree {
         }
 
         return null;
+    }
+
+    private List<NodeConnection> findConnectionsFrom(NodeSocket outputSocket) {
+        List<NodeConnection> list = new ArrayList<>();
+
+        for (NodeConnection conn : connections) {
+            if (conn.getOutputSocket() == outputSocket) {
+                list.add(conn);
+            }
+        }
+
+        return list;
     }
 
     private List<NodeConnection> findConnections(NodeSocket socket) {
@@ -116,6 +166,15 @@ public class NodeTree {
         connections.add(connection);
 
         return connection;
+    }
+
+    public void disconnect(NodeSocket fromOutput, NodeSocket toInput) {
+        NodeConnection connection = findConnection(fromOutput, toInput);
+        if (connection == null) {
+            throw new NullPointerException("Sockets must be connected.");
+        }
+
+        connections.remove(connection);
     }
 
     public List<Node> getNodes() {
