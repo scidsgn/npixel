@@ -18,7 +18,6 @@ import javafx.scene.text.TextAlignment;
 
 public class NodeEditor extends Canvas {
     private final NodeTree tree;
-    private Node activeNode = null;
     private NodeSocket activeSocket = null;
 
     private ContextMenu selectedNodeMenu;
@@ -27,9 +26,7 @@ public class NodeEditor extends Canvas {
 
     double viewX = 0, viewY = 0;
 
-    public NodeEditor(NodeTree tree, double width, double height) {
-        super(width, height);
-
+    public NodeEditor(NodeTree tree) {
         this.tree = tree;
 
         this.setOnMousePressed(this::handleMouseDown);
@@ -37,7 +34,42 @@ public class NodeEditor extends Canvas {
         this.setOnMouseDragged(this::handleDragging);
         this.setOnContextMenuRequested(this::handleContextMenu);
 
+        widthProperty().addListener(event -> render());
+        heightProperty().addListener(event -> render());
+
         setupSelectedNodeMenu();
+    }
+
+    @Override
+    public boolean isResizable() {
+        return true;
+    }
+
+    @Override
+    public void resize(double width, double height) {
+        setWidth(width);
+        setHeight(height);
+        render();
+    }
+
+    @Override
+    public double minWidth(double v) {
+        return 1;
+    }
+
+    @Override
+    public double minHeight(double v) {
+        return 1;
+    }
+
+    @Override
+    public double maxWidth(double v) {
+        return Double.POSITIVE_INFINITY;
+    }
+
+    @Override
+    public double maxHeight(double v) {
+        return Double.POSITIVE_INFINITY;
     }
 
     private void setupSelectedNodeMenu() {
@@ -45,14 +77,14 @@ public class NodeEditor extends Canvas {
 
         MenuItem deleteItem = new MenuItem("Delete node");
         deleteItem.setOnAction(event -> {
-            tree.smartDeleteNode(activeNode);
-            activeNode = null;
+            tree.smartDeleteNode(tree.getActiveNode());
+            tree.setActiveNode(null);
 
             render();
         });
         MenuItem disconnectItem = new MenuItem("Remove all connections");
         disconnectItem.setOnAction(event -> {
-            tree.disconnectAll(activeNode);
+            tree.disconnectAll(tree.getActiveNode());
             render();
         });
 
@@ -60,7 +92,7 @@ public class NodeEditor extends Canvas {
     }
 
     private void handleContextMenu(ContextMenuEvent contextMenuEvent) {
-        if (activeNode != null) {
+        if (tree.getActiveNode() != null) {
             selectedNodeMenu.show(this, contextMenuEvent.getScreenX(), contextMenuEvent.getScreenY());
         }
     }
@@ -89,10 +121,10 @@ public class NodeEditor extends Canvas {
                 }
             }
 
-            activeNode = node;
+            tree.setActiveNode(node);
             tree.bringToFront(node);
         } else {
-            activeNode = null;
+            tree.setActiveNode(null);
         }
 
         lastMousePosition[0] = mouseEvent.getX();
@@ -200,7 +232,7 @@ public class NodeEditor extends Canvas {
 
         int socketCount = node.getInputs().size() + node.getOutputs().size();
 
-        ctx.setFill((node == activeNode) ? Color.BLUE : Color.GRAY);
+        ctx.setFill((node == tree.getActiveNode()) ? Color.BLUE : Color.GRAY);
         ctx.fillRect(xBase, yBase, 150, 32 + socketCount * 24);
 
         ctx.setFill(Color.LIGHTGRAY);

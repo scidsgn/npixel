@@ -1,15 +1,14 @@
 package com.npixel.gui;
 
+import com.npixel.base.Document;
 import com.npixel.base.node.Node;
 import com.npixel.base.node.NodeSocket;
 import com.npixel.base.node.NodeSocketType;
 import com.npixel.base.tree.NodeTree;
-import com.npixel.gui.nodeeditor.NodeEditor;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -24,11 +23,15 @@ public class Main extends Application {
             inputs.add(new NodeSocket(this, "b", NodeSocketType.INPUT, "Number B", 2));
             outputs.add(new NodeSocket(this, "out", NodeSocketType.OUTPUT, "Output", 0, "a"));
         }
+
+        @Override
+        public void process() {
+            getOutput("out").setValue((Integer)getInputValue("a") + (Integer)getInputValue("b"));
+            super.process();
+        }
     }
 
-    private NodeTree createTestNodeTree() {
-        NodeTree tree = new NodeTree();
-
+    private void createTestNodeTree(NodeTree tree) {
         TestNode n1 = new TestNode(tree, "Test1");
         n1.setX(30);
         n1.setY(90);
@@ -50,24 +53,23 @@ public class Main extends Application {
         tree.connect(n1, "out", n3, "a");
         tree.connect(n2, "out", n4, "a");
         tree.connect(n3, "out", n4, "b");
-
-        return tree;
     }
 
     @Override
     public void start(Stage primaryStage) {
         HBox root = new HBox();
 
-        NodeTree tree = createTestNodeTree();
+        Document doc = new Document(300, 200);
+        createTestNodeTree(doc.getTree());
 
-        NodeEditor nodeEditor = new NodeEditor(tree, 800, 600);
-        root.getChildren().add(nodeEditor);
+        DocumentView docView = new DocumentView(doc);
+        root.getChildren().add(docView);
+
+        HBox.setHgrow(docView, Priority.ALWAYS);
 
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();
-
-        nodeEditor.render();
     }
 
 

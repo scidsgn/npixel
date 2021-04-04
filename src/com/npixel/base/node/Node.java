@@ -1,12 +1,13 @@
 package com.npixel.base.node;
 
+import com.npixel.base.events.SimpleEventEmitter;
 import com.npixel.base.tree.NodeTree;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Node {
+public class Node extends SimpleEventEmitter<NodeEvent, Node> {
     protected List<NodeSocket> inputs;
     protected List<NodeSocket> outputs;
     protected NodeTree tree;
@@ -63,7 +64,9 @@ public class Node {
         return Objects.requireNonNullElse(connectedSocket, inputSocket).getValue();
     }
 
-    public void process() {}
+    public void process() {
+        emit(NodeEvent.UPDATED, this);
+    }
 
     public double getX() {
         return x;

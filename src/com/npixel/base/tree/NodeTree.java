@@ -1,5 +1,6 @@
 package com.npixel.base.tree;
 
+import com.npixel.base.events.SimpleEventEmitter;
 import com.npixel.base.node.Node;
 import com.npixel.base.node.NodeSocket;
 import com.npixel.base.node.NodeSocketType;
@@ -7,11 +8,15 @@ import com.npixel.base.node.NodeSocketType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NodeTree {
+public class NodeTree extends SimpleEventEmitter<NodeTreeEvent, Node> {
     private final List<Node> nodes;
     private final List<NodeConnection> connections;
 
+    private Node activeNode = null;
+
     public NodeTree() {
+        super();
+
         nodes = new ArrayList<>();
         connections = new ArrayList<>();
     }
@@ -196,5 +201,18 @@ public class NodeTree {
 
         nodes.remove(node);
         nodes.add(node);
+    }
+
+    public Node getActiveNode() {
+        return activeNode;
+    }
+
+    public void setActiveNode(Node node) {
+        if (!nodes.contains(node) && node != null) {
+            throw new IllegalArgumentException("Node must belong to the tree.");
+        }
+
+        this.activeNode = node;
+        this.emit(NodeTreeEvent.ACTIVENODECHANGED, this.activeNode);
     }
 }
