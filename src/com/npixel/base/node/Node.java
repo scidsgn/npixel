@@ -15,8 +15,12 @@ public class Node extends SimpleEventEmitter<NodeEvent, Node> {
     protected String typeString = "";
     protected String name;
 
+    private int lastUpdateTick = 0;
+
     private double x = 0.0;
     private double y = 0.0;
+
+    private NodeCycleColor cycleColor = NodeCycleColor.NONE;
 
     public Node(NodeTree tree) {
         this.tree = tree;
@@ -66,6 +70,7 @@ public class Node extends SimpleEventEmitter<NodeEvent, Node> {
 
     public void process() {
         emit(NodeEvent.UPDATED, this);
+        lastUpdateTick = tree.incrementUpdateTick();
     }
 
     public double getX() {
@@ -94,5 +99,41 @@ public class Node extends SimpleEventEmitter<NodeEvent, Node> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getLastUpdateTick() {
+        return lastUpdateTick;
+    }
+
+    public void resetUpdateTick() {
+        lastUpdateTick = 0;
+    }
+
+    public boolean requiresUpdate() {
+        if (lastUpdateTick == 0) {
+            return true;
+        }
+
+        for (NodeSocket input : inputs) {
+            NodeSocket outputSocket = tree.getConnectedOutput(input);
+            if (
+                    outputSocket != null && (
+                            outputSocket.getParentNode().getLastUpdateTick() >= lastUpdateTick ||
+                            outputSocket.getParentNode().requiresUpdate()
+                    )
+            ) {
+                 return true;
+            }
+        }
+
+        return false;
+    }
+
+    public NodeCycleColor getCycleColor() {
+        return cycleColor;
+    }
+
+    public void setCycleColor(NodeCycleColor cycleColor) {
+        this.cycleColor = cycleColor;
     }
 }

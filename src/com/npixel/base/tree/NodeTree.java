@@ -2,6 +2,7 @@ package com.npixel.base.tree;
 
 import com.npixel.base.events.SimpleEventEmitter;
 import com.npixel.base.node.Node;
+import com.npixel.base.node.NodeCycleColor;
 import com.npixel.base.node.NodeSocket;
 import com.npixel.base.node.NodeSocketType;
 
@@ -13,6 +14,10 @@ public class NodeTree extends SimpleEventEmitter<NodeTreeEvent, Node> {
     private final List<NodeConnection> connections;
 
     private Node activeNode = null;
+
+    private int updateTick = 0;
+
+    private boolean isInvalid = false;
 
     public NodeTree() {
         super();
@@ -62,6 +67,7 @@ public class NodeTree extends SimpleEventEmitter<NodeTreeEvent, Node> {
                 connections.remove(conn);
                 if (newOutputSocket != null) {
                     connections.add(new NodeConnection(newOutputSocket, conn.getInputSocket()));
+                    conn.getInputSocket().getParentNode().resetUpdateTick();
                 }
             }
         }
@@ -142,6 +148,7 @@ public class NodeTree extends SimpleEventEmitter<NodeTreeEvent, Node> {
         for (NodeSocket output : node.getOutputs()) {
             for (NodeConnection conn : findConnections(output)) {
                 connections.remove(conn);
+                conn.getInputSocket().getParentNode().resetUpdateTick();
             }
         }
     }
@@ -170,6 +177,8 @@ public class NodeTree extends SimpleEventEmitter<NodeTreeEvent, Node> {
         NodeConnection connection = new NodeConnection(outputSocket, inputSocket);
         connections.add(connection);
 
+        inputSocket.getParentNode().resetUpdateTick();
+
         return connection;
     }
 
@@ -180,6 +189,7 @@ public class NodeTree extends SimpleEventEmitter<NodeTreeEvent, Node> {
         }
 
         connections.remove(connection);
+        toInput.getParentNode().resetUpdateTick();
     }
 
     public List<Node> getNodes() {
@@ -212,7 +222,106 @@ public class NodeTree extends SimpleEventEmitter<NodeTreeEvent, Node> {
             throw new IllegalArgumentException("Node must belong to the tree.");
         }
 
+        if (node != null) {
+            updateSubtree(node);
+        }
+
         this.activeNode = node;
         this.emit(NodeTreeEvent.ACTIVENODECHANGED, this.activeNode);
+    }
+
+    public int incrementUpdateTick() {
+        updateTick += 1;
+        return updateTick;
+    }
+
+    private void traverseUpdateTree(List<Node> list, Node node) {
+        List<Node> nextList = new ArrayList<>();
+
+        for (NodeSocket input : node.getInputs()) {
+            NodeSocket connectedOutput = getConnectedOutput(input);
+
+            if (connectedOutput != null) {
+                Node connectedNode = connectedOutput.getParentNode();
+
+                if (connectedNode.requiresUpdate()) {
+                    nextList.add(connectedNode);
+
+                    list.remove(connectedNode);
+                    list.add(0, connectedNode);
+                }
+            }
+        }
+
+        for (Node nextNode : nextList) {
+            traverseUpdateTree(list, nextNode);
+        }
+    }
+
+    public List<Node> getUpdateOrder(Node startNode) {
+        if (!nodes.contains(startNode) || startNode == null) {
+            throw new IllegalArgumentException("Node must belong to the tree.");
+        }
+
+        List<Node> list = new ArrayList<>();
+        if (!startNode.requiresUpdate()) {
+            return list;
+        }
+
+        list.add(0, startNode);
+        traverseUpdateTree(list, startNode);
+
+        return list;
+    }
+
+    public void updateSubtree(Node targetNode) {
+        if (!nodes.contains(targetNode) || targetNode == null) {
+            throw new IllegalArgumentException("Node must belong to the tree.");
+        }
+
+        if (checkSubtreeLoops(targetNode)) {
+            return;
+        }
+
+        for (Node node : getUpdateOrder(targetNode)) {
+            node.process();
+        }
+    }
+
+    private boolean checkSubtreeLoopsIteration(Node node) {
+        boolean foundCycle = false;
+
+        node.setCycleColor(NodeCycleColor.PROCESSING);
+
+        for (NodeSocket input : node.getInputs()) {
+            NodeSocket connectedOutput = getConnectedOutput(input);
+            if (connectedOutput == null) {
+                continue;
+            }
+
+            Node connectedNode = connectedOutput.getParentNode();
+            if (connectedNode.getCycleColor() == NodeCycleColor.PROCESSING) {
+                return true;
+            }
+
+            foundCycle |= checkSubtreeLoopsIteration(connectedNode);
+        }
+
+        node.setCycleColor(NodeCycleColor.COMPLETE);
+
+        return foundCycle;
+    }
+
+    public boolean checkSubtreeLoops(Node targetNode) {
+        for (Node node : nodes) {
+            node.setCycleColor(NodeCycleColor.NONE);
+        }
+
+        isInvalid = checkSubtreeLoopsIteration(targetNode);
+        return isInvalid;
+    }
+
+    public boolean isInvalid() {
+        return isInvalid;
     }
 }

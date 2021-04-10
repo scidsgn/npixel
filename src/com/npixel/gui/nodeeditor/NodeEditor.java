@@ -282,6 +282,11 @@ public class NodeEditor extends Canvas {
 
             i++;
         }
+
+        if (node.requiresUpdate()) {
+            ctx.setFill(Color.RED);
+            ctx.fillRect(xBase + 145, yBase - 5, 10, 10);
+        }
     }
 
     private void renderConnection(GraphicsContext ctx, NodeConnection conn) {
@@ -305,6 +310,12 @@ public class NodeEditor extends Canvas {
         GraphicsContext ctx = getGraphicsContext2D();
 
         ctx.clearRect(0, 0, getWidth(), getHeight());
+
+        if (tree.isInvalid()) {
+            ctx.setStroke(Color.RED);
+            ctx.setLineWidth(8);
+            ctx.strokeRect(0, 0, getWidth(), getHeight());
+        }
 
         ctx.save();
         ctx.translate(viewX, viewY);

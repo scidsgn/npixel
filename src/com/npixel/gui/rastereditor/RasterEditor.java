@@ -73,7 +73,10 @@ public class RasterEditor extends Canvas {
         }
 
         this.currentNode = currentNode;
-        this.currentNode.on(NodeEvent.UPDATED, this::onNodeUpdated);
+        if (this.currentNode != null) {
+            this.currentNode.on(NodeEvent.UPDATED, this::onNodeUpdated);
+        }
+
         render();
     }
 }

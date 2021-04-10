@@ -68,7 +68,7 @@ public class Main extends Application {
         HBox.setHgrow(docView, Priority.ALWAYS);
 
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 800, 600));
+        primaryStage.setScene(new Scene(root, 1140, 768));
         primaryStage.show();
     }
 
