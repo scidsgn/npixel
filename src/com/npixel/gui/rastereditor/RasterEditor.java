@@ -1,6 +1,6 @@
 package com.npixel.gui.rastereditor;
 
-import com.npixel.base.Bitmap;
+import com.npixel.base.bitmap.Bitmap;
 import com.npixel.base.node.Node;
 import com.npixel.base.node.NodeEvent;
 import com.npixel.base.node.NodeSocket;

@@ -1,9 +1,8 @@
-package com.npixel.base;
+package com.npixel.base.bitmap;
 
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
-import javafx.scene.paint.Color;
 
 public class Bitmap extends WritableImage {
     private final PixelReader reader = this.getPixelReader();
@@ -14,10 +13,10 @@ public class Bitmap extends WritableImage {
     }
 
     public void setPixel(int x, int y, Color color) {
-        writer.setColor(x, y, color);
+        writer.setColor(x, y, color.getFXColor());
     }
 
     public Color getPixel(int x, int y) {
-        return reader.getColor(x, y);
+        return new Color(reader.getColor(x, y));
     }
 }
