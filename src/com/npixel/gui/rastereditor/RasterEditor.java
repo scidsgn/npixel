@@ -1,5 +1,6 @@
 package com.npixel.gui.rastereditor;
 
+import com.npixel.base.Bitmap;
 import com.npixel.base.node.Node;
 import com.npixel.base.node.NodeEvent;
 import com.npixel.base.node.NodeSocket;
@@ -53,9 +54,15 @@ public class RasterEditor extends Canvas {
 
         if (currentNode != null && currentNode.getOutputs().size() > 0) {
             NodeSocket firstOutput = currentNode.getOutputs().get(0);
-            Integer v = (Integer)firstOutput.getValue();
+            Object v = firstOutput.getValue();
 
-            ctx.fillText(v.toString(), 50, 50);
+            if (v instanceof Bitmap) {
+                Bitmap bmp = (Bitmap) v;
+                ctx.strokeRect(59, 59, bmp.getWidth() + 2, bmp.getHeight() + 2);
+                ctx.drawImage(bmp, 60, 60);
+            } else if (v instanceof Integer) {
+                ctx.fillText(v.toString(), 50, 50);
+            }
         } else {
             ctx.fillText("Null!", 50, 50);
         }
