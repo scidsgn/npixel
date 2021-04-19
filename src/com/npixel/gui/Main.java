@@ -54,6 +54,11 @@ public class Main extends Application {
                 }
             }
         }
+
+        @Override
+        public Bitmap getThumbnail() {
+            return (Bitmap)getOutput("out").getValue();
+        }
     }
 
     private static class TestFadeNode extends Node {
@@ -83,6 +88,11 @@ public class Main extends Application {
             }
 
             super.process();
+        }
+
+        @Override
+        public Bitmap getThumbnail() {
+            return (Bitmap)getOutput("out").getValue();
         }
     }
 
@@ -115,7 +125,7 @@ public class Main extends Application {
 
         HBox.setHgrow(docView, Priority.ALWAYS);
 
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("NPIXEL");
         primaryStage.setScene(new Scene(root, 1140, 768));
         primaryStage.show();
     }

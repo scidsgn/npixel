@@ -1,5 +1,6 @@
 package com.npixel.gui.nodeeditor;
 
+import com.npixel.base.bitmap.Bitmap;
 import com.npixel.base.node.Node;
 import com.npixel.base.node.NodeSocket;
 import com.npixel.base.node.NodeSocketType;
@@ -185,11 +186,20 @@ public class NodeEditor extends Canvas {
         render();
     }
 
+    private double calculateThumbnailOffset(Node node, boolean addSpace) {
+        Bitmap thumbnail = node.getThumbnail();
+        if (thumbnail != null) {
+            return 142 * thumbnail.getHeight() / thumbnail.getWidth() + (addSpace ? 0.0 : 4.0);
+        }
+
+        return 0.0;
+    }
+
     private Node hitTest(double x, double y) {
         Node hitNode = null;
 
         for (Node node : tree.getNodes()) {
-            int nodeHeight = 32 + (node.getInputs().size() + node.getOutputs().size()) * 24;
+            int nodeHeight = 32 + (node.getInputs().size() + node.getOutputs().size()) * 24 + (int)calculateThumbnailOffset(node, true);
 
             if (x >= node.getX() && y >= node.getY() && x < node.getX() + 150 && y < node.getY() + nodeHeight) {
                 hitNode = node;
@@ -204,7 +214,8 @@ public class NodeEditor extends Canvas {
             return null;
         }
 
-        double yOffset = y - node.getY() - 30;
+        double yOffset = y - node.getY() - 30 - calculateThumbnailOffset(node, true);
+
         int socketIndex = (int)(yOffset / 24);
         if (socketIndex < 0) {
             return null;
@@ -224,7 +235,7 @@ public class NodeEditor extends Canvas {
 
         Node node = socket.getParentNode();
         pos[0] = node.getX() + ((socket.getType() == NodeSocketType.INPUT) ? 5 : 145);
-        pos[1] = node.getY() + 42;
+        pos[1] = node.getY() + 42 + calculateThumbnailOffset(node, true);
 
         if (socket.getType() == NodeSocketType.INPUT) {
             pos[1] += node.getInputs().indexOf(socket) * 24;
@@ -239,10 +250,12 @@ public class NodeEditor extends Canvas {
         double xBase = node.getX();
         double yBase = node.getY();
 
+        double thumbnailOffset = calculateThumbnailOffset(node, true);
+
         int socketCount = node.getInputs().size() + node.getOutputs().size();
 
         ctx.setFill((node == tree.getActiveNode()) ? Color.BLUE : Color.GRAY);
-        ctx.fillRect(xBase, yBase, 150, 32 + socketCount * 24);
+        ctx.fillRect(xBase, yBase, 150, 32 + socketCount * 24 + thumbnailOffset);
 
         ctx.setFill(Color.LIGHTGRAY);
         ctx.fillRect(xBase + 2, yBase + 2, 146, 26);
@@ -257,12 +270,17 @@ public class NodeEditor extends Canvas {
         ctx.fillText(node.getTypeString(), xBase + 150 - 16, yBase + 15);
 
         ctx.setFill(Color.WHITE);
-        ctx.fillRect(xBase + 2, yBase + 30, 146, socketCount * 24);
+        ctx.fillRect(xBase + 2, yBase + 30, 146, socketCount * 24 + thumbnailOffset);
 
         int i = 0;
 
+        Bitmap thumbnail = node.getThumbnail();
+        if (thumbnail != null) {
+            ctx.drawImage(thumbnail, xBase + 4, yBase + 32, 142, thumbnailOffset - 4);
+        }
+
         for (NodeSocket socket : node.getInputs()) {
-            int yOffset = 30 + i * 24;
+            int yOffset = 30 + i * 24 + (int)thumbnailOffset;
 
             ctx.setFill(Color.BLACK);
             ctx.setTextAlign(TextAlignment.LEFT);
@@ -277,7 +295,7 @@ public class NodeEditor extends Canvas {
             i++;
         }
         for (NodeSocket socket : node.getOutputs()) {
-            int yOffset = 30 + i * 24;
+            int yOffset = 30 + i * 24 + (int)thumbnailOffset;
 
             ctx.setFill(Color.BLACK);
             ctx.setTextAlign(TextAlignment.RIGHT);
@@ -301,11 +319,11 @@ public class NodeEditor extends Canvas {
     private void renderConnection(GraphicsContext ctx, NodeConnection conn) {
         NodeSocket from = conn.getOutputSocket();
         Node fromNode = from.getParentNode();
-        int fromYOffset = 30 + 24 * (fromNode.getInputs().size() + fromNode.getOutputs().indexOf(from));
+        int fromYOffset = 30 + 24 * (fromNode.getInputs().size() + fromNode.getOutputs().indexOf(from)) + (int)calculateThumbnailOffset(fromNode, true);
 
         NodeSocket to = conn.getInputSocket();
         Node toNode = to.getParentNode();
-        int toYOffset = 30 + 24 * toNode.getInputs().indexOf(to);
+        int toYOffset = 30 + 24 * toNode.getInputs().indexOf(to) + (int)calculateThumbnailOffset(toNode, true);
 
         ctx.moveTo(fromNode.getX() + 149, fromNode.getY() + fromYOffset + 12);
         ctx.bezierCurveTo(

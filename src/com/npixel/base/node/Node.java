@@ -1,5 +1,6 @@
 package com.npixel.base.node;
 
+import com.npixel.base.bitmap.Bitmap;
 import com.npixel.base.events.SimpleEventEmitter;
 import com.npixel.base.tree.NodeTree;
 
@@ -136,5 +137,9 @@ public class Node extends SimpleEventEmitter<NodeEvent, Node> {
 
     public void setCycleColor(NodeCycleColor cycleColor) {
         this.cycleColor = cycleColor;
+    }
+
+    public Bitmap getThumbnail() {
+        return null;
     }
 }
