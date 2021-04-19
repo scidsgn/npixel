@@ -99,6 +99,7 @@ public class Node extends SimpleEventEmitter<NodeEvent, Node> {
 
     public void setName(String name) {
         this.name = name;
+        emit(NodeEvent.APPEARANCEUPDATED, this);
     }
 
     public int getLastUpdateTick() {

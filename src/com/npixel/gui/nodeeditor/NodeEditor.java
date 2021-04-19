@@ -5,6 +5,7 @@ import com.npixel.base.node.NodeSocket;
 import com.npixel.base.node.NodeSocketType;
 import com.npixel.base.tree.NodeConnection;
 import com.npixel.base.tree.NodeTree;
+import com.npixel.base.tree.NodeTreeEvent;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -29,6 +30,11 @@ public class NodeEditor extends Canvas {
     public NodeEditor(NodeTree tree) {
         this.tree = tree;
 
+        prepareEvents();
+        setupSelectedNodeMenu();
+    }
+
+    private void prepareEvents() {
         this.setOnMousePressed(this::handleMouseDown);
         this.setOnMouseReleased(this::handleMouseRelease);
         this.setOnMouseDragged(this::handleDragging);
@@ -37,7 +43,10 @@ public class NodeEditor extends Canvas {
         widthProperty().addListener(event -> render());
         heightProperty().addListener(event -> render());
 
-        setupSelectedNodeMenu();
+        tree.on(NodeTreeEvent.NODEAPPEARANCEUPDATED, node -> {
+            render();
+            return null;
+        });
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.npixel.base.node.NodeEvent;
 import com.npixel.base.node.NodeSocket;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 public class RasterEditor extends Canvas {
     private Node currentNode = null;
@@ -58,7 +59,10 @@ public class RasterEditor extends Canvas {
 
             if (v instanceof Bitmap) {
                 Bitmap bmp = (Bitmap) v;
-                ctx.strokeRect(59, 59, bmp.getWidth() + 2, bmp.getHeight() + 2);
+
+                ctx.setFill(Color.BLACK);
+                ctx.fillRect(59, 59, bmp.getWidth() + 2, bmp.getHeight() + 2);
+
                 ctx.drawImage(bmp, 60, 60);
             } else if (v instanceof Integer) {
                 ctx.fillText(v.toString(), 50, 50);

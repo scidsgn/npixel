@@ -1,10 +1,7 @@
 package com.npixel.base.tree;
 
 import com.npixel.base.events.SimpleEventEmitter;
-import com.npixel.base.node.Node;
-import com.npixel.base.node.NodeCycleColor;
-import com.npixel.base.node.NodeSocket;
-import com.npixel.base.node.NodeSocketType;
+import com.npixel.base.node.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +29,7 @@ public class NodeTree extends SimpleEventEmitter<NodeTreeEvent, Node> {
         }
 
         nodes.add(node);
+        attachNodeEvents(node);
     }
 
     public void deleteNode(Node node) {
@@ -41,6 +39,7 @@ public class NodeTree extends SimpleEventEmitter<NodeTreeEvent, Node> {
 
         disconnectAll(node);
         nodes.remove(node);
+        detachNodeEvents(node);
     }
 
     public void smartDeleteNode(Node node) {
@@ -80,6 +79,7 @@ public class NodeTree extends SimpleEventEmitter<NodeTreeEvent, Node> {
         }
 
         nodes.remove(node);
+        detachNodeEvents(node);
     }
 
     public NodeSocket getConnectedOutput(NodeSocket inputSocket) {
@@ -323,5 +323,25 @@ public class NodeTree extends SimpleEventEmitter<NodeTreeEvent, Node> {
 
     public boolean isInvalid() {
         return isInvalid;
+    }
+
+    private Void onNodeUpdated(Node node) {
+        this.emit(NodeTreeEvent.NODEUPDATED, node);
+        return null;
+    }
+
+    private Void onNodeAppearanceUpdated(Node node) {
+        this.emit(NodeTreeEvent.NODEAPPEARANCEUPDATED, node);
+        return null;
+    }
+
+    private void attachNodeEvents(Node node) {
+        node.on(NodeEvent.UPDATED, this::onNodeUpdated);
+        node.on(NodeEvent.APPEARANCEUPDATED, this::onNodeAppearanceUpdated);
+    }
+
+    private void detachNodeEvents(Node node) {
+        node.off(NodeEvent.UPDATED, this::onNodeUpdated);
+        node.off(NodeEvent.APPEARANCEUPDATED, this::onNodeAppearanceUpdated);
     }
 }
