@@ -6,6 +6,8 @@ import com.npixel.base.bitmap.Color;
 import com.npixel.base.node.Node;
 import com.npixel.base.node.NodeSocket;
 import com.npixel.base.node.NodeSocketType;
+import com.npixel.base.node.properties.IntNodeProperty;
+import com.npixel.base.node.properties.NodePropertyGroup;
 import com.npixel.base.tree.NodeTree;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -68,6 +70,11 @@ public class Main extends Application {
             typeString = "TestImg";
             this.name = name;
 
+            propertyGroups.add(new NodePropertyGroup(
+                    "blend", "Blend",
+                    new IntNodeProperty(this, "mix", "Mix", 0, 0, 10)
+            ));
+
             inputs.add(new NodeSocket(this, "a", NodeSocketType.INPUT, "Bmp1", new Bitmap(200, 200)));
             inputs.add(new NodeSocket(this, "b", NodeSocketType.INPUT, "Bmp2", new Bitmap(200, 200)));
             outputs.add(new NodeSocket(this, "out", NodeSocketType.OUTPUT, "Output", new Bitmap(200, 200)));
@@ -80,10 +87,13 @@ public class Main extends Application {
 
             Bitmap bmp = (Bitmap)getOutput("out").getValue();
 
+            IntNodeProperty mixProp = (IntNodeProperty)getProperty("blend", "mix");
+            double mixPropValue = (double)mixProp.getValue() / 10;
+
             for (int x = 0; x < bmp.getWidth(); x++) {
                 double mix = (double)x / bmp.getWidth();
                 for (int y = 0; y < bmp.getHeight(); y++) {
-                    bmp.setPixel(x, y, Color.mix(bmp1.getPixel(x, y), bmp2.getPixel(x, y), mix));
+                    bmp.setPixel(x, y, Color.mix(bmp1.getPixel(x, y), bmp2.getPixel(x, y), mix * mixPropValue));
                 }
             }
 
@@ -126,7 +136,7 @@ public class Main extends Application {
         HBox.setHgrow(docView, Priority.ALWAYS);
 
         primaryStage.setTitle("NPIXEL");
-        primaryStage.setScene(new Scene(root, 1140, 768));
+        primaryStage.setScene(new Scene(root, 1500, 940));
         primaryStage.show();
     }
 

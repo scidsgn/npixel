@@ -48,6 +48,10 @@ public class NodeEditor extends Canvas {
             render();
             return null;
         });
+        tree.on(NodeTreeEvent.NODEUPDATED, node -> {
+            render();
+            return null;
+        });
     }
 
     @Override

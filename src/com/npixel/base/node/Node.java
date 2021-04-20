@@ -2,6 +2,8 @@ package com.npixel.base.node;
 
 import com.npixel.base.bitmap.Bitmap;
 import com.npixel.base.events.SimpleEventEmitter;
+import com.npixel.base.node.properties.INodeProperty;
+import com.npixel.base.node.properties.NodePropertyGroup;
 import com.npixel.base.tree.NodeTree;
 
 import java.util.ArrayList;
@@ -16,6 +18,8 @@ public class Node extends SimpleEventEmitter<NodeEvent, Node> {
     protected String typeString = "";
     protected String name;
 
+    protected List<NodePropertyGroup> propertyGroups;
+
     private int lastUpdateTick = 0;
 
     private double x = 0.0;
@@ -25,6 +29,8 @@ public class Node extends SimpleEventEmitter<NodeEvent, Node> {
 
     public Node(NodeTree tree) {
         this.tree = tree;
+
+        propertyGroups = new ArrayList<>();
 
         inputs = new ArrayList<>();
         outputs = new ArrayList<>();
@@ -140,6 +146,26 @@ public class Node extends SimpleEventEmitter<NodeEvent, Node> {
     }
 
     public Bitmap getThumbnail() {
+        return null;
+    }
+
+    public List<NodePropertyGroup> getPropertyGroups() {
+        return propertyGroups;
+    }
+
+    protected INodeProperty getProperty(String groupId, String propertyId) {
+        for (NodePropertyGroup propertyGroup : propertyGroups) {
+            if (!propertyGroup.getId().equals(groupId)) {
+                continue;
+            }
+
+            for (INodeProperty property : propertyGroup.getProperties()) {
+                if (property.getId().equals(propertyId)) {
+                    return property;
+                }
+            }
+        }
+
         return null;
     }
 }
