@@ -1,11 +1,14 @@
 package com.npixel.gui.nodeeditor;
 
 import com.npixel.base.node.Node;
+import com.npixel.base.node.properties.DoubleNodeProperty;
 import com.npixel.base.node.properties.INodeProperty;
 import com.npixel.base.node.properties.IntNodeProperty;
 import com.npixel.base.node.properties.NodePropertyGroup;
 import com.npixel.base.tree.NodeTree;
 import com.npixel.base.tree.NodeTreeEvent;
+import com.npixel.gui.nodeeditor.properties.DoublePropertyEditor;
+import com.npixel.gui.nodeeditor.properties.IntPropertyEditor;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -79,19 +82,9 @@ public class NodePropertiesPanel extends VBox {
     private javafx.scene.Node createPropertyControl(INodeProperty property) {
         // TODO: make it better than this
         if (property instanceof IntNodeProperty) {
-            IntNodeProperty p = (IntNodeProperty)property;
-
-            Slider slider = new Slider(p.getMinValue(), p.getMaxValue(), p.getValue());
-            slider.setMajorTickUnit(1);
-            slider.setMinorTickCount(0);
-            slider.setShowTickMarks(true);
-            slider.setSnapToTicks(true);
-
-            slider.valueProperty().addListener((observable, oldValue, newValue) -> {
-                p.setValue(newValue.intValue());
-            });
-
-            return slider;
+            return new IntPropertyEditor((IntNodeProperty)property);
+        } else if (property instanceof DoubleNodeProperty) {
+            return new DoublePropertyEditor((DoubleNodeProperty)property);
         }
 
         return null;

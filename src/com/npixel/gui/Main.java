@@ -9,6 +9,7 @@ import com.npixel.base.node.NodeSocketType;
 import com.npixel.base.node.properties.IntNodeProperty;
 import com.npixel.base.node.properties.NodePropertyGroup;
 import com.npixel.base.tree.NodeTree;
+import com.npixel.nodelibrary.color.ColorCrossfadeNode;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
@@ -90,12 +91,10 @@ public class Main extends Application {
             IntNodeProperty mixProp = (IntNodeProperty)getProperty("blend", "mix");
             double mixPropValue = (double)mixProp.getValue() / 10;
 
-            for (int x = 0; x < bmp.getWidth(); x++) {
+            bmp.scan((x, y, c) -> {
                 double mix = (double)x / bmp.getWidth();
-                for (int y = 0; y < bmp.getHeight(); y++) {
-                    bmp.setPixel(x, y, Color.mix(bmp1.getPixel(x, y), bmp2.getPixel(x, y), mix * mixPropValue));
-                }
-            }
+                return Color.mix(bmp1.getPixel(x, y), bmp2.getPixel(x, y), mix * mixPropValue);
+            });
 
             super.process();
         }
@@ -121,6 +120,11 @@ public class Main extends Application {
         n5.setX(600);
         n5.setY(40);
         tree.addNode(n5);
+
+        ColorCrossfadeNode xfade = new ColorCrossfadeNode(tree, "Xfade");
+        xfade.setX(200);
+        xfade.setY(40);
+        tree.addNode(xfade);
     }
 
     @Override
