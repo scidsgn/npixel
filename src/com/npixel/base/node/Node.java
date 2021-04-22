@@ -16,7 +16,7 @@ public class Node extends SimpleEventEmitter<NodeEvent, Node> {
     protected NodeTree tree;
 
     protected String typeString = "";
-    protected String name;
+    protected String name = null;
 
     protected List<NodePropertyGroup> propertyGroups;
 
@@ -101,6 +101,9 @@ public class Node extends SimpleEventEmitter<NodeEvent, Node> {
     }
 
     public String getName() {
+        if (name == null) {
+            return typeString;
+        }
         return name;
     }
 

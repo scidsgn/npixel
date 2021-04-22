@@ -10,11 +10,10 @@ import com.npixel.base.node.properties.NodePropertyGroup;
 import com.npixel.base.tree.NodeTree;
 
 public class ColorCrossfadeNode extends Node {
-    public ColorCrossfadeNode(NodeTree tree, String name) {
+    public ColorCrossfadeNode(NodeTree tree) {
         super(tree);
 
         typeString = "ColorXfade";
-        this.name = name;
 
         propertyGroups.add(new NodePropertyGroup(
                 "xfade", "Crossfade",

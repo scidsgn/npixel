@@ -1,16 +1,15 @@
 package com.npixel.gui.nodeeditor;
 
 import com.npixel.base.node.Node;
-import com.npixel.base.node.properties.DoubleNodeProperty;
-import com.npixel.base.node.properties.INodeProperty;
-import com.npixel.base.node.properties.IntNodeProperty;
-import com.npixel.base.node.properties.NodePropertyGroup;
+import com.npixel.base.node.properties.*;
 import com.npixel.base.tree.NodeTree;
 import com.npixel.base.tree.NodeTreeEvent;
 import com.npixel.gui.nodeeditor.properties.DoublePropertyEditor;
 import com.npixel.gui.nodeeditor.properties.IntPropertyEditor;
+import com.npixel.gui.nodeeditor.properties.OptionPropertyEditor;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
@@ -62,7 +61,12 @@ public class NodePropertiesPanel extends VBox {
             VBox content = new VBox();
 
             for (INodeProperty property : propertyGroup.getProperties()) {
-                VBox propPanel = new VBox();
+                Pane propPanel;
+                if (property.isCompact()) {
+                    propPanel = new HBox();
+                } else {
+                    propPanel = new VBox();
+                }
 
                 Label propLabel = new Label(property.getName());
                 javafx.scene.Node propControl = createPropertyControl(property);
@@ -85,6 +89,8 @@ public class NodePropertiesPanel extends VBox {
             return new IntPropertyEditor((IntNodeProperty)property);
         } else if (property instanceof DoubleNodeProperty) {
             return new DoublePropertyEditor((DoubleNodeProperty)property);
+        } else if (property instanceof OptionNodeProperty) {
+            return new OptionPropertyEditor((OptionNodeProperty)property);
         }
 
         return null;

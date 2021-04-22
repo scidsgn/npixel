@@ -8,6 +8,7 @@ import com.npixel.base.node.NodeSocket;
 import com.npixel.base.node.NodeSocketType;
 import com.npixel.base.node.properties.IntNodeProperty;
 import com.npixel.base.node.properties.NodePropertyGroup;
+import com.npixel.base.node.properties.OptionNodeProperty;
 import com.npixel.base.tree.NodeTree;
 import com.npixel.nodelibrary.color.ColorCrossfadeNode;
 import javafx.application.Application;
@@ -17,24 +18,6 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-    private static class TestNode extends Node {
-        TestNode(NodeTree tree, String name) {
-            super(tree);
-
-            typeString = "Test";
-            this.name = name;
-
-            inputs.add(new NodeSocket(this, "a", NodeSocketType.INPUT, "Number A", 2));
-            inputs.add(new NodeSocket(this, "b", NodeSocketType.INPUT, "Number B", 2));
-            outputs.add(new NodeSocket(this, "out", NodeSocketType.OUTPUT, "Output", 0, "a"));
-        }
-
-        @Override
-        public void process() {
-            getOutput("out").setValue((Integer)getInputValue("a") + (Integer)getInputValue("b"));
-            super.process();
-        }
-    }
 
     private static class TestColorNode extends Node {
         TestColorNode(NodeTree tree, String name, Color color) {
@@ -63,7 +46,6 @@ public class Main extends Application {
             return (Bitmap)getOutput("out").getValue();
         }
     }
-
     private static class TestFadeNode extends Node {
         TestFadeNode(NodeTree tree, String name) {
             super(tree);
@@ -73,7 +55,8 @@ public class Main extends Application {
 
             propertyGroups.add(new NodePropertyGroup(
                     "blend", "Blend",
-                    new IntNodeProperty(this, "mix", "Mix", 0, 0, 10)
+                    new IntNodeProperty(this, "mix", "Mix", 0, 0, 10),
+                    new OptionNodeProperty(this, "test", "Test", 0, "A", "B", "C")
             ));
 
             inputs.add(new NodeSocket(this, "a", NodeSocketType.INPUT, "Bmp1", new Bitmap(200, 200)));
@@ -90,6 +73,8 @@ public class Main extends Application {
 
             IntNodeProperty mixProp = (IntNodeProperty)getProperty("blend", "mix");
             double mixPropValue = (double)mixProp.getValue() / 10;
+
+            System.out.println(((OptionNodeProperty)getProperty("blend", "test")).getValue());
 
             bmp.scan((x, y, c) -> {
                 double mix = (double)x / bmp.getWidth();
@@ -121,7 +106,7 @@ public class Main extends Application {
         n5.setY(40);
         tree.addNode(n5);
 
-        ColorCrossfadeNode xfade = new ColorCrossfadeNode(tree, "Xfade");
+        ColorCrossfadeNode xfade = new ColorCrossfadeNode(tree);
         xfade.setX(200);
         xfade.setY(40);
         tree.addNode(xfade);

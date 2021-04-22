@@ -7,10 +7,15 @@ import com.npixel.base.node.NodeSocketType;
 import com.npixel.base.tree.NodeConnection;
 import com.npixel.base.tree.NodeTree;
 import com.npixel.base.tree.NodeTreeEvent;
+import com.npixel.nodelibrary.NodeLibrary;
+import com.npixel.nodelibrary.NodeLibraryCategory;
+import com.npixel.nodelibrary.NodeLibraryNode;
+import javafx.geometry.Bounds;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseButton;
@@ -23,6 +28,7 @@ public class NodeEditor extends Canvas {
     private NodeSocket activeSocket = null;
 
     private ContextMenu selectedNodeMenu;
+    private ContextMenu addNodeMenu;
 
     private final Double[] lastMousePosition = {0.0, 0.0};
 
@@ -33,6 +39,7 @@ public class NodeEditor extends Canvas {
 
         prepareEvents();
         setupSelectedNodeMenu();
+        setupAddNodeMenu();
     }
 
     private void prepareEvents() {
@@ -105,9 +112,28 @@ public class NodeEditor extends Canvas {
         selectedNodeMenu.getItems().addAll(deleteItem, disconnectItem);
     }
 
+    private void setupAddNodeMenu() {
+        addNodeMenu = new ContextMenu();
+
+        for (NodeLibraryCategory category : NodeLibrary.nodeLibrary.getCategories()) {
+            Menu categoryMenu = new Menu(category.getName());
+
+            for (NodeLibraryNode node : category.getNodes()) {
+                MenuItem nodeItem = new MenuItem(node.getName());
+                nodeItem.setOnAction(event -> addNode(node.create(tree)));
+
+                categoryMenu.getItems().add(nodeItem);
+            }
+
+            addNodeMenu.getItems().add(categoryMenu);
+        }
+    }
+
     private void handleContextMenu(ContextMenuEvent contextMenuEvent) {
         if (tree.getActiveNode() != null) {
             selectedNodeMenu.show(this, contextMenuEvent.getScreenX(), contextMenuEvent.getScreenY());
+        } else {
+            addNodeMenu.show(this, contextMenuEvent.getScreenX(), contextMenuEvent.getScreenY());
         }
     }
 
@@ -115,6 +141,7 @@ public class NodeEditor extends Canvas {
         Node node = hitTest(mouseEvent.getX() - viewX, mouseEvent.getY() - viewY);
 
         selectedNodeMenu.hide();
+        addNodeMenu.hide();
 
         if (node != null) {
             double xOffset = mouseEvent.getX() - node.getX() - viewX;
@@ -373,5 +400,17 @@ public class NodeEditor extends Canvas {
         ctx.stroke();
 
         ctx.restore();
+    }
+
+    public void addNode(Node node) {
+        if (node == null) {
+            return;
+        }
+
+        node.setX((getWidth() - 150) / 2 - viewX);
+        node.setY(getHeight() / 2 - 100 - viewY);
+        tree.addNode(node);
+
+        render();
     }
 }

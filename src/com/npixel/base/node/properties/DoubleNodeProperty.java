@@ -46,8 +46,11 @@ public class DoubleNodeProperty implements INodeProperty {
         return id;
     }
 
-    @Override
     public Node getNode() {
         return node;
+    }
+
+    public boolean isCompact() {
+        return false;
     }
 }
