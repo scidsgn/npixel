@@ -4,6 +4,7 @@ import com.npixel.base.bitmap.Bitmap;
 import com.npixel.base.events.SimpleEventEmitter;
 import com.npixel.base.node.properties.INodeProperty;
 import com.npixel.base.node.properties.NodePropertyGroup;
+import com.npixel.base.tool.ITool;
 import com.npixel.base.tree.NodeTree;
 
 import java.util.ArrayList;
@@ -14,6 +15,9 @@ public class Node extends SimpleEventEmitter<NodeEvent, Node> {
     protected List<NodeSocket> inputs;
     protected List<NodeSocket> outputs;
     protected NodeTree tree;
+
+    protected List<ITool> tools;
+    private ITool activeTool = null;
 
     protected String typeString = "";
     protected String name = null;
@@ -34,6 +38,8 @@ public class Node extends SimpleEventEmitter<NodeEvent, Node> {
 
         inputs = new ArrayList<>();
         outputs = new ArrayList<>();
+
+        tools = new ArrayList<>();
     }
 
     public List<NodeSocket> getInputs() {
@@ -170,5 +176,19 @@ public class Node extends SimpleEventEmitter<NodeEvent, Node> {
         }
 
         return null;
+    }
+
+    public List<ITool> getTools() {
+        return tools;
+    }
+
+    public ITool getActiveTool() {
+        return activeTool;
+    }
+
+    public void setActiveTool(ITool tool) {
+        if (tools.contains(tool)) {
+            activeTool = tool;
+        }
     }
 }

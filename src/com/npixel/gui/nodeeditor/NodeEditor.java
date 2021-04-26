@@ -31,7 +31,6 @@ public class NodeEditor extends Canvas {
     private ContextMenu addNodeMenu;
 
     private final Double[] lastMousePosition = {0.0, 0.0};
-
     double viewX = 0, viewY = 0;
 
     public NodeEditor(NodeTree tree) {

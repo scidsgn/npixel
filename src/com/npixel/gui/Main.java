@@ -9,6 +9,7 @@ import com.npixel.base.node.NodeSocketType;
 import com.npixel.base.node.properties.IntNodeProperty;
 import com.npixel.base.node.properties.NodePropertyGroup;
 import com.npixel.base.node.properties.OptionNodeProperty;
+import com.npixel.base.tool.ITool;
 import com.npixel.base.tree.NodeTree;
 import com.npixel.nodelibrary.color.ColorCrossfadeNode;
 import javafx.application.Application;
@@ -18,6 +19,39 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+    private static class TestBrush implements ITool {
+        private final Bitmap bitmap;
+
+        public TestBrush(Bitmap bitmap) {
+            this.bitmap = bitmap;
+        }
+
+        public String getName() {
+            return "test";
+        }
+
+        public boolean onMouseDragged(double endX, double endY, double movementX, double movementY) {
+            double startX = endX - movementX;
+            double startY = endY - movementY;
+
+            double maxDelta = Math.max(Math.abs(movementX), Math.abs(movementY));
+
+            for (int i = 0; i < maxDelta; i++) {
+                double x = 1 - ((double)i / maxDelta);
+                bitmap.setPixel((int)(startX + movementX * x), (int)(startY + movementY * x), new Color());
+            }
+
+            return false;
+        }
+
+        public boolean onMousePressed(double x, double y) {
+            return false;
+        }
+
+        public boolean onMouseReleased(double x, double y) {
+            return true;
+        }
+    }
 
     private static class TestColorNode extends Node {
         TestColorNode(NodeTree tree, String name, Color color) {
@@ -26,7 +60,12 @@ public class Main extends Application {
             typeString = "TestColor";
             this.name = name;
 
-            outputs.add(new NodeSocket(this, "out", NodeSocketType.OUTPUT, "Output", new Bitmap(200, 200)));
+            Bitmap bitmap = new Bitmap(200, 200);
+            outputs.add(new NodeSocket(this, "out", NodeSocketType.OUTPUT, "Output", bitmap));
+
+            ITool brushTool = new TestBrush(bitmap);
+            tools.add(brushTool);
+            setActiveTool(brushTool);
 
             fill(color);
         }

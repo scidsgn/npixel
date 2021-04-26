@@ -26,13 +26,13 @@ public class Bitmap extends WritableImage {
     }
 
     public void setPixel(int x, int y, Color color) {
-        if (x < getWidth() && y < getHeight()) {
+        if (x < getWidth() && y < getHeight() && x >= 0 && y >= 0) {
             writer.setColor(x, y, color.getFXColor());
         }
     }
 
     public Color getPixel(int x, int y) {
-        if (x >= getWidth() || y >= getHeight()) {
+        if (x >= getWidth() || y >= getHeight() || x < 0 || y < 0) {
             return new Color(0, 0, 0, 0);
         }
 

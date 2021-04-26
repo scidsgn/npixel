@@ -75,4 +75,15 @@ public class Color {
                 a.getAlpha() + mix * (b.getAlpha() - a.getAlpha())
         );
     }
+
+    public static Color over(Color bg, Color fore) {
+        double a = fore.getAlpha() + bg.getAlpha() * (1 - fore.getAlpha());
+
+        return new Color(
+                (fore.getRed() * fore.getAlpha() + bg.getRed() * bg.getAlpha() * (1 - fore.getAlpha())) / a,
+                (fore.getGreen() * fore.getAlpha() + bg.getGreen() * bg.getAlpha() * (1 - fore.getAlpha())) / a,
+                (fore.getBlue() * fore.getAlpha() + bg.getBlue() * bg.getAlpha() * (1 - fore.getAlpha())) / a,
+                a
+        );
+    }
 }

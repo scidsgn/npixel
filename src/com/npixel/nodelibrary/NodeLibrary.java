@@ -2,6 +2,7 @@ package com.npixel.nodelibrary;
 
 import com.npixel.base.node.Node;
 import com.npixel.base.tree.NodeTree;
+import com.npixel.nodelibrary.color.ColorAlphaCompositeNode;
 import com.npixel.nodelibrary.color.ColorCrossfadeNode;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class NodeLibrary {
 
         this.categories.add(new NodeLibraryCategory(
                 "Color",
+                new NodeLibraryNode("ColorAComp", "Alpha Composite", ColorAlphaCompositeNode::new),
                 new NodeLibraryNode("ColorXfade", "Crossfade", ColorCrossfadeNode::new)
         ));
     }
