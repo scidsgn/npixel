@@ -5,8 +5,8 @@ import com.npixel.base.bitmap.Color;
 import com.npixel.base.node.Node;
 import com.npixel.base.node.NodeSocket;
 import com.npixel.base.node.NodeSocketType;
-import com.npixel.base.node.properties.DoubleNodeProperty;
-import com.npixel.base.node.properties.NodePropertyGroup;
+import com.npixel.base.properties.DoubleProperty;
+import com.npixel.base.properties.PropertyGroup;
 import com.npixel.base.tree.NodeTree;
 
 public class ColorAlphaCompositeNode extends Node {
@@ -15,9 +15,9 @@ public class ColorAlphaCompositeNode extends Node {
 
         typeString = "ColorAComp";
 
-        propertyGroups.add(new NodePropertyGroup(
+        propertyGroups.add(new PropertyGroup(
                 "acomp", "Composite",
-                new DoubleNodeProperty(this, "opacity", "Foreground opacity", 1, 0, 1)
+                new DoubleProperty(this, "opacity", "Foreground opacity", 1, 0, 1)
         ));
 
         inputs.add(new NodeSocket(this, "a", NodeSocketType.INPUT, "Background", new Bitmap(1, 1)));
@@ -33,7 +33,7 @@ public class ColorAlphaCompositeNode extends Node {
         Bitmap bmpA = (Bitmap)getInputValue("a");
         Bitmap bmpB = (Bitmap)getInputValue("b");
 
-        double opacityValue = ((DoubleNodeProperty)getProperty("acomp", "opacity")).getValue();
+        double opacityValue = ((DoubleProperty)getProperty("acomp", "opacity")).getValue();
 
         outBitmap.scan((x, y, color) -> {
             Color fg = bmpB.getPixel(x, y);

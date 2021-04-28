@@ -1,14 +1,14 @@
-package com.npixel.gui.nodeeditor.properties;
+package com.npixel.gui.properties;
 
-import com.npixel.base.node.properties.OptionNodeProperty;
+import com.npixel.base.properties.OptionProperty;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
 public class OptionPropertyEditor extends HBox {
-    private final OptionNodeProperty property;
+    private final OptionProperty property;
 
-    public OptionPropertyEditor(OptionNodeProperty property) {
+    public OptionPropertyEditor(OptionProperty property) {
         this.property = property;
 
         prepareLayout();

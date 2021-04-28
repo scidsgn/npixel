@@ -1,14 +1,14 @@
-package com.npixel.gui.nodeeditor.properties;
+package com.npixel.gui.properties;
 
-import com.npixel.base.node.properties.IntNodeProperty;
+import com.npixel.base.properties.IntProperty;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
 public class IntPropertyEditor extends HBox {
-    private final IntNodeProperty property;
+    private final IntProperty property;
 
-    public IntPropertyEditor(IntNodeProperty property) {
+    public IntPropertyEditor(IntProperty property) {
         this.property = property;
 
         prepareLayout();

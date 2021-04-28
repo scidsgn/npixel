@@ -1,14 +1,14 @@
-package com.npixel.base.node.properties;
+package com.npixel.base.properties;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class NodePropertyGroup {
-    private final List<INodeProperty> properties;
-    private String name, id;
+public class PropertyGroup {
+    private final List<IProperty> properties;
+    private final String name, id;
 
-    public NodePropertyGroup(String id, String name, INodeProperty... properties) {
+    public PropertyGroup(String id, String name, IProperty... properties) {
         this.name = name;
         this.id = id;
 
@@ -16,7 +16,7 @@ public class NodePropertyGroup {
         this.properties.addAll(Arrays.asList(properties));
     }
 
-    public List<INodeProperty> getProperties() {
+    public List<IProperty> getProperties() {
         return properties;
     }
 

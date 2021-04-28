@@ -1,16 +1,16 @@
-package com.npixel.base.node.properties;
+package com.npixel.base.properties;
 
 import com.npixel.base.node.Node;
 
-public class DoubleNodeProperty implements INodeProperty {
+public class DoubleProperty implements IProperty {
     private final double minValue, maxValue;
     private double value;
     private final String name, id;
 
-    private final Node node;
+    private final IUpdateable target;
 
-    public DoubleNodeProperty(Node node, String id, String name, double value, double minValue, double maxValue) {
-        this.node = node;
+    public DoubleProperty(IUpdateable target, String id, String name, double value, double minValue, double maxValue) {
+        this.target = target;
 
         this.minValue = minValue;
         this.maxValue = maxValue;
@@ -35,7 +35,7 @@ public class DoubleNodeProperty implements INodeProperty {
     public void setValue(double value) {
         this.value = value;
 
-        node.process();
+        target.update();
     }
 
     public String getName() {
@@ -46,8 +46,8 @@ public class DoubleNodeProperty implements INodeProperty {
         return id;
     }
 
-    public Node getNode() {
-        return node;
+    public IUpdateable getTargetObject() {
+        return target;
     }
 
     public boolean isCompact() {

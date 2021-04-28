@@ -1,6 +1,8 @@
 package com.npixel.base.tool;
 
-public interface ITool {
+import com.npixel.base.properties.IUpdateable;
+
+public interface ITool extends IUpdateable {
     String getName();
 
     boolean onMouseDragged(double endX, double endY, double movementX, double movementY);

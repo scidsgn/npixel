@@ -6,9 +6,9 @@ import com.npixel.base.bitmap.Color;
 import com.npixel.base.node.Node;
 import com.npixel.base.node.NodeSocket;
 import com.npixel.base.node.NodeSocketType;
-import com.npixel.base.node.properties.IntNodeProperty;
-import com.npixel.base.node.properties.NodePropertyGroup;
-import com.npixel.base.node.properties.OptionNodeProperty;
+import com.npixel.base.properties.IntProperty;
+import com.npixel.base.properties.PropertyGroup;
+import com.npixel.base.properties.OptionProperty;
 import com.npixel.base.tool.ITool;
 import com.npixel.base.tree.NodeTree;
 import com.npixel.nodelibrary.color.ColorCrossfadeNode;
@@ -18,12 +18,18 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main extends Application {
     private static class TestBrush implements ITool {
         private final Bitmap bitmap;
+        private final List<PropertyGroup> propertyGroups;
 
         public TestBrush(Bitmap bitmap) {
             this.bitmap = bitmap;
+
+            propertyGroups = new ArrayList<>();
         }
 
         public String getName() {
@@ -50,6 +56,12 @@ public class Main extends Application {
 
         public boolean onMouseReleased(double x, double y) {
             return true;
+        }
+
+        public void update() {}
+
+        public List<PropertyGroup> getPropertyGroups() {
+            return propertyGroups;
         }
     }
 
@@ -92,10 +104,10 @@ public class Main extends Application {
             typeString = "TestImg";
             this.name = name;
 
-            propertyGroups.add(new NodePropertyGroup(
+            propertyGroups.add(new PropertyGroup(
                     "blend", "Blend",
-                    new IntNodeProperty(this, "mix", "Mix", 0, 0, 10),
-                    new OptionNodeProperty(this, "test", "Test", 0, "A", "B", "C")
+                    new IntProperty(this, "mix", "Mix", 0, 0, 10),
+                    new OptionProperty(this, "test", "Test", 0, "A", "B", "C")
             ));
 
             inputs.add(new NodeSocket(this, "a", NodeSocketType.INPUT, "Bmp1", new Bitmap(200, 200)));
@@ -110,10 +122,10 @@ public class Main extends Application {
 
             Bitmap bmp = (Bitmap)getOutput("out").getValue();
 
-            IntNodeProperty mixProp = (IntNodeProperty)getProperty("blend", "mix");
+            IntProperty mixProp = (IntProperty)getProperty("blend", "mix");
             double mixPropValue = (double)mixProp.getValue() / 10;
 
-            System.out.println(((OptionNodeProperty)getProperty("blend", "test")).getValue());
+            System.out.println(((OptionProperty)getProperty("blend", "test")).getValue());
 
             bmp.scan((x, y, c) -> {
                 double mix = (double)x / bmp.getWidth();

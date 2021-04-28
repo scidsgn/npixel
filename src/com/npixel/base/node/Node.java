@@ -2,8 +2,10 @@ package com.npixel.base.node;
 
 import com.npixel.base.bitmap.Bitmap;
 import com.npixel.base.events.SimpleEventEmitter;
-import com.npixel.base.node.properties.INodeProperty;
-import com.npixel.base.node.properties.NodePropertyGroup;
+import com.npixel.base.properties.IProperty;
+import com.npixel.base.properties.IUpdateable;
+import com.npixel.base.properties.PropUtil;
+import com.npixel.base.properties.PropertyGroup;
 import com.npixel.base.tool.ITool;
 import com.npixel.base.tree.NodeTree;
 
@@ -11,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Node extends SimpleEventEmitter<NodeEvent, Node> {
+public class Node extends SimpleEventEmitter<NodeEvent, Node> implements IUpdateable {
     protected List<NodeSocket> inputs;
     protected List<NodeSocket> outputs;
     protected NodeTree tree;
@@ -22,7 +24,7 @@ public class Node extends SimpleEventEmitter<NodeEvent, Node> {
     protected String typeString = "";
     protected String name = null;
 
-    protected List<NodePropertyGroup> propertyGroups;
+    protected List<PropertyGroup> propertyGroups;
 
     private int lastUpdateTick = 0;
 
@@ -79,6 +81,10 @@ public class Node extends SimpleEventEmitter<NodeEvent, Node> {
         NodeSocket connectedSocket = tree.getConnectedOutput(inputSocket);
 
         return Objects.requireNonNullElse(connectedSocket, inputSocket).getValue();
+    }
+
+    public void update() {
+        process();
     }
 
     public void process() {
@@ -158,24 +164,12 @@ public class Node extends SimpleEventEmitter<NodeEvent, Node> {
         return null;
     }
 
-    public List<NodePropertyGroup> getPropertyGroups() {
+    public List<PropertyGroup> getPropertyGroups() {
         return propertyGroups;
     }
 
-    protected INodeProperty getProperty(String groupId, String propertyId) {
-        for (NodePropertyGroup propertyGroup : propertyGroups) {
-            if (!propertyGroup.getId().equals(groupId)) {
-                continue;
-            }
-
-            for (INodeProperty property : propertyGroup.getProperties()) {
-                if (property.getId().equals(propertyId)) {
-                    return property;
-                }
-            }
-        }
-
-        return null;
+    protected IProperty getProperty(String groupId, String propertyId) {
+        return PropUtil.getProperty(this, groupId, propertyId);
     }
 
     public List<ITool> getTools() {

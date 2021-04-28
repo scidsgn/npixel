@@ -5,8 +5,8 @@ import com.npixel.base.bitmap.Color;
 import com.npixel.base.node.Node;
 import com.npixel.base.node.NodeSocket;
 import com.npixel.base.node.NodeSocketType;
-import com.npixel.base.node.properties.DoubleNodeProperty;
-import com.npixel.base.node.properties.NodePropertyGroup;
+import com.npixel.base.properties.DoubleProperty;
+import com.npixel.base.properties.PropertyGroup;
 import com.npixel.base.tree.NodeTree;
 
 public class ColorCrossfadeNode extends Node {
@@ -15,9 +15,9 @@ public class ColorCrossfadeNode extends Node {
 
         typeString = "ColorXfade";
 
-        propertyGroups.add(new NodePropertyGroup(
+        propertyGroups.add(new PropertyGroup(
                 "xfade", "Crossfade",
-                new DoubleNodeProperty(this, "value", "A/B fade", 0.5, 0, 1)
+                new DoubleProperty(this, "value", "A/B fade", 0.5, 0, 1)
         ));
 
         inputs.add(new NodeSocket(this, "a", NodeSocketType.INPUT, "A", new Bitmap(1, 1)));
@@ -33,7 +33,7 @@ public class ColorCrossfadeNode extends Node {
         Bitmap bmpA = (Bitmap)getInputValue("a");
         Bitmap bmpB = (Bitmap)getInputValue("b");
 
-        double xfadeValue = ((DoubleNodeProperty)getProperty("xfade", "value")).getValue();
+        double xfadeValue = ((DoubleProperty)getProperty("xfade", "value")).getValue();
 
         outBitmap.scan((x, y, color) -> Color.mix(bmpA.getPixel(x, y), bmpB.getPixel(x, y), xfadeValue));
 

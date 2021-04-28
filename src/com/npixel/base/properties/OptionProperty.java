@@ -1,4 +1,4 @@
-package com.npixel.base.node.properties;
+package com.npixel.base.properties;
 
 import com.npixel.base.node.Node;
 
@@ -6,15 +6,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class OptionNodeProperty implements INodeProperty {
+public class OptionProperty implements IProperty {
     private final List<String> values;
     private int value;
     private final String name, id;
 
-    private final Node node;
+    private final IUpdateable target;
 
-    public OptionNodeProperty(Node node, String id, String name, int value, String ...values) {
-        this.node = node;
+    public OptionProperty(IUpdateable target, String id, String name, int value, String ...values) {
+        this.target = target;
 
         this.value = value;
         this.name = name;
@@ -35,7 +35,7 @@ public class OptionNodeProperty implements INodeProperty {
     public void setValue(int value) {
         this.value = Math.max(0, Math.min(values.size() - 1, value));
 
-        node.process();
+        target.update();
     }
 
     public String getName() {
@@ -46,8 +46,8 @@ public class OptionNodeProperty implements INodeProperty {
         return id;
     }
 
-    public Node getNode() {
-        return node;
+    public IUpdateable getTargetObject() {
+        return target;
     }
 
     public boolean isCompact() {

@@ -1,13 +1,13 @@
-package com.npixel.base.node.properties;
+package com.npixel.base.properties;
 
 import com.npixel.base.node.Node;
 
-public interface INodeProperty {
+public interface IProperty {
     String getId();
     String getName();
 
     boolean isCompact();
 
-    Node getNode();
+    IUpdateable getTargetObject();
     // TODO: serialize
 }

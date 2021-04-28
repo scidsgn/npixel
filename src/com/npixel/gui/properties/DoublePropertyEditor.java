@@ -1,14 +1,14 @@
-package com.npixel.gui.nodeeditor.properties;
+package com.npixel.gui.properties;
 
-import com.npixel.base.node.properties.DoubleNodeProperty;
+import com.npixel.base.properties.DoubleProperty;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
 public class DoublePropertyEditor extends HBox {
-    private final DoubleNodeProperty property;
+    private final DoubleProperty property;
 
-    public DoublePropertyEditor(DoubleNodeProperty property) {
+    public DoublePropertyEditor(DoubleProperty property) {
         this.property = property;
 
         prepareLayout();
