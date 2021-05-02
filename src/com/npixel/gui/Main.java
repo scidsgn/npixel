@@ -7,6 +7,7 @@ import com.npixel.base.node.Node;
 import com.npixel.base.node.NodeSocket;
 import com.npixel.base.node.NodeSocketType;
 import com.npixel.base.properties.IntProperty;
+import com.npixel.base.properties.PropUtil;
 import com.npixel.base.properties.PropertyGroup;
 import com.npixel.base.properties.OptionProperty;
 import com.npixel.base.tool.ITool;
@@ -30,6 +31,10 @@ public class Main extends Application {
             this.bitmap = bitmap;
 
             propertyGroups = new ArrayList<>();
+            propertyGroups.add(new PropertyGroup(
+                    "brush", "Brush",
+                    new IntProperty(this, "radius", "Radius", 1, 1, 10)
+            ));
         }
 
         public String getName() {
@@ -40,11 +45,25 @@ public class Main extends Application {
             double startX = endX - movementX;
             double startY = endY - movementY;
 
-            double maxDelta = Math.max(Math.abs(movementX), Math.abs(movementY));
+            double maxDelta = Math.hypot(movementX, movementY);
+
+            IntProperty radiusProp = (IntProperty)PropUtil.getProperty(this, "brush", "radius");
+            int radius = (int)radiusProp.getValue();
 
             for (int i = 0; i < maxDelta; i++) {
                 double x = 1 - ((double)i / maxDelta);
-                bitmap.setPixel((int)(startX + movementX * x), (int)(startY + movementY * x), new Color());
+
+                for (int dx = -radius + 1; dx < radius; dx++) {
+                    for (int dy = -radius + 1; dy < radius; dy++) {
+                        if (dx != dy) {
+                            continue;
+                        }
+                        bitmap.setPixel(
+                                (int)(startX + movementX * x + dx), (int)(startY + movementY * x + dy),
+                                new Color()
+                        );
+                    }
+                }
             }
 
             return false;
@@ -124,8 +143,6 @@ public class Main extends Application {
 
             IntProperty mixProp = (IntProperty)getProperty("blend", "mix");
             double mixPropValue = (double)mixProp.getValue() / 10;
-
-            System.out.println(((OptionProperty)getProperty("blend", "test")).getValue());
 
             bmp.scan((x, y, c) -> {
                 double mix = (double)x / bmp.getWidth();

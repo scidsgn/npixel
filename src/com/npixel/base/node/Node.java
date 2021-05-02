@@ -183,6 +183,7 @@ public class Node extends SimpleEventEmitter<NodeEvent, Node> implements IUpdate
     public void setActiveTool(ITool tool) {
         if (tools.contains(tool)) {
             activeTool = tool;
+            emit(NodeEvent.TOOLCHANGED, this);
         }
     }
 }

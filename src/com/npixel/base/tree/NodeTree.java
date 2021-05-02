@@ -335,13 +335,20 @@ public class NodeTree extends SimpleEventEmitter<NodeTreeEvent, Node> {
         return null;
     }
 
+    private Void onNodeToolChanged(Node node) {
+        this.emit(NodeTreeEvent.NODETOOLCHANGED, node);
+        return null;
+    }
+
     private void attachNodeEvents(Node node) {
         node.on(NodeEvent.UPDATED, this::onNodeUpdated);
         node.on(NodeEvent.APPEARANCEUPDATED, this::onNodeAppearanceUpdated);
+        node.on(NodeEvent.TOOLCHANGED, this::onNodeToolChanged);
     }
 
     private void detachNodeEvents(Node node) {
         node.off(NodeEvent.UPDATED, this::onNodeUpdated);
         node.off(NodeEvent.APPEARANCEUPDATED, this::onNodeAppearanceUpdated);
+        node.off(NodeEvent.TOOLCHANGED, this::onNodeToolChanged);
     }
 }

@@ -2,7 +2,9 @@ package com.npixel.gui;
 
 import com.npixel.base.Document;
 import com.npixel.gui.nodeeditor.NodeEditorPanel;
-import com.npixel.gui.nodeeditor.NodePropertiesPanel;
+import com.npixel.gui.sidepanel.DocumentSidePanel;
+import com.npixel.gui.sidepanel.NodePropertiesPanel;
+import com.npixel.gui.sidepanel.ToolPropertiesPanel;
 import com.npixel.gui.rastereditor.RasterEditorPanel;
 import javafx.geometry.Orientation;
 import javafx.scene.control.SplitPane;
@@ -12,9 +14,6 @@ import javafx.scene.layout.VBox;
 public class DocumentView extends VBox {
     private Document doc;
 
-    private RasterEditorPanel rasterEditorPanel;
-    private NodeEditorPanel nodeEditorPanel;
-    private NodePropertiesPanel nodePropertiesPanel;
 
     public DocumentView(Document doc) {
         this.doc = doc;
@@ -30,13 +29,13 @@ public class DocumentView extends VBox {
         SplitPane splitPane2 = new SplitPane();
         splitPane2.setOrientation(Orientation.VERTICAL);
 
-        rasterEditorPanel = new RasterEditorPanel(doc);
-        nodeEditorPanel = new NodeEditorPanel(doc.getTree());
+        RasterEditorPanel rasterEditorPanel = new RasterEditorPanel(doc);
+        NodeEditorPanel nodeEditorPanel = new NodeEditorPanel(doc.getTree());
         splitPane2.getItems().addAll(rasterEditorPanel, nodeEditorPanel);
 
-        nodePropertiesPanel = new NodePropertiesPanel(doc.getTree());
+        DocumentSidePanel sidePanel = new DocumentSidePanel(doc);
 
-        splitPane.getItems().addAll(splitPane2, nodePropertiesPanel);
+        splitPane.getItems().addAll(splitPane2, sidePanel);
 
         getChildren().add(splitPane);
     }

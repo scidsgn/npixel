@@ -1,16 +1,10 @@
-package com.npixel.gui.nodeeditor;
+package com.npixel.gui.sidepanel;
 
-import com.npixel.base.node.Node;
-import com.npixel.base.properties.*;
 import com.npixel.base.tree.NodeTree;
 import com.npixel.base.tree.NodeTreeEvent;
-import com.npixel.gui.properties.DoublePropertyEditor;
-import com.npixel.gui.properties.IntPropertyEditor;
-import com.npixel.gui.properties.OptionPropertyEditor;
 import com.npixel.gui.properties.PropertiesEditor;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
@@ -52,6 +46,5 @@ public class NodePropertiesPanel extends VBox {
         });
 
         getChildren().addAll(nameBox, propertiesEditor);
-        maxWidthProperty().setValue(300);
     }
 }
