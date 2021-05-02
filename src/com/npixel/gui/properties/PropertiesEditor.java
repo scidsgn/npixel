@@ -19,6 +19,10 @@ public class PropertiesEditor extends VBox {
         getChildren().clear();
 
         if (target == null) {
+            Label label = new Label("Nothing selected");
+            label.getStyleClass().add("no-editor-context");
+            getChildren().add(label);
+
             return;
         }
 
@@ -42,6 +46,7 @@ public class PropertiesEditor extends VBox {
             }
 
             TitledPane pane = new TitledPane(propertyGroup.getName(), content);
+            pane.setCollapsible(false);
             pane.setExpanded(true);
 
             getChildren().add(pane);

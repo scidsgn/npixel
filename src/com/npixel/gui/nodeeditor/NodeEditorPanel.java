@@ -1,15 +1,17 @@
 package com.npixel.gui.nodeeditor;
 
-import com.npixel.base.node.Node;
 import com.npixel.base.tree.NodeTree;
+import com.npixel.nodelibrary.NodeLibrary;
+import com.npixel.nodelibrary.NodeLibraryNode;
+import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 
-import java.util.List;
-
-public class NodeEditorPanel extends VBox {
+public class NodeEditorPanel extends HBox {
     NodeTree tree;
     NodeEditor nodeEditor;
     ToolBar toolBar;
@@ -22,36 +24,35 @@ public class NodeEditorPanel extends VBox {
 
     private void prepareLayout() {
         toolBar = new ToolBar();
+        toolBar.setOrientation(Orientation.VERTICAL);
         prepareToolbar();
 
         nodeEditor = new NodeEditor(tree);
-        VBox.setVgrow(nodeEditor, Priority.ALWAYS);
+        HBox.setHgrow(nodeEditor, Priority.ALWAYS);
 
         getChildren().addAll(toolBar, nodeEditor);
     }
 
+    private Button createAddNodeButton(String nodeId) {
+        NodeLibraryNode node = NodeLibrary.nodeLibrary.getNode(nodeId);
+
+        ImageView nodeIcon = new ImageView(node.getIcon());
+        nodeIcon.setFitWidth(24);
+        nodeIcon.setFitHeight(24);
+
+        Button nodeBtn = new Button("", nodeIcon);
+        nodeBtn.setTooltip(new Tooltip("Add " + node.getName()));
+
+        nodeBtn.setOnAction(event -> {
+            nodeEditor.addNode(node.create(tree));
+        });
+
+        return nodeBtn;
+    }
+
     private void prepareToolbar() {
-        Button renderBtn = new Button("Process node");
-
-        renderBtn.setOnAction(event -> {
-            if (tree.getActiveNode() != null) {
-                tree.getActiveNode().process();
-            }
-        });
-
-        Button updateListBtn = new Button("Update list to stdout");
-
-        updateListBtn.setOnAction(event -> {
-            if (tree.getActiveNode() != null) {
-                List<Node> updateList = tree.getUpdateOrder(tree.getActiveNode());
-
-                System.out.println("UPDATE LIST:");
-                for (Node node : updateList) {
-                    System.out.println(node.getName());
-                }
-            }
-        });
-
-        toolBar.getItems().addAll(renderBtn, updateListBtn);
+        toolBar.getItems().addAll(
+                createAddNodeButton("ColorAComp")
+        );
     }
 }

@@ -8,12 +8,14 @@ import com.npixel.base.node.NodeSocketType;
 import com.npixel.base.properties.DoubleProperty;
 import com.npixel.base.properties.PropertyGroup;
 import com.npixel.base.tree.NodeTree;
+import com.npixel.gui.icons.Icons;
 
 public class ColorCrossfadeNode extends Node {
     public ColorCrossfadeNode(NodeTree tree) {
         super(tree);
 
         typeString = "ColorXfade";
+        icon = Icons.getIcon("colorxfade");
 
         propertyGroups.add(new PropertyGroup(
                 "xfade", "Crossfade",

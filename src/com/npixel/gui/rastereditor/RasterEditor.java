@@ -4,18 +4,28 @@ import com.npixel.base.bitmap.Bitmap;
 import com.npixel.base.node.Node;
 import com.npixel.base.node.NodeEvent;
 import com.npixel.base.node.NodeSocket;
+import com.npixel.base.properties.IntProperty;
+import com.npixel.base.properties.PropUtil;
+import com.npixel.base.properties.PropertyGroup;
 import com.npixel.base.tool.ITool;
+import com.npixel.gui.icons.Icons;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RasterEditor extends Canvas {
     private Node currentNode = null;
 
     private final Double[] lastMousePosition = {0.0, 0.0};
     double viewX = 0, viewY = 0;
+
+    private final InternalHandTool handTool = new InternalHandTool(this);
 
     public RasterEditor() {
         widthProperty().addListener(event -> render());
@@ -36,7 +46,7 @@ public class RasterEditor extends Canvas {
     }
 
     private void handleMouseDown(MouseEvent mouseEvent) {
-        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+        if (mouseEvent.getButton() == MouseButton.PRIMARY && currentNode != null) {
             ITool tool = currentNode.getActiveTool();
             if (tool != null) {
                 boolean update = tool.onMousePressed(
@@ -56,7 +66,7 @@ public class RasterEditor extends Canvas {
     }
 
     private void handleMouseRelease(MouseEvent mouseEvent) {
-        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+        if (mouseEvent.getButton() == MouseButton.PRIMARY && currentNode != null) {
             ITool tool = currentNode.getActiveTool();
             if (tool != null) {
                 boolean update = tool.onMouseReleased(
@@ -76,7 +86,7 @@ public class RasterEditor extends Canvas {
     }
 
     private void handleDragging(MouseEvent mouseEvent) {
-        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+        if (mouseEvent.getButton() == MouseButton.PRIMARY && currentNode != null) {
             ITool tool = currentNode.getActiveTool();
             if (tool != null) {
                 boolean update = tool.onMouseDragged(
@@ -90,8 +100,7 @@ public class RasterEditor extends Canvas {
                 }
             }
         } else if (mouseEvent.getButton() == MouseButton.MIDDLE) {
-            viewX += mouseEvent.getX() - lastMousePosition[0];
-            viewY += mouseEvent.getY() - lastMousePosition[1];
+            panView(mouseEvent.getX() - lastMousePosition[0], mouseEvent.getY() - lastMousePosition[1]);
         }
 
         lastMousePosition[0] = mouseEvent.getX();
@@ -125,6 +134,11 @@ public class RasterEditor extends Canvas {
     @Override
     public double maxHeight(double v) {
         return Double.POSITIVE_INFINITY;
+    }
+
+    public void panView(double dx, double dy) {
+        viewX += dx;
+        viewY += dy;
     }
 
     public void render() {
@@ -173,5 +187,47 @@ public class RasterEditor extends Canvas {
         }
 
         render();
+    }
+
+    public ITool getHandTool() {
+        return handTool;
+    }
+
+    private static class InternalHandTool implements ITool {
+        private final List<PropertyGroup> propertyGroups;
+        private final RasterEditor editor;
+
+        public InternalHandTool(RasterEditor editor) {
+            propertyGroups = new ArrayList<>();
+
+            this.editor = editor;
+        }
+
+        public String getName() {
+            return "Hand";
+        }
+
+        public Image getIcon() {
+            return Icons.getIcon("hand");
+        }
+
+        public boolean onMouseDragged(double endX, double endY, double movementX, double movementY) {
+            editor.panView(movementX, movementY);
+            return false;
+        }
+
+        public boolean onMousePressed(double x, double y) {
+            return false;
+        }
+
+        public boolean onMouseReleased(double x, double y) {
+            return false;
+        }
+
+        public void update() {}
+
+        public List<PropertyGroup> getPropertyGroups() {
+            return propertyGroups;
+        }
     }
 }

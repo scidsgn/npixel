@@ -284,23 +284,22 @@ public class NodeEditor extends Canvas {
 
         int socketCount = node.getInputs().size() + node.getOutputs().size();
 
-        ctx.setFill((node == tree.getActiveNode()) ? Color.BLUE : Color.GRAY);
-        ctx.fillRect(xBase, yBase, 150, 32 + socketCount * 24 + thumbnailOffset);
+        ctx.setFill(Color.color(0.9, 0.9, 0.9));
+        ctx.fillRoundRect(xBase - 0.5, yBase + 0.5, 151, 32 + socketCount * 24 + thumbnailOffset, 8, 8);
 
-        ctx.setFill(Color.LIGHTGRAY);
-        ctx.fillRect(xBase + 2, yBase + 2, 146, 26);
+        ctx.setFill(Color.WHITE);
+        ctx.fillRoundRect(xBase - 0.5, yBase + 30.5, 151, 2 + socketCount * 24 + thumbnailOffset, 8, 8);
+
+        ctx.setStroke((node == tree.getActiveNode()) ? Color.BLUE : Color.GRAY);
+        ctx.setLineWidth(1);
+        ctx.strokeRoundRect(xBase - 0.5, yBase - 0.5, 152, 34 + socketCount * 24 + thumbnailOffset, 8, 8);
+
+        ctx.drawImage(node.getIcon(), xBase + 3, yBase + 3, 24, 24);
 
         ctx.setFill(Color.BLACK);
         ctx.setTextBaseline(VPos.CENTER);
         ctx.setTextAlign(TextAlignment.LEFT);
-        ctx.fillText(node.getName(), xBase + 16, yBase + 15);
-
-        ctx.setFill(Color.GRAY);
-        ctx.setTextAlign(TextAlignment.RIGHT);
-        ctx.fillText(node.getTypeString(), xBase + 150 - 16, yBase + 15);
-
-        ctx.setFill(Color.WHITE);
-        ctx.fillRect(xBase + 2, yBase + 30, 146, socketCount * 24 + thumbnailOffset);
+        ctx.fillText(node.getName(), xBase + 32, yBase + 15);
 
         int i = 0;
 
@@ -316,11 +315,12 @@ public class NodeEditor extends Canvas {
             ctx.setTextAlign(TextAlignment.LEFT);
             ctx.fillText(socket.getName(), xBase + 16, yBase + yOffset + 12);
 
-            ctx.setFill(Color.GRAY);
-            ctx.fillRect(xBase, yBase + yOffset + 7, 10, 10);
-
             ctx.setFill(Color.LIGHTGRAY);
-            ctx.fillRect(xBase + 2, yBase + yOffset + 9, 6, 6);
+            ctx.fillRect(xBase , yBase + yOffset + 7, 10, 10);
+
+            ctx.setStroke((node == tree.getActiveNode()) ? Color.BLUE : Color.GRAY);
+            ctx.setLineWidth(1);
+            ctx.strokeRect(xBase - 0.5, yBase + yOffset + 6.5, 11, 11);
 
             i++;
         }
@@ -331,18 +331,19 @@ public class NodeEditor extends Canvas {
             ctx.setTextAlign(TextAlignment.RIGHT);
             ctx.fillText(socket.getName(), xBase + 150 - 16, yBase + yOffset + 12);
 
-            ctx.setFill(Color.GRAY);
-            ctx.fillRect(xBase + 140, yBase + yOffset + 7, 10, 10);
-
             ctx.setFill(Color.LIGHTGRAY);
-            ctx.fillRect(xBase + 142, yBase + yOffset + 9, 6, 6);
+            ctx.fillRect(xBase + 141, yBase + yOffset + 7, 10, 10);
+
+            ctx.setStroke((node == tree.getActiveNode()) ? Color.BLUE : Color.GRAY);
+            ctx.setLineWidth(1);
+            ctx.strokeRect(xBase + 140.5, yBase + yOffset + 6.5, 11, 11);
 
             i++;
         }
 
         if (node.requiresUpdate()) {
             ctx.setFill(Color.RED);
-            ctx.fillRect(xBase + 145, yBase - 5, 10, 10);
+            ctx.fillOval(xBase + 146, yBase - 4, 8, 8);
         }
     }
 
@@ -409,6 +410,7 @@ public class NodeEditor extends Canvas {
         node.setX((getWidth() - 150) / 2 - viewX);
         node.setY(getHeight() / 2 - 100 - viewY);
         tree.addNode(node);
+        tree.setActiveNode(node);
 
         render();
     }

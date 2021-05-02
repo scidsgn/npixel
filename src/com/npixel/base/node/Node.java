@@ -8,6 +8,8 @@ import com.npixel.base.properties.PropUtil;
 import com.npixel.base.properties.PropertyGroup;
 import com.npixel.base.tool.ITool;
 import com.npixel.base.tree.NodeTree;
+import com.npixel.gui.icons.Icons;
+import javafx.scene.image.Image;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,7 @@ public class Node extends SimpleEventEmitter<NodeEvent, Node> implements IUpdate
 
     private double x = 0.0;
     private double y = 0.0;
+    protected Image icon = Icons.getIcon("none");
 
     private NodeCycleColor cycleColor = NodeCycleColor.NONE;
 
@@ -97,7 +100,7 @@ public class Node extends SimpleEventEmitter<NodeEvent, Node> implements IUpdate
     }
 
     public void setX(double x) {
-        this.x = x;
+        this.x = Math.floor(x);
     }
 
     public double getY() {
@@ -105,7 +108,7 @@ public class Node extends SimpleEventEmitter<NodeEvent, Node> implements IUpdate
     }
 
     public void setY(double y) {
-        this.y = y;
+        this.y = Math.floor(y);
     }
 
     public String getTypeString() {
@@ -164,6 +167,10 @@ public class Node extends SimpleEventEmitter<NodeEvent, Node> implements IUpdate
         return null;
     }
 
+    public Image getIcon() {
+        return icon;
+    }
+
     public List<PropertyGroup> getPropertyGroups() {
         return propertyGroups;
     }
@@ -181,9 +188,7 @@ public class Node extends SimpleEventEmitter<NodeEvent, Node> implements IUpdate
     }
 
     public void setActiveTool(ITool tool) {
-        if (tools.contains(tool)) {
-            activeTool = tool;
-            emit(NodeEvent.TOOLCHANGED, this);
-        }
+        activeTool = tool;
+        emit(NodeEvent.TOOLCHANGED, this);
     }
 }

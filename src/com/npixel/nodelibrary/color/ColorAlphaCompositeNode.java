@@ -8,12 +8,14 @@ import com.npixel.base.node.NodeSocketType;
 import com.npixel.base.properties.DoubleProperty;
 import com.npixel.base.properties.PropertyGroup;
 import com.npixel.base.tree.NodeTree;
+import com.npixel.gui.icons.Icons;
 
 public class ColorAlphaCompositeNode extends Node {
     public ColorAlphaCompositeNode(NodeTree tree) {
         super(tree);
 
         typeString = "ColorAComp";
+        icon = Icons.getIcon("coloracomp");
 
         propertyGroups.add(new PropertyGroup(
                 "acomp", "Composite",

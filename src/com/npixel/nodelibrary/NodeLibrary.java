@@ -16,18 +16,27 @@ public class NodeLibrary {
 
         this.categories.add(new NodeLibraryCategory(
                 "Color",
-                new NodeLibraryNode("ColorAComp", "Alpha Composite", ColorAlphaCompositeNode::new),
-                new NodeLibraryNode("ColorXfade", "Crossfade", ColorCrossfadeNode::new)
+                new NodeLibraryNode("ColorAComp", "Alpha Composite", "coloracomp", ColorAlphaCompositeNode::new),
+                new NodeLibraryNode("ColorXfade", "Crossfade", "colorxfade", ColorCrossfadeNode::new)
         ));
     }
 
-    public Node createNodeFromId(NodeTree tree, String id) {
+    public NodeLibraryNode getNode(String id) {
         for (NodeLibraryCategory category : categories) {
             for (NodeLibraryNode node : category.getNodes()) {
                 if (node.getId().equals(id)) {
-                    return node.create(tree);
+                    return node;
                 }
             }
+        }
+
+        return null;
+    }
+
+    public Node createNodeFromId(NodeTree tree, String id) {
+        NodeLibraryNode node = getNode(id);
+        if (node != null) {
+            return node.create(tree);
         }
 
         return null;
