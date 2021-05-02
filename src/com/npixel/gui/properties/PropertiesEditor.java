@@ -49,7 +49,8 @@ public class PropertiesEditor extends VBox {
                 }
             }
 
-            TitledPane pane = new TitledPane(propertyGroup.getName(), content);
+            TitledPane pane = new TitledPane(propertyGroup.getName().toUpperCase(), content);
+            pane.getStyleClass().add("property-group");
             pane.setCollapsible(false);
             pane.setExpanded(true);
 

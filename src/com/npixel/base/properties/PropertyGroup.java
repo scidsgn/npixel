@@ -27,4 +27,14 @@ public class PropertyGroup {
     public String getId() {
         return id;
     }
+
+    public IProperty getProperty(String id) {
+        for (IProperty property : properties) {
+            if (property.getId().equals(id)) {
+                return property;
+            }
+        }
+
+        return null;
+    }
 }

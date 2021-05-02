@@ -29,22 +29,19 @@
 .titled-pane {
     -fx-background-color: #fff;
 
+    -fx-border-style: hidden;
+    -fx-padding: 4px 0px 0px 0px;
+}
+
+.document-side-panel > .titled-pane {
     -fx-border-style: hidden hidden solid hidden;
     -fx-border-width: 1px;
     -fx-border-color: #d4d4d4;
+    -fx-padding: 4px;
 }
 
 .titled-pane .title {
     -fx-background-color: transparent;
-}
-
-.document-side-panel > .titled-pane .title {
-    -fx-font-size: 10pt;
-    -fx-font-weight: 600;
-}
-
-.titled-pane .titled-pane .title {
-    -fx-text-fill: #aaa;
 
     -fx-font-weight: 700;
     -fx-text-transform: uppercase;
@@ -53,15 +50,20 @@
     -fx-padding: 0px;
 }
 
+.document-side-panel > .titled-pane .title {
+    -fx-font-size: 10pt;
+    -fx-font-weight: 600;
+}
+
 .titled-pane .content {
     -fx-background-color: transparent;
 
     -fx-border-color: transparent;
-    -fx-padding: 8px;
+    -fx-padding: 0px;
 }
 
-.titled-pane .titled-pane .content {
-    -fx-padding: 0px 0px 4px 0px;
+.document-side-panel > .titled-pane .content {
+    -fx-padding: 8px;
 }
 
 .no-editor-context {

@@ -16,4 +16,14 @@ public class PropUtil {
 
         return null;
     }
+
+    public static PropertyGroup getPropertyGroup(IUpdateable object, String groupId) {
+        for (PropertyGroup propertyGroup : object.getPropertyGroups()) {
+            if (propertyGroup.getId().equals(groupId)) {
+                return propertyGroup;
+            }
+        }
+
+        return null;
+    }
 }
