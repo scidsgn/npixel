@@ -6,9 +6,7 @@ import com.npixel.base.bitmap.Color;
 import com.npixel.base.node.Node;
 import com.npixel.base.node.NodeSocket;
 import com.npixel.base.node.NodeSocketType;
-import com.npixel.base.properties.IntProperty;
-import com.npixel.base.properties.PropUtil;
-import com.npixel.base.properties.PropertyGroup;
+import com.npixel.base.properties.*;
 import com.npixel.base.tool.ITool;
 import com.npixel.base.tree.NodeTree;
 import com.npixel.gui.icons.Icons;
@@ -161,24 +159,35 @@ public class Main extends Application {
             typeString = "TestColor";
             this.name = name;
 
+            propertyGroups.add(new PropertyGroup(
+                    "color", "Color",
+                    new ColorProperty(this, "color", "Color", color)
+            ));
+
             Bitmap bitmap = new Bitmap(200, 200);
             outputs.add(new NodeSocket(this, "out", NodeSocketType.OUTPUT, "Output", bitmap));
 
             tools.add(new TestBrush(bitmap));
             tools.add(new TestEraser(bitmap));
             setActiveTool(tools.get(0));
-
-            fill(color);
         }
 
-        private void fill(Color color) {
+        private void fill() {
             Bitmap bmp = (Bitmap)getOutput("out").getValue();
+
+            Color color = ((ColorProperty)getProperty("color", "color")).getValue();
 
             for (int x = 0; x < bmp.getWidth(); x++) {
                 for (int y = 0; y < bmp.getHeight(); y++) {
                     bmp.setPixel(x, y, color);
                 }
             }
+        }
+
+        @Override
+        public void process() {
+            fill();
+            super.process();
         }
 
         @Override

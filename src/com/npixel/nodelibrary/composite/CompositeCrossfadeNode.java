@@ -24,7 +24,7 @@ public class CompositeCrossfadeNode extends Node {
 
         inputs.add(new NodeSocket(this, "a", NodeSocketType.INPUT, "A", new Bitmap(1, 1)));
         inputs.add(new NodeSocket(this, "b", NodeSocketType.INPUT, "B", new Bitmap(1, 1)));
-        outputs.add(new NodeSocket(this, "out", NodeSocketType.OUTPUT, "Output", new Bitmap(1, 1)));
+        outputs.add(new NodeSocket(this, "out", NodeSocketType.OUTPUT, "Output", new Bitmap(1, 1), "a"));
     }
 
     @Override

@@ -1,7 +1,5 @@
 package com.npixel.base.properties;
 
-import com.npixel.base.node.Node;
-
 public class IntProperty implements IProperty {
     private final int minValue, maxValue;
     private int value;

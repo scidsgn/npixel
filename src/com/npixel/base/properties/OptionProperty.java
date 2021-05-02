@@ -1,7 +1,5 @@
 package com.npixel.base.properties;
 
-import com.npixel.base.node.Node;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

@@ -1,36 +1,26 @@
 package com.npixel.base.properties;
 
-public class DoubleProperty implements IProperty {
-    private final double minValue, maxValue;
-    private double value;
+import com.npixel.base.bitmap.Color;
+
+public class BooleanProperty implements IProperty {
+    private boolean value;
     private final String name, id;
 
     private final IUpdateable target;
 
-    public DoubleProperty(IUpdateable target, String id, String name, double value, double minValue, double maxValue) {
+    public BooleanProperty(IUpdateable target, String id, String name, boolean value) {
         this.target = target;
-
-        this.minValue = minValue;
-        this.maxValue = maxValue;
 
         this.value = value;
         this.name = name;
         this.id = id;
     }
 
-    public double getMinValue() {
-        return minValue;
-    }
-
-    public double getMaxValue() {
-        return maxValue;
-    }
-
-    public double getValue() {
+    public boolean getValue() {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(boolean value) {
         this.value = value;
 
         target.update();
@@ -49,6 +39,6 @@ public class DoubleProperty implements IProperty {
     }
 
     public boolean isCompact() {
-        return false;
+        return true;
     }
 }

@@ -5,6 +5,8 @@ import com.npixel.base.tree.NodeTree;
 import com.npixel.nodelibrary.composite.CompositeAlphaCompositeNode;
 import com.npixel.nodelibrary.composite.CompositeCrossfadeNode;
 import com.npixel.nodelibrary.composite.CompositeMaskNode;
+import com.npixel.nodelibrary.shape.ShapeEllipseNode;
+import com.npixel.nodelibrary.shape.ShapeRectangleNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,11 @@ public class NodeLibrary {
     private NodeLibrary() {
         this.categories = new ArrayList<>();
 
+        this.categories.add(new NodeLibraryCategory(
+                "Shape",
+                new NodeLibraryNode("ShapeEllipse", "Ellipse", "shapeellipse", ShapeEllipseNode::new),
+                new NodeLibraryNode("ShapeRectangle", "Rectangle", "shaperectangle", ShapeRectangleNode::new)
+        ));
         this.categories.add(new NodeLibraryCategory(
                 "Composite",
                 new NodeLibraryNode("CompAComp", "Alpha Composite", "compacomp", CompositeAlphaCompositeNode::new),

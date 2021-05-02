@@ -94,4 +94,6 @@ public class Color {
                 a
         );
     }
+
+    public static Color TRANSPARENT = new Color(0, 0, 0, 0);
 }

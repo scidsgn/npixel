@@ -5,6 +5,7 @@ import com.npixel.base.bitmap.Color;
 import com.npixel.base.node.Node;
 import com.npixel.base.node.NodeSocket;
 import com.npixel.base.node.NodeSocketType;
+import com.npixel.base.properties.BooleanProperty;
 import com.npixel.base.properties.DoubleProperty;
 import com.npixel.base.properties.OptionProperty;
 import com.npixel.base.properties.PropertyGroup;
@@ -20,6 +21,7 @@ public class CompositeMaskNode extends Node {
 
         propertyGroups.add(new PropertyGroup(
                 "mask", "Masking",
+                new BooleanProperty(this, "invert", "Invert mask", false),
                 new OptionProperty(
                         this, "mode", "Mode", 0,
                         "Lightness to Alpha", "Red to Alpha", "Green to Alpha", "Blue to Alpha",
@@ -30,7 +32,7 @@ public class CompositeMaskNode extends Node {
 
         inputs.add(new NodeSocket(this, "in", NodeSocketType.INPUT, "Input", new Bitmap(1, 1)));
         inputs.add(new NodeSocket(this, "mask", NodeSocketType.INPUT, "Mask", new Bitmap(1, 1)));
-        outputs.add(new NodeSocket(this, "out", NodeSocketType.OUTPUT, "Output", new Bitmap(1, 1)));
+        outputs.add(new NodeSocket(this, "out", NodeSocketType.OUTPUT, "Output", new Bitmap(1, 1), "in"));
     }
 
     private double getMaskValue(Color maskColor, int mode) {
@@ -59,15 +61,19 @@ public class CompositeMaskNode extends Node {
 
         int maskMode = ((OptionProperty)getProperty("mask", "mode")).getValue();
         double maskStrength = ((DoubleProperty)getProperty("mask", "strength")).getValue();
+        boolean maskInvert = ((BooleanProperty)getProperty("mask", "invert")).getValue();
 
         outBitmap.scan((x, y, color) -> {
             Color bmpColor = inBitmap.getPixel(x, y);
             Color maskColor = maskBitmap.getPixel(x, y);
 
             double bmpAlpha = bmpColor.getAlpha();
-            double maskedAlpha = bmpAlpha * getMaskValue(maskColor, maskMode);
+            double maskedAlpha = getMaskValue(maskColor, maskMode);
+            if (maskInvert) {
+                maskedAlpha = 1 - maskedAlpha;
+            }
 
-            return bmpColor.setAlpha(bmpAlpha + maskStrength * (maskedAlpha - bmpAlpha));
+            return bmpColor.setAlpha(bmpAlpha + maskStrength * (bmpAlpha * maskedAlpha - bmpAlpha));
         });
 
         super.process();

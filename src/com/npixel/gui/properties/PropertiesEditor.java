@@ -30,19 +30,23 @@ public class PropertiesEditor extends VBox {
             VBox content = new VBox();
 
             for (IProperty property : propertyGroup.getProperties()) {
-                Pane propPanel;
-                if (property.isCompact()) {
-                    propPanel = new HBox();
+                if (property instanceof BooleanProperty) {
+                    content.getChildren().add(new BooleanPropertyEditor((BooleanProperty)property));
                 } else {
-                    propPanel = new VBox();
+                    Pane propPanel;
+                    if (property.isCompact()) {
+                        propPanel = new HBox();
+                    } else {
+                        propPanel = new VBox();
+                    }
+
+                    Label propLabel = new Label(property.getName());
+                    javafx.scene.Node propControl = createPropertyControl(property);
+
+                    propPanel.getChildren().addAll(propLabel, propControl);
+
+                    content.getChildren().add(propPanel);
                 }
-
-                Label propLabel = new Label(property.getName());
-                javafx.scene.Node propControl = createPropertyControl(property);
-
-                propPanel.getChildren().addAll(propLabel, propControl);
-
-                content.getChildren().add(propPanel);
             }
 
             TitledPane pane = new TitledPane(propertyGroup.getName(), content);
@@ -61,6 +65,8 @@ public class PropertiesEditor extends VBox {
             return new DoublePropertyEditor((DoubleProperty)property);
         } else if (property instanceof OptionProperty) {
             return new OptionPropertyEditor((OptionProperty)property);
+        } else if (property instanceof ColorProperty) {
+            return new ColorPropertyEditor((ColorProperty)property);
         }
 
         return null;

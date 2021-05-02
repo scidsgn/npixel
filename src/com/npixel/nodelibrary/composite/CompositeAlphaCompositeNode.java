@@ -24,7 +24,7 @@ public class CompositeAlphaCompositeNode extends Node {
 
         inputs.add(new NodeSocket(this, "a", NodeSocketType.INPUT, "Background", new Bitmap(1, 1)));
         inputs.add(new NodeSocket(this, "b", NodeSocketType.INPUT, "Foreground", new Bitmap(1, 1)));
-        outputs.add(new NodeSocket(this, "out", NodeSocketType.OUTPUT, "Output", new Bitmap(1, 1)));
+        outputs.add(new NodeSocket(this, "out", NodeSocketType.OUTPUT, "Output", new Bitmap(1, 1), "a"));
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.npixel.nodelibrary.NodeLibrary;
 import com.npixel.nodelibrary.NodeLibraryNode;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
+import javafx.scene.control.Separator;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
@@ -52,6 +53,9 @@ public class NodeEditorPanel extends HBox {
 
     private void prepareToolbar() {
         toolBar.getItems().addAll(
+                createAddNodeButton("ShapeRectangle"),
+                createAddNodeButton("ShapeEllipse"),
+                new Separator(),
                 createAddNodeButton("CompAComp"),
                 createAddNodeButton("CompMask")
         );

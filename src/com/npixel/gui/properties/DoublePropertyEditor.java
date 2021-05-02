@@ -23,6 +23,7 @@ public class DoublePropertyEditor extends HBox {
         TextField valueField = new TextField();
         valueField.setDisable(true);
         valueField.setText(Double.toString(property.getValue()));
+        valueField.setMaxWidth(80);
 
         slider.valueProperty().addListener((observable, oldValue, newValue) -> {
             property.setValue(newValue.doubleValue());

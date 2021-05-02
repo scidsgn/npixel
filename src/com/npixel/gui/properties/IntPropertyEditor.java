@@ -2,6 +2,7 @@ package com.npixel.gui.properties;
 
 import com.npixel.base.properties.IntProperty;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
@@ -20,13 +21,18 @@ public class IntPropertyEditor extends HBox {
         slider.setMinorTickCount(0);
         slider.setShowTickMarks(true);
         slider.setSnapToTicks(true);
-
         HBox.setHgrow(slider, Priority.ALWAYS);
+
+        TextField valueField = new TextField();
+        valueField.setDisable(true);
+        valueField.setText(Integer.toString(property.getValue()));
+        valueField.setMaxWidth(80);
 
         slider.valueProperty().addListener((observable, oldValue, newValue) -> {
             property.setValue(newValue.intValue());
+            valueField.setText(Integer.toString(property.getValue()));
         });
 
-        this.getChildren().add(slider);
+        this.getChildren().addAll(slider, valueField);
     }
 }
