@@ -52,7 +52,8 @@ public class NodeEditorPanel extends HBox {
 
     private void prepareToolbar() {
         toolBar.getItems().addAll(
-                createAddNodeButton("ColorAComp")
+                createAddNodeButton("CompAComp"),
+                createAddNodeButton("CompMask")
         );
     }
 }

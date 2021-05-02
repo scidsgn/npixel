@@ -39,32 +39,40 @@ public class Color {
         return red;
     }
 
-    public void setRed(double v) {
+    public Color setRed(double v) {
         red = v;
+        return this;
     }
 
     public double getGreen() {
         return green;
     }
 
-    public void setGreen(double v) {
+    public Color setGreen(double v) {
         green = v;
+        return this;
     }
 
     public double getBlue() {
         return blue;
     }
 
-    public void setBlue(double v) {
+    public Color setBlue(double v) {
         blue = v;
+        return this;
     }
 
     public double getAlpha() {
         return alpha;
     }
 
-    public void setAlpha(double v) {
+    public Color setAlpha(double v) {
         alpha = v;
+        return this;
+    }
+
+    public double getLightness() {
+        return 0.2126 * red + 0.7152 * green + 0.0722 * blue;
     }
 
     public static Color mix(Color a, Color b, double mix) {

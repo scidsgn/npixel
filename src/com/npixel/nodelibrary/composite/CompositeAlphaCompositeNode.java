@@ -1,4 +1,4 @@
-package com.npixel.nodelibrary.color;
+package com.npixel.nodelibrary.composite;
 
 import com.npixel.base.bitmap.Bitmap;
 import com.npixel.base.bitmap.Color;
@@ -10,12 +10,12 @@ import com.npixel.base.properties.PropertyGroup;
 import com.npixel.base.tree.NodeTree;
 import com.npixel.gui.icons.Icons;
 
-public class ColorAlphaCompositeNode extends Node {
-    public ColorAlphaCompositeNode(NodeTree tree) {
+public class CompositeAlphaCompositeNode extends Node {
+    public CompositeAlphaCompositeNode(NodeTree tree) {
         super(tree);
 
-        typeString = "ColorAComp";
-        icon = Icons.getIcon("coloracomp");
+        typeString = "CompAComp";
+        icon = Icons.getIcon("compacomp");
 
         propertyGroups.add(new PropertyGroup(
                 "acomp", "Composite",
@@ -29,11 +29,11 @@ public class ColorAlphaCompositeNode extends Node {
 
     @Override
     public void process() {
-        Bitmap outBitmap = Bitmap.createEncompassing((Bitmap)getInputValue("a"), (Bitmap)getInputValue("b"));
-        getOutput("out").setValue(outBitmap);
-
         Bitmap bmpA = (Bitmap)getInputValue("a");
         Bitmap bmpB = (Bitmap)getInputValue("b");
+
+        Bitmap outBitmap = Bitmap.createEncompassing(bmpA, bmpB);
+        getOutput("out").setValue(outBitmap);
 
         double opacityValue = ((DoubleProperty)getProperty("acomp", "opacity")).getValue();
 

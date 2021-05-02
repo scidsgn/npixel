@@ -72,3 +72,12 @@
 
     -fx-padding: 1px;
 }
+
+.tooltip {
+    -fx-background-color: #fff;
+    -fx-text-fill: #000;
+
+    -fx-font-size: 9pt;
+
+    -fx-border-color: #aaa;
+}

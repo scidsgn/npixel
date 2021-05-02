@@ -9,11 +9,10 @@ import com.npixel.base.node.NodeSocketType;
 import com.npixel.base.properties.IntProperty;
 import com.npixel.base.properties.PropUtil;
 import com.npixel.base.properties.PropertyGroup;
-import com.npixel.base.properties.OptionProperty;
 import com.npixel.base.tool.ITool;
 import com.npixel.base.tree.NodeTree;
 import com.npixel.gui.icons.Icons;
-import com.npixel.nodelibrary.color.ColorCrossfadeNode;
+import com.npixel.nodelibrary.composite.CompositeCrossfadeNode;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -199,7 +198,7 @@ public class Main extends Application {
         red.setY(200);
         tree.addNode(red);
 
-        ColorCrossfadeNode xfade = new ColorCrossfadeNode(tree);
+        CompositeCrossfadeNode xfade = new CompositeCrossfadeNode(tree);
         xfade.setX(200);
         xfade.setY(40);
         tree.addNode(xfade);

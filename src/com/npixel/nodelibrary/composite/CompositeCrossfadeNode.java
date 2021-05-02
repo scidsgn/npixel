@@ -1,4 +1,4 @@
-package com.npixel.nodelibrary.color;
+package com.npixel.nodelibrary.composite;
 
 import com.npixel.base.bitmap.Bitmap;
 import com.npixel.base.bitmap.Color;
@@ -10,12 +10,12 @@ import com.npixel.base.properties.PropertyGroup;
 import com.npixel.base.tree.NodeTree;
 import com.npixel.gui.icons.Icons;
 
-public class ColorCrossfadeNode extends Node {
-    public ColorCrossfadeNode(NodeTree tree) {
+public class CompositeCrossfadeNode extends Node {
+    public CompositeCrossfadeNode(NodeTree tree) {
         super(tree);
 
-        typeString = "ColorXfade";
-        icon = Icons.getIcon("colorxfade");
+        typeString = "CompXfade";
+        icon = Icons.getIcon("compxfade");
 
         propertyGroups.add(new PropertyGroup(
                 "xfade", "Crossfade",
@@ -29,11 +29,11 @@ public class ColorCrossfadeNode extends Node {
 
     @Override
     public void process() {
-        Bitmap outBitmap = Bitmap.createEncompassing((Bitmap)getInputValue("a"), (Bitmap)getInputValue("b"));
-        getOutput("out").setValue(outBitmap);
-
         Bitmap bmpA = (Bitmap)getInputValue("a");
         Bitmap bmpB = (Bitmap)getInputValue("b");
+
+        Bitmap outBitmap = Bitmap.createEncompassing(bmpA, bmpB);
+        getOutput("out").setValue(outBitmap);
 
         double xfadeValue = ((DoubleProperty)getProperty("xfade", "value")).getValue();
 
