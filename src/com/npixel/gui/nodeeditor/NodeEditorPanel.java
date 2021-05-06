@@ -53,6 +53,8 @@ public class NodeEditorPanel extends HBox {
 
     private void prepareToolbar() {
         toolBar.getItems().addAll(
+                createAddNodeButton("SourceBitmap"),
+                new Separator(),
                 createAddNodeButton("ShapeRectangle"),
                 createAddNodeButton("ShapeEllipse"),
                 new Separator(),

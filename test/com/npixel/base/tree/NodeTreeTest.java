@@ -29,7 +29,7 @@ class NodeTreeTest {
 
     @BeforeEach
     void setUp() {
-        tree = new NodeTree();
+        tree = new NodeTree(null);
         node1 = new TestNode(tree);
         node2 = new TestNode(tree);
         node3 = new TestNode(tree);

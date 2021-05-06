@@ -3,6 +3,7 @@ package com.npixel.gui.sidepanel;
 import com.npixel.base.Document;
 import com.npixel.base.tool.ITool;
 import com.npixel.base.tree.NodeTreeEvent;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
@@ -20,7 +21,10 @@ public class DocumentSidePanel extends ScrollPane {
         VBox vbox = new VBox();
         vbox.getStyleClass().add("document-side-panel");
 
+        TitledPane colorPane = new TitledPane("Color", new ColorPanel(doc));
+        TitledPane swatchPane = new TitledPane("Swatch", new Label("todo"));
         TitledPane toolPane = new TitledPane("Tool", new ToolPropertiesPanel(doc.getTree()));
+        TitledPane brushPane = new TitledPane("Brush", new Label("todo"));
         TitledPane nodePane = new TitledPane("Node", new NodePropertiesPanel(doc.getTree()));
 
         doc.getTree().on(NodeTreeEvent.NODETOOLCHANGED, node -> {
@@ -48,7 +52,7 @@ public class DocumentSidePanel extends ScrollPane {
             return null;
         });
 
-        vbox.getChildren().addAll(toolPane, nodePane);
+        vbox.getChildren().addAll(colorPane, swatchPane, toolPane, brushPane, nodePane);
 
         setContent(vbox);
 

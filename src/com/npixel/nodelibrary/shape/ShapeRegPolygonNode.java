@@ -10,19 +10,18 @@ import com.npixel.base.properties.templates.SizePropertyGroup;
 import com.npixel.base.tree.NodeTree;
 import com.npixel.gui.icons.Icons;
 
-public class ShapeEllipseNode extends Node {
-    public ShapeEllipseNode(NodeTree tree) {
+public class ShapeRegPolygonNode extends Node {
+    public ShapeRegPolygonNode(NodeTree tree) {
         super(tree);
 
-        typeString = "ShapeEllipse";
-        icon = Icons.getIcon("shapeellipse");
+        typeString = "ShapeRegPolygon";
+        icon = Icons.getIcon("shaperegpolygon");
 
         propertyGroups.add(new SizePropertyGroup(this, "size", "Size", 32, 32, 1, 500));
         propertyGroups.add(new PropertyGroup(
                 "shape", "Shape",
-                new BooleanProperty(this, "uniform", "Uniform shape (use only Horizontal exponent)", false),
-                new DoubleProperty(this, "exph", "Horizontal exponent", 2, 0.5, 5),
-                new DoubleProperty(this, "expv", "Vertical exponent", 2, 0.5, 5)
+                new IntProperty(this, "sides", "Sides", 3, 3, 20),
+                new IntProperty(this, "rotation", "Rotation", 0, -180, 180)
         ));
         propertyGroups.add(new PropertyGroup(
                 "fill", "Fill",
@@ -37,22 +36,37 @@ public class ShapeEllipseNode extends Node {
         int w = SizePropertyGroup.getWidth(this, "size");
         int h = SizePropertyGroup.getHeight(this, "size");
 
-        double exph = ((DoubleProperty)getProperty("shape", "exph")).getValue();
-        double expv = ((DoubleProperty)getProperty("shape", "expv")).getValue();
-        boolean shapeUniform = ((BooleanProperty)getProperty("shape", "uniform")).getValue();
-
         Color color = ((ColorProperty)getProperty("fill", "color")).getValue();
+
+        int n = ((IntProperty)getProperty("shape", "sides")).getValue();
+
+        int rotDeg = ((IntProperty)getProperty("shape", "rotation")).getValue();
+        double rot = (double)rotDeg * Math.PI / 180;
 
         Bitmap outBitmap = new Bitmap(w, h);
         getOutput("out").setValue(outBitmap);
 
+        double[] xs = new double[n];
+        double[] ys = new double[n];
+        for (int i = 0; i < n; i++) {
+            double theta = (double) i / n * 2 * Math.PI + rot;
+            xs[i] = (0.5 + Math.cos(theta) / 2) * w;
+            ys[i] = (0.5 + Math.sin(theta) / 2) * h;
+        }
+
         outBitmap.scan((x, y, c) -> {
-            double fx = (double)x * 2 - w;
-            double fy = (double)y * 2 - h;
+            for (int i = 0; i < n; i++) {
+                double refX = xs[(i + 1) % n] - xs[i];
+                double refY = ys[(i + 1) % n] - ys[i];
+                double relX = x - xs[i];
+                double relY = y - ys[i];
 
-            boolean inside = Math.pow(Math.abs(fx / w), exph) + Math.pow(Math.abs(fy / h), shapeUniform ? exph : expv) <= 1;
+                if (refX * relY - refY * relX < 0) {
+                    return Color.TRANSPARENT;
+                }
+            }
 
-            return inside ? color : Color.TRANSPARENT;
+            return color;
         });
 
         super.process();

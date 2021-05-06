@@ -1,5 +1,6 @@
 package com.npixel.base.tree;
 
+import com.npixel.base.Document;
 import com.npixel.base.events.SimpleEventEmitter;
 import com.npixel.base.node.*;
 
@@ -10,17 +11,25 @@ public class NodeTree extends SimpleEventEmitter<NodeTreeEvent, Node> {
     private final List<Node> nodes;
     private final List<NodeConnection> connections;
 
+    private final Document doc;
+
     private Node activeNode = null;
 
     private int updateTick = 0;
 
     private boolean isInvalid = false;
 
-    public NodeTree() {
+    public NodeTree(Document doc) {
         super();
+
+        this.doc = doc;
 
         nodes = new ArrayList<>();
         connections = new ArrayList<>();
+    }
+
+    public Document getDocument() {
+        return doc;
     }
 
     public void addNode(Node node) {
@@ -350,5 +359,33 @@ public class NodeTree extends SimpleEventEmitter<NodeTreeEvent, Node> {
         node.off(NodeEvent.UPDATED, this::onNodeUpdated);
         node.off(NodeEvent.APPEARANCEUPDATED, this::onNodeAppearanceUpdated);
         node.off(NodeEvent.TOOLCHANGED, this::onNodeToolChanged);
+    }
+
+    private Node getNodeByName(String name) {
+        for (Node node : nodes) {
+            if (node.getName().equals(name)) {
+                return node;
+            }
+        }
+
+        return null;
+    }
+
+    public String makeUniqueName(String base) {
+        if (getNodeByName(base) == null) {
+            return base;
+        }
+
+        int index = 1;
+
+        while (true) {
+            String name = base + "." + index;
+
+            if (getNodeByName(name) == null) {
+                return name;
+            } else {
+                index++;
+            }
+        }
     }
 }

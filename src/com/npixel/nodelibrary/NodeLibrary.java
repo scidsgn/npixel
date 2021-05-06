@@ -2,11 +2,9 @@ package com.npixel.nodelibrary;
 
 import com.npixel.base.node.Node;
 import com.npixel.base.tree.NodeTree;
-import com.npixel.nodelibrary.composite.CompositeAlphaCompositeNode;
-import com.npixel.nodelibrary.composite.CompositeCrossfadeNode;
-import com.npixel.nodelibrary.composite.CompositeMaskNode;
-import com.npixel.nodelibrary.shape.ShapeEllipseNode;
-import com.npixel.nodelibrary.shape.ShapeRectangleNode;
+import com.npixel.nodelibrary.composite.*;
+import com.npixel.nodelibrary.shape.*;
+import com.npixel.nodelibrary.source.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +16,14 @@ public class NodeLibrary {
         this.categories = new ArrayList<>();
 
         this.categories.add(new NodeLibraryCategory(
+                "Source",
+                new NodeLibraryNode("SourceBitmap", "Pixel Layer", "sourcebitmap", SourceBitmapNode::new)
+        ));
+        this.categories.add(new NodeLibraryCategory(
                 "Shape",
                 new NodeLibraryNode("ShapeEllipse", "Ellipse", "shapeellipse", ShapeEllipseNode::new),
-                new NodeLibraryNode("ShapeRectangle", "Rectangle", "shaperectangle", ShapeRectangleNode::new)
+                new NodeLibraryNode("ShapeRectangle", "Rectangle", "shaperectangle", ShapeRectangleNode::new),
+                new NodeLibraryNode("ShapeRegPolygon", "Regular Polygon", "shaperegpolygon", ShapeRegPolygonNode::new)
         ));
         this.categories.add(new NodeLibraryCategory(
                 "Composite",

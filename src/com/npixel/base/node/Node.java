@@ -1,5 +1,6 @@
 package com.npixel.base.node;
 
+import com.npixel.base.Document;
 import com.npixel.base.bitmap.Bitmap;
 import com.npixel.base.events.SimpleEventEmitter;
 import com.npixel.base.properties.IProperty;
@@ -111,10 +112,6 @@ public class Node extends SimpleEventEmitter<NodeEvent, Node> implements IUpdate
         this.y = Math.floor(y);
     }
 
-    public String getTypeString() {
-        return typeString;
-    }
-
     public String getName() {
         if (name == null) {
             return typeString;
@@ -125,6 +122,14 @@ public class Node extends SimpleEventEmitter<NodeEvent, Node> implements IUpdate
     public void setName(String name) {
         this.name = name;
         emit(NodeEvent.APPEARANCEUPDATED, this);
+    }
+
+    public NodeTree getTree() {
+        return tree;
+    }
+
+    public Document getDocument() {
+        return tree.getDocument();
     }
 
     public int getLastUpdateTick() {

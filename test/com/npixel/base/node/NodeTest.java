@@ -26,7 +26,7 @@ class NodeTest {
 
     @BeforeEach
     void setUp() {
-        node = new TestNode(new NodeTree());
+        node = new TestNode(new NodeTree(null));
     }
 
     @Test

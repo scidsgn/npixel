@@ -33,7 +33,7 @@ public class Bitmap extends WritableImage {
 
     public Color getPixel(int x, int y) {
         if (x >= getWidth() || y >= getHeight() || x < 0 || y < 0) {
-            return new Color(0, 0, 0, 0);
+            return Color.TRANSPARENT;
         }
 
         return new Color(reader.getColor(x, y));
@@ -45,6 +45,13 @@ public class Bitmap extends WritableImage {
                 setPixel(x, y, scanFunction.apply(x, y, getPixel(x, y)));
             }
         }
+    }
+
+    public Bitmap cropPad(int width, int height) {
+        Bitmap target = new Bitmap(width, height);
+        target.scan((x, y, c) -> getPixel(x, y));
+
+        return target;
     }
 
     public static Bitmap createEncompassing(Bitmap... bitmaps) {

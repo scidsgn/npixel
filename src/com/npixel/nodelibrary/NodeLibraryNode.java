@@ -41,6 +41,9 @@ public class NodeLibraryNode {
     }
 
     public Node create(NodeTree tree) {
-        return nodeCreator.apply(tree);
+        Node node = nodeCreator.apply(tree);
+        node.setName(tree.makeUniqueName(name));
+
+        return node;
     }
 }

@@ -196,29 +196,11 @@ public class Main extends Application {
         }
     }
 
-    private void createTestNodeTree(NodeTree tree) {
-        TestColorNode blue = new TestColorNode(tree, "Blue", new Color(javafx.scene.paint.Color.BLUE));
-        blue.setX(60);
-        blue.setY(60);
-        tree.addNode(blue);
-
-        TestColorNode red = new TestColorNode(tree, "Red", new Color(javafx.scene.paint.Color.RED));
-        red.setX(60);
-        red.setY(200);
-        tree.addNode(red);
-
-        CompositeCrossfadeNode xfade = new CompositeCrossfadeNode(tree);
-        xfade.setX(200);
-        xfade.setY(40);
-        tree.addNode(xfade);
-    }
-
     @Override
     public void start(Stage primaryStage) {
         HBox root = new HBox();
 
         Document doc = new Document(300, 200);
-        createTestNodeTree(doc.getTree());
 
         DocumentView docView = new DocumentView(doc);
         root.getChildren().add(docView);
