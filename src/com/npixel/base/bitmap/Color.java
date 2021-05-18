@@ -32,7 +32,12 @@ public class Color {
     }
 
     public javafx.scene.paint.Color getFXColor() {
-        return new javafx.scene.paint.Color(red, green, blue, alpha);
+        return new javafx.scene.paint.Color(
+                Math.max(Math.min(red, 1), 0),
+                Math.max(Math.min(green, 1), 0),
+                Math.max(Math.min(blue, 1), 0),
+                Math.max(Math.min(alpha, 1), 0)
+        );
     }
 
     public double getRed() {

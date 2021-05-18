@@ -47,6 +47,14 @@ public class Bitmap extends WritableImage {
         }
     }
 
+    public void scanNoSet(BitmapScanFunction<Integer, Integer, Color, Void> scanFunction) {
+        for (int x = 0; x < getWidth(); x++) {
+            for (int y = 0; y < getHeight(); y++) {
+                scanFunction.apply(x, y, getPixel(x, y));
+            }
+        }
+    }
+
     public Bitmap cropPad(int width, int height) {
         Bitmap target = new Bitmap(width, height);
         target.scan((x, y, c) -> getPixel(x, y));
