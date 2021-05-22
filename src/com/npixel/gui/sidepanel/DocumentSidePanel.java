@@ -22,7 +22,7 @@ public class DocumentSidePanel extends ScrollPane {
         vbox.getStyleClass().add("document-side-panel");
 
         TitledPane colorPane = new TitledPane("Color", new ColorPanel(doc));
-        TitledPane swatchPane = new TitledPane("Swatch", new Label("todo"));
+        TitledPane swatchPane = new TitledPane("Palettes", new PalettePanel(doc));
         TitledPane toolPane = new TitledPane("Tool", new ToolPropertiesPanel(doc.getTree()));
         TitledPane brushPane = new TitledPane("Brush", new Label("todo"));
         TitledPane nodePane = new TitledPane("Node", new NodePropertiesPanel(doc.getTree()));
