@@ -1,5 +1,6 @@
 package com.npixel.gui.rastereditor;
 
+import com.npixel.base.Document;
 import com.npixel.base.bitmap.Bitmap;
 import com.npixel.base.node.Node;
 import com.npixel.base.node.NodeEvent;
@@ -32,6 +33,10 @@ public class RasterEditor extends Canvas {
         heightProperty().addListener(event -> render());
 
         prepareEvents();
+    }
+
+    public Document getDocument() {
+        return currentNode.getDocument();
     }
 
     @Override
@@ -201,6 +206,10 @@ public class RasterEditor extends Canvas {
             propertyGroups = new ArrayList<>();
 
             this.editor = editor;
+        }
+
+        public Document getDocument() {
+            return editor.getDocument();
         }
 
         public String getName() {

@@ -1,5 +1,6 @@
 package com.npixel.base.tool.bitmap;
 
+import com.npixel.base.Document;
 import com.npixel.base.bitmap.Bitmap;
 import com.npixel.base.node.Node;
 import com.npixel.base.properties.PropertyGroup;
@@ -20,6 +21,10 @@ public class BitmapBaseTool implements ITool {
         this.target = target;
 
         propertyGroups = new ArrayList<>();
+    }
+
+    public Document getDocument() {
+        return target.getDocument();
     }
 
     public String getName() {

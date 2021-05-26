@@ -80,6 +80,12 @@ public class Color {
         return 0.2126 * red + 0.7152 * green + 0.0722 * blue;
     }
 
+    public void addScaled(Color c, double scale) {
+        red += c.getRed() * scale;
+        green += c.getGreen() * scale;
+        blue += c.getBlue() * scale;
+    }
+
     public static Color mix(Color a, Color b, double mix) {
         return new Color(
                 a.getRed() + mix * (b.getRed() - a.getRed()),

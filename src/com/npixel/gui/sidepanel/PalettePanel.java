@@ -89,8 +89,6 @@ public class PalettePanel extends VBox {
         private void fillColor(NamedColor color) {
             GraphicsContext ctx = getGraphicsContext2D();
 
-            ctx.setFill(Color.BLACK);
-            ctx.fillRect(0, 0, 16, 16);
             ctx.setFill(color.getFXColor());
             ctx.fillRect(1, 1, 14, 14);
         }

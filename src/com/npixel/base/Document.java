@@ -9,8 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class Document extends SimpleEventEmitter<DocumentEvent, Document> {
-    private int width;
-    private int height;
+    private String fileName;
     private NodeTree tree;
 
     private Color foregroundColor = new Color();
@@ -18,12 +17,22 @@ public class Document extends SimpleEventEmitter<DocumentEvent, Document> {
 
     private final ObservableList<Palette> palettes;
 
-    public Document(int width, int height) {
-        this.width = width;
-        this.height = height;
+    public Document(String fileName) {
+        this.fileName = fileName;
 
         tree = new NodeTree(this);
         palettes = FXCollections.observableArrayList();
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public String getShortName() {
+        if (fileName == null) {
+            return "Untitled";
+        }
+        return fileName;
     }
 
     public NodeTree getTree() {
