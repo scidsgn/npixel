@@ -7,7 +7,7 @@ public class Color {
         red = r;
         green = g;
         blue = b;
-        alpha = a;
+        alpha = Math.max(Math.min(a, 1), 0);
     }
 
     public Color(double r, double g, double b) {
@@ -72,7 +72,7 @@ public class Color {
     }
 
     public Color setAlpha(double v) {
-        alpha = v;
+        alpha = Math.max(Math.min(v, 1), 0);
         return this;
     }
 
@@ -84,6 +84,7 @@ public class Color {
         red += c.getRed() * scale;
         green += c.getGreen() * scale;
         blue += c.getBlue() * scale;
+        alpha += c.getAlpha() * scale;
     }
 
     public static Color mix(Color a, Color b, double mix) {
@@ -96,6 +97,10 @@ public class Color {
     }
 
     public static Color over(Color bg, Color fore) {
+        if (bg.getAlpha() == 0) {
+            return fore;
+        }
+
         double a = fore.getAlpha() + bg.getAlpha() * (1 - fore.getAlpha());
 
         return new Color(

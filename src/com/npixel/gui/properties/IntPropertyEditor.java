@@ -15,6 +15,16 @@ public class IntPropertyEditor extends HBox {
         prepareLayout();
     }
 
+    private void handleTextUpdate(TextField valueField, Slider slider) {
+        int value = Integer.parseInt(valueField.getText());
+        if (value >= property.getMinValue() && value <= property.getMaxValue()) {
+            property.setValue(value);
+            slider.setValue(value);
+        } else {
+            valueField.setText(Integer.toString(property.getValue()));
+        }
+    }
+
     private void prepareLayout() {
         Slider slider = new Slider(property.getMinValue(), property.getMaxValue(), property.getValue());
         slider.setMajorTickUnit(1);
@@ -24,9 +34,15 @@ public class IntPropertyEditor extends HBox {
         HBox.setHgrow(slider, Priority.ALWAYS);
 
         TextField valueField = new TextField();
-        valueField.setDisable(true);
         valueField.setText(Integer.toString(property.getValue()));
         valueField.setMaxWidth(80);
+
+        valueField.setOnAction(event -> handleTextUpdate(valueField, slider));
+        valueField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                handleTextUpdate(valueField, slider);
+            }
+        });
 
         slider.valueProperty().addListener((observable, oldValue, newValue) -> {
             property.setValue(newValue.intValue());

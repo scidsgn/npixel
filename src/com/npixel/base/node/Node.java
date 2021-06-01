@@ -76,6 +76,17 @@ public class Node extends SimpleEventEmitter<NodeEvent, Node> implements IUpdate
         return null;
     }
 
+    protected boolean isInputConnected(String id) {
+        NodeSocket inputSocket = getInput(id);
+        if (inputSocket == null) {
+            return false;
+        }
+
+        NodeSocket connectedSocket = tree.getConnectedOutput(inputSocket);
+
+        return connectedSocket != null;
+    }
+
     protected Object getInputValue(String id) {
         NodeSocket inputSocket = getInput(id);
         if (inputSocket == null) {

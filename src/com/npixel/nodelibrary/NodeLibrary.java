@@ -5,6 +5,8 @@ import com.npixel.base.tree.NodeTree;
 import com.npixel.nodelibrary.channel.*;
 import com.npixel.nodelibrary.color.*;
 import com.npixel.nodelibrary.composite.*;
+import com.npixel.nodelibrary.distribute.*;
+import com.npixel.nodelibrary.filter.*;
 import com.npixel.nodelibrary.grade.*;
 import com.npixel.nodelibrary.p3d.*;
 import com.npixel.nodelibrary.shape.*;
@@ -34,11 +36,17 @@ public class NodeLibrary {
         ));
         this.categories.add(new NodeLibraryCategory(
                 "Grade",
-                new NodeLibraryNode("GradeLevels", "Levels", "none", GradeLevelsNode::new)
+                new NodeLibraryNode("GradeLevels", "Levels", "none", GradeLevelsNode::new),
+                new NodeLibraryNode("GradeBrightContrast", "Brightness & Contrast", "none", GradeBrightContrastNode::new)
         ));
         this.categories.add(new NodeLibraryCategory(
                 "Channel",
                 new NodeLibraryNode("ChannelSeparate", "Separate RGB", "none", ChannelSeparateNode::new)
+        ));
+        this.categories.add(new NodeLibraryCategory(
+                "Filter",
+                new NodeLibraryNode("FilterEdgeDetect", "Edge Detection", "none", FilterEdgeDetectionNode::new),
+                new NodeLibraryNode("FilterSoften", "Soften", "none", FilterSoftenNode::new)
         ));
         this.categories.add(new NodeLibraryCategory(
                 "Shape",
@@ -52,6 +60,10 @@ public class NodeLibrary {
                 new NodeLibraryNode("CompAComp", "Alpha Composite", "compacomp", CompositeAlphaCompositeNode::new),
                 new NodeLibraryNode("CompXfade", "Crossfade", "compxfade", CompositeCrossfadeNode::new),
                 new NodeLibraryNode("CompMask", "Mask", "compmask", CompositeMaskNode::new)
+        ));
+        this.categories.add(new NodeLibraryCategory(
+                "Distribute",
+                new NodeLibraryNode("DistributeScatter", "Scatter", "none", DistributeScatterNode::new)
         ));
         this.categories.add(new NodeLibraryCategory(
                 "Texture",
