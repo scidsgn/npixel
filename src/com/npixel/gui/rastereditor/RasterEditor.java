@@ -172,7 +172,7 @@ public class RasterEditor extends Canvas {
                     ctx.setFill(TransparencyGrid.grid.getPattern());
                     ctx.fillRect(xOffset, 0, bmp.getWidth(), bmp.getHeight());
 
-                    ctx.drawImage(bmp, 0, 0);
+                    ctx.drawImage(bmp, xOffset, 0);
 
                     xOffset += bmp.getWidth() + 8;
                 }
