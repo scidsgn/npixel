@@ -10,6 +10,7 @@ import com.npixel.base.properties.PropUtil;
 import com.npixel.base.properties.PropertyGroup;
 import com.npixel.base.tool.ITool;
 import com.npixel.gui.icons.Icons;
+import com.npixel.gui.utils.TransparencyGrid;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -155,18 +156,26 @@ public class RasterEditor extends Canvas {
         ctx.translate(viewX, viewY);
 
         if (currentNode != null && currentNode.getOutputs().size() > 0) {
-            NodeSocket firstOutput = currentNode.getOutputs().get(0);
-            Object v = firstOutput.getValue();
+            int xOffset = 0;
 
-            if (v instanceof Bitmap) {
-                Bitmap bmp = (Bitmap) v;
+            for (NodeSocket output : currentNode.getOutputs()) {
+                Object v = output.getValue();
 
                 ctx.setFill(Color.BLACK);
-                ctx.fillRect(-1, -1, bmp.getWidth() + 2, bmp.getHeight() + 2);
+                ctx.fillText(output.getName(), xOffset, -6);
 
-                ctx.drawImage(bmp, 0, 0);
-            } else if (v instanceof Integer) {
-                ctx.fillText(v.toString(), 50, 50);
+                if (v instanceof Bitmap) {
+                    Bitmap bmp = (Bitmap) v;
+
+                    ctx.setFill(Color.DARKGRAY);
+                    ctx.fillRect(xOffset - 1, -1, bmp.getWidth() + 2, bmp.getHeight() + 2);
+                    ctx.setFill(TransparencyGrid.grid.getPattern());
+                    ctx.fillRect(xOffset, 0, bmp.getWidth(), bmp.getHeight());
+
+                    ctx.drawImage(bmp, 0, 0);
+
+                    xOffset += bmp.getWidth() + 8;
+                }
             }
         } else {
             ctx.fillText("Null!", 50, 50);

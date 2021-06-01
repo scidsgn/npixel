@@ -7,6 +7,7 @@ import com.npixel.base.node.NodeSocketType;
 import com.npixel.base.tree.NodeConnection;
 import com.npixel.base.tree.NodeTree;
 import com.npixel.base.tree.NodeTreeEvent;
+import com.npixel.gui.utils.TransparencyGrid;
 import com.npixel.nodelibrary.NodeLibrary;
 import com.npixel.nodelibrary.NodeLibraryCategory;
 import com.npixel.nodelibrary.NodeLibraryNode;
@@ -305,7 +306,15 @@ public class NodeEditor extends Canvas {
 
         Bitmap thumbnail = node.getThumbnail();
         if (thumbnail != null) {
+            ctx.setFill(Color.DARKGRAY);
+            ctx.fillRect(xBase + 3, yBase + 31, 144, thumbnailOffset - 2);
+
+            ctx.setFill(TransparencyGrid.grid.getPattern());
+            ctx.fillRect(xBase + 4, yBase + 32, 142, thumbnailOffset - 4);
+
+            ctx.setImageSmoothing(false);
             ctx.drawImage(thumbnail, xBase + 4, yBase + 32, 142, thumbnailOffset - 4);
+            ctx.setImageSmoothing(true);
         }
 
         for (NodeSocket socket : node.getInputs()) {
