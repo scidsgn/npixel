@@ -2,7 +2,7 @@ package com.npixel.base.node;
 
 public class NodeSocket {
     private final String id;
-    private final String name;
+    private String name;
     private final Node parent;
     private final NodeSocketType type;
     private Object value;
@@ -40,6 +40,10 @@ public class NodeSocket {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Object getValue() {

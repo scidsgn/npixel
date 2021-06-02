@@ -25,8 +25,16 @@ public class BitmapDistributor {
         positions.add(new Vector(x, y, 0));
     }
 
-    public void sort(Comparator<Vector> comparator) {
-        positions.sort(comparator);
+    public void sortX(boolean descending) {
+        positions.sort((v1, v2) -> {
+            return (descending ? -1 : 1) * Double.compare(v2.getX(), v1.getX());
+        });
+    }
+
+    public void sortY(boolean descending) {
+        positions.sort((v1, v2) -> {
+            return (descending ? -1 : 1) * Double.compare(v2.getY(), v1.getY());
+        });
     }
 
     private Vector calculateBitmapPosition(Vector position, Bitmap target, Bitmap object) {

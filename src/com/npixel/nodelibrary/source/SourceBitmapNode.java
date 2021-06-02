@@ -21,7 +21,7 @@ public class SourceBitmapNode extends Node {
 
         propertyGroups.add(new SizePropertyGroup(this, "size", "Size", 100, 100, 1, 500));
 
-        outputs.add(new NodeSocket(this, "out", NodeSocketType.OUTPUT, "Layer", new Bitmap(100, 100)));
+        outputs.add(new NodeSocket(this, "out", NodeSocketType.OUTPUT, getName(), new Bitmap(100, 100)));
 
         tools.add(new SolidBrushTool(this, null));
         tools.add(new EraserBrushTool(this, null));
@@ -56,5 +56,11 @@ public class SourceBitmapNode extends Node {
     @Override
     public Bitmap getThumbnail() {
         return (Bitmap)getOutput("out").getValue();
+    }
+
+    @Override
+    public void setName(String name) {
+        super.setName(name);
+        outputs.get(0).setName(name);
     }
 }

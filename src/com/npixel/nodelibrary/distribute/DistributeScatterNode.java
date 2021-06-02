@@ -8,6 +8,7 @@ import com.npixel.base.properties.templates.SizePropertyGroup;
 import com.npixel.base.tree.NodeTree;
 import com.npixel.gui.icons.Icons;
 import com.npixel.nodelibrary.distribute.properties.templates.DistributeBasicPropertyGroup;
+import com.npixel.nodelibrary.distribute.properties.templates.DistributeSortPropertyGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ public class DistributeScatterNode extends Node {
 
         propertyGroups.add(new SizePropertyGroup(this, "size", "Size", 100, 100, 1, 500));
         propertyGroups.add(new DistributeBasicPropertyGroup(this, "basic", "Basic settings", 10, 0));
+        propertyGroups.add(new DistributeSortPropertyGroup(this, "sort", "Sorting", 0, 0));
 
         inputs.add(new NodeSocket(this, "obj1", NodeSocketType.INPUT, "Object 1", new Bitmap(1, 1)));
         inputs.add(new NodeSocket(this, "obj2", NodeSocketType.INPUT, "Object 2", new Bitmap(1, 1)));
@@ -62,6 +64,18 @@ public class DistributeScatterNode extends Node {
 
         for (int i = 0; i < n; i++) {
             distributor.add(rng.nextDouble(), rng.nextDouble());
+        }
+
+        int sortX = DistributeSortPropertyGroup.getSortX(this, "sort");
+        int sortY = DistributeSortPropertyGroup.getSortY(this, "sort");
+
+        if (sortX > 0) {
+            System.out.println(sortX);
+            distributor.sortX(sortX == 2);
+        }
+        if (sortY > 0) {
+            System.out.println(sortX);
+            distributor.sortY(sortY == 2);
         }
 
         distributor.distribute(outBitmap, getObjects());
