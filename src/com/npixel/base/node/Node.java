@@ -123,6 +123,10 @@ public class Node extends SimpleEventEmitter<NodeEvent, Node> implements IUpdate
         this.y = Math.floor(y);
     }
 
+    public String getTypeString() {
+        return typeString;
+    }
+
     public String getName() {
         if (name == null) {
             return typeString;

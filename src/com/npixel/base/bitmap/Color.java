@@ -40,6 +40,22 @@ public class Color {
         );
     }
 
+    public int getByteRed() {
+        return (int)(255 * Math.max(Math.min(red, 1), 0));
+    }
+
+    public int getByteGreen() {
+        return (int)(255 * Math.max(Math.min(green, 1), 0));
+    }
+
+    public int getByteBlue() {
+        return (int)(255 * Math.max(Math.min(blue, 1), 0));
+    }
+
+    public int getByteAlpha() {
+        return (int)(255 * Math.max(Math.min(alpha, 1), 0));
+    }
+
     public double getRed() {
         return red;
     }

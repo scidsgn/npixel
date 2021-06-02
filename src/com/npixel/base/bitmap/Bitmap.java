@@ -4,6 +4,7 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.util.function.Function;
 

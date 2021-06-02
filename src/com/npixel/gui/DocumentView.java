@@ -14,7 +14,6 @@ import javafx.scene.layout.VBox;
 public class DocumentView extends VBox {
     private Document doc;
 
-
     public DocumentView(Document doc) {
         this.doc = doc;
 
