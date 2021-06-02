@@ -1,6 +1,7 @@
 package com.npixel.gui;
 
 import com.npixel.base.Document;
+import com.npixel.base.DocumentEvent;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
@@ -13,10 +14,15 @@ public class Main extends Application {
     private TabPane tabPane;
 
     private Tab getDocumentTab(Document doc) {
-        Tab tab = new Tab(doc.getShortName());
+        Tab tab = new Tab(doc.getTabName());
         tab.setClosable(false);
 
         tab.setContent(new DocumentView(doc));
+
+        doc.on(DocumentEvent.VIEWPORTSCALEUPDATED, d -> {
+            tab.setText(doc.getTabName());
+            return null;
+        });
 
         return tab;
     }

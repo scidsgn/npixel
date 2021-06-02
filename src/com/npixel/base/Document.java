@@ -17,11 +17,18 @@ public class Document extends SimpleEventEmitter<DocumentEvent, Document> {
 
     private final ObservableList<Palette> palettes;
 
+    private final ViewportCoordinates coordinates;
+
     public Document(String fileName) {
         this.fileName = fileName;
 
         tree = new NodeTree(this);
         palettes = FXCollections.observableArrayList();
+        coordinates = new ViewportCoordinates(32, 40, 1);
+        coordinates.on(DocumentEvent.VIEWPORTSCALEUPDATED, coordinates -> {
+            emit(DocumentEvent.VIEWPORTSCALEUPDATED, this);
+            return null;
+        });
     }
 
     public String getFileName() {
@@ -68,5 +75,13 @@ public class Document extends SimpleEventEmitter<DocumentEvent, Document> {
     private void generatePalettes() {
         palettes.add(new NStopPalette("Eight", 2));
         palettes.add(new NStopPalette("Web Safe", 6));
+    }
+
+    public ViewportCoordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public String getTabName() {
+        return String.format("%s @ (%d%%)", getShortName(), (int)(coordinates.getScaleFactor() * 100));
     }
 }

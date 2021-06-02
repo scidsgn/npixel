@@ -29,7 +29,7 @@ public class RasterEditorPanel extends HBox {
         toolBar = new ToolBar();
         toolBar.setOrientation(Orientation.VERTICAL);
 
-        rasterEditor = new RasterEditor();
+        rasterEditor = new RasterEditor(doc);
         HBox.setHgrow(rasterEditor, Priority.ALWAYS);
 
         getChildren().addAll(toolBar, rasterEditor);
