@@ -162,6 +162,13 @@ public class NodeTree extends SimpleEventEmitter<NodeTreeEvent, Node> {
         }
     }
 
+    public NodeConnection connect(NodeSocket fromSocket, NodeSocket toSocket) {
+        return connect(
+                fromSocket.getParentNode(), fromSocket.getId(),
+                toSocket.getParentNode(), toSocket.getId()
+        );
+    }
+
     public NodeConnection connect(Node fromNode, String fromOutputId, Node toNode, String toInputId) {
         if (!nodes.contains(fromNode) || !nodes.contains(toNode)) {
             throw new IllegalArgumentException("Both nodes must belong to the tree.");

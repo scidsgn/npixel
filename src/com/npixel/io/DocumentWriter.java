@@ -111,7 +111,7 @@ public class DocumentWriter {
     private void writeNodeOutput(int nodeIndex, NodeSocket socket) throws IOException {
         Object value = socket.getValue();
         if (value instanceof Bitmap) {
-            stream.writeChars("NBMP");
+            stream.writeBytes("NBMP");
             stream.writeInt(nodeIndex);
             stream.writeByte(socket.getParentNode().getOutputs().indexOf(socket));
 

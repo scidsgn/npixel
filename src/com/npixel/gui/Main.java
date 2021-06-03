@@ -2,6 +2,7 @@ package com.npixel.gui;
 
 import com.npixel.base.Document;
 import com.npixel.base.DocumentEvent;
+import com.npixel.io.DocumentReader;
 import com.npixel.io.DocumentWriter;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -10,11 +11,10 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.*;
 
 public class Main extends Application {
     private TabPane tabPane;
@@ -35,16 +35,39 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        Document doc = new Document(null);
+        doc.initNewDocument();
+
         HBox root = new HBox();
 
         tabPane = new TabPane();
         HBox.setHgrow(tabPane, Priority.ALWAYS);
 
+        VBox testButtons = new VBox();
+
+        Button testOpen = new Button("test open");
+        testOpen.setOnAction(actionEvent -> {
+            // TEST
+            try {
+                Document newDoc = new Document(null);
+                newDoc.initNewDocument();
+
+                File file = new File("test.npxl");
+                FileInputStream fileIS = new FileInputStream(file);
+                DataInputStream stream = new DataInputStream(fileIS);
+
+                DocumentReader documentReader = new DocumentReader(stream);
+                documentReader.readDocument(newDoc);
+
+                stream.close();
+
+                tabPane.getTabs().add(getDocumentTab(newDoc));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
         Button testSave = new Button("test save");
-
-        Document doc = new Document(null);
-        doc.initNewDocument();
-
         testSave.setOnAction(actionEvent -> {
             // TEST
             try {
@@ -59,13 +82,14 @@ public class Main extends Application {
                 stream.flush();
                 stream.close();
             } catch (Exception e) {
-                System.out.println(e);
+                e.printStackTrace();
             }
         });
 
         tabPane.getTabs().add(getDocumentTab(doc));
 
-        root.getChildren().addAll(tabPane, testSave);
+        testButtons.getChildren().addAll(testOpen, testSave);
+        root.getChildren().addAll(tabPane, testButtons);
 
         Scene scene = new Scene(root, 1500, 940);
         scene.getStylesheets().add(getClass().getResource("styles.css").toString());
