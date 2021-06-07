@@ -18,6 +18,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -112,20 +114,35 @@ public class NodeEditor extends Canvas {
         selectedNodeMenu.getItems().addAll(deleteItem, disconnectItem);
     }
 
+    private MenuItem createNodeMenuItem(NodeLibraryNode node) {
+        MenuItem nodeItem = new MenuItem(node.getName());
+        nodeItem.setGraphic(node.getIconView());
+        nodeItem.setOnAction(event -> addNode(node.create(tree)));
+
+        return nodeItem;
+    }
+
     private void setupAddNodeMenu() {
         addNodeMenu = new ContextMenu();
+
+        for (NodeLibraryNode node : NodeLibrary.nodeLibrary.getSingleNodes()) {
+            addNodeMenu.getItems().add(createNodeMenuItem(node));
+        }
+
+        addNodeMenu.getItems().add(new SeparatorMenuItem());
 
         for (NodeLibraryCategory category : NodeLibrary.nodeLibrary.getCategories()) {
             Menu categoryMenu = new Menu(category.getName());
 
             for (NodeLibraryNode node : category.getNodes()) {
-                MenuItem nodeItem = new MenuItem(node.getName());
-                nodeItem.setOnAction(event -> addNode(node.create(tree)));
-
-                categoryMenu.getItems().add(nodeItem);
+                categoryMenu.getItems().add(createNodeMenuItem(node));
             }
 
             addNodeMenu.getItems().add(categoryMenu);
+
+            if (category.isBeforeSeparator()) {
+                addNodeMenu.getItems().add(new SeparatorMenuItem());
+            }
         }
     }
 

@@ -3,7 +3,9 @@ package com.npixel.nodelibrary;
 import com.npixel.base.node.Node;
 import com.npixel.base.tree.NodeTree;
 import com.npixel.gui.icons.Icons;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.util.function.Function;
 
@@ -38,6 +40,14 @@ public class NodeLibraryNode {
 
     public Image getIcon() {
         return icon;
+    }
+
+    public ImageView getIconView() {
+        ImageView imageView = new ImageView(icon);
+        imageView.setFitHeight(16);
+        imageView.setFitWidth(16);
+
+        return imageView;
     }
 
     public Node create(NodeTree tree) {

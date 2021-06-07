@@ -18,14 +18,34 @@ import java.util.List;
 
 public class NodeLibrary {
     private final List<NodeLibraryCategory> categories;
+    private final List<NodeLibraryNode> singleNodes;
 
     private NodeLibrary() {
         this.categories = new ArrayList<>();
+        this.singleNodes = new ArrayList<>();
+
+        this.singleNodes.add(
+                new NodeLibraryNode("SourceBitmap", "Pixel Layer", "sourcebitmap", SourceBitmapNode::new)
+        );
 
         this.categories.add(new NodeLibraryCategory(
-                "Source",
-                new NodeLibraryNode("SourceBitmap", "Pixel Layer", "sourcebitmap", SourceBitmapNode::new)
+                "Shape",
+                new NodeLibraryNode("ShapeEllipse", "Ellipse", "shapeellipse", ShapeEllipseNode::new),
+                new NodeLibraryNode("ShapeRectangle", "Rectangle", "shaperectangle", ShapeRectangleNode::new),
+                new NodeLibraryNode("ShapeRegPolygon", "Regular Polygon", "shaperegpolygon", ShapeRegPolygonNode::new),
+                new NodeLibraryNode("ShapeStar", "Star", "none", ShapeStarNode::new)
         ));
+        this.categories.add(new NodeLibraryCategory(
+                "Distribute",
+                new NodeLibraryNode("DistributeScatter", "Scatter", "none", DistributeScatterNode::new)
+        ));
+        this.categories.add(new NodeLibraryCategory(
+                "Composite", true,
+                new NodeLibraryNode("CompAComp", "Alpha Composite", "compacomp", CompositeAlphaCompositeNode::new),
+                new NodeLibraryNode("CompXfade", "Crossfade", "compxfade", CompositeCrossfadeNode::new),
+                new NodeLibraryNode("CompMask", "Mask", "compmask", CompositeMaskNode::new)
+        ));
+
         this.categories.add(new NodeLibraryCategory(
                 "Color",
                 new NodeLibraryNode("ColorGrayscale", "Grayscale", "none", ColorGrayscaleNode::new),
@@ -40,36 +60,21 @@ public class NodeLibrary {
                 new NodeLibraryNode("GradeBrightContrast", "Brightness & Contrast", "none", GradeBrightContrastNode::new)
         ));
         this.categories.add(new NodeLibraryCategory(
-                "Channel",
+                "Channel", true,
                 new NodeLibraryNode("ChannelSeparate", "Separate RGB", "none", ChannelSeparateNode::new)
         ));
+
         this.categories.add(new NodeLibraryCategory(
                 "Filter",
                 new NodeLibraryNode("FilterEdgeDetect", "Edge Detection", "none", FilterEdgeDetectionNode::new),
                 new NodeLibraryNode("FilterSoften", "Soften", "none", FilterSoftenNode::new)
         ));
         this.categories.add(new NodeLibraryCategory(
-                "Shape",
-                new NodeLibraryNode("ShapeEllipse", "Ellipse", "shapeellipse", ShapeEllipseNode::new),
-                new NodeLibraryNode("ShapeRectangle", "Rectangle", "shaperectangle", ShapeRectangleNode::new),
-                new NodeLibraryNode("ShapeRegPolygon", "Regular Polygon", "shaperegpolygon", ShapeRegPolygonNode::new),
-                new NodeLibraryNode("ShapeStar", "Star", "none", ShapeStarNode::new)
-        ));
-        this.categories.add(new NodeLibraryCategory(
-                "Composite",
-                new NodeLibraryNode("CompAComp", "Alpha Composite", "compacomp", CompositeAlphaCompositeNode::new),
-                new NodeLibraryNode("CompXfade", "Crossfade", "compxfade", CompositeCrossfadeNode::new),
-                new NodeLibraryNode("CompMask", "Mask", "compmask", CompositeMaskNode::new)
-        ));
-        this.categories.add(new NodeLibraryCategory(
-                "Distribute",
-                new NodeLibraryNode("DistributeScatter", "Scatter", "none", DistributeScatterNode::new)
-        ));
-        this.categories.add(new NodeLibraryCategory(
-                "Texture",
+                "Texture", true,
                 new NodeLibraryNode("TextureXOR", "XOR Texture", "texturexor", TextureXORNode::new),
                 new NodeLibraryNode("TextureNoise", "White Noise Texture", "none", TextureNoiseNode::new)
         ));
+
         this.categories.add(new NodeLibraryCategory(
                 "Pseudo-3D",
                 new NodeLibraryNode("P3DNormalMapNode", "Normal Map", "none", P3DNormalMapNode::new)
@@ -77,6 +82,12 @@ public class NodeLibrary {
     }
 
     public NodeLibraryNode getNode(String id) {
+        for (NodeLibraryNode node : singleNodes) {
+            if (node.getId().equals(id)) {
+                return node;
+            }
+        }
+
         for (NodeLibraryCategory category : categories) {
             for (NodeLibraryNode node : category.getNodes()) {
                 if (node.getId().equals(id)) {
@@ -95,6 +106,10 @@ public class NodeLibrary {
         }
 
         return null;
+    }
+
+    public List<NodeLibraryNode> getSingleNodes() {
+        return singleNodes;
     }
 
     public List<NodeLibraryCategory> getCategories() {
