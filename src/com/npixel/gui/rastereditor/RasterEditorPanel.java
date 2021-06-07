@@ -1,10 +1,10 @@
 package com.npixel.gui.rastereditor;
 
 import com.npixel.base.Document;
+import com.npixel.base.node.Node;
 import com.npixel.base.tool.ITool;
 import com.npixel.base.tree.NodeTreeEvent;
 import javafx.geometry.Orientation;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.Tooltip;
@@ -35,7 +35,7 @@ public class RasterEditorPanel extends HBox {
         getChildren().addAll(toolBar, rasterEditor);
     }
 
-    private Button createToolButton(com.npixel.base.node.Node node, ITool tool) {
+    private Button createToolButton(Node node, ITool tool) {
         ImageView toolIcon = new ImageView(tool.getIcon());
         toolIcon.setFitWidth(24);
         toolIcon.setFitHeight(24);
@@ -47,7 +47,7 @@ public class RasterEditorPanel extends HBox {
         }
 
         toolButton.setOnAction(event -> {
-            for (Node n : toolBar.getItems()) {
+            for (javafx.scene.Node n : toolBar.getItems()) {
                 if (n.getStyleClass().contains("active-tool")) {
                     n.getStyleClass().remove("active-tool");
                     break;
@@ -61,22 +61,28 @@ public class RasterEditorPanel extends HBox {
         return toolButton;
     }
 
+    private void setActiveNode(Node node) {
+        toolBar.getItems().clear();
+
+        if (node != null) {
+            if (node.getActiveTool() == null) {
+                node.setActiveTool(rasterEditor.getHandTool());
+            }
+            toolBar.getItems().add(createToolButton(node, rasterEditor.getHandTool()));
+
+            for (ITool tool : node.getTools()) {
+                toolBar.getItems().add(createToolButton(node, tool));
+            }
+
+            rasterEditor.setCurrentNode(node);
+        } else {
+            rasterEditor.setCurrentNode(null);
+        }
+    }
+
     private void prepareEvents() {
         doc.getTree().on(NodeTreeEvent.ACTIVENODECHANGED, node -> {
-            if (node != null) {
-                toolBar.getItems().clear();
-
-                if (node.getActiveTool() == null) {
-                    node.setActiveTool(rasterEditor.getHandTool());
-                }
-                toolBar.getItems().add(createToolButton(node, rasterEditor.getHandTool()));
-
-                for (ITool tool : node.getTools()) {
-                    toolBar.getItems().add(createToolButton(node, tool));
-                }
-
-                rasterEditor.setCurrentNode(node);
-            }
+            setActiveNode(node);
             return null;
         });
     }

@@ -127,5 +127,16 @@ public class Color {
         );
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Color) {
+            return ((Color) obj).getRed() == red &&
+                    ((Color) obj).getGreen() == green &&
+                    ((Color) obj).getBlue() == blue &&
+                    ((Color) obj).getAlpha() == alpha;
+        }
+        return false;
+    }
+
     public static Color TRANSPARENT = new Color(0, 0, 0, 0);
 }

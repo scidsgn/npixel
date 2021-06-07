@@ -32,8 +32,7 @@ public class NodeLibrary {
                 "Shape",
                 new NodeLibraryNode("ShapeEllipse", "Ellipse", "shapeellipse", ShapeEllipseNode::new),
                 new NodeLibraryNode("ShapeRectangle", "Rectangle", "shaperectangle", ShapeRectangleNode::new),
-                new NodeLibraryNode("ShapeRegPolygon", "Regular Polygon", "shaperegpolygon", ShapeRegPolygonNode::new),
-                new NodeLibraryNode("ShapeStar", "Star", "none", ShapeStarNode::new)
+                new NodeLibraryNode("ShapeRegPolygon", "Regular Polygon", "shaperegpolygon", ShapeRegPolygonNode::new)
         ));
         this.categories.add(new NodeLibraryCategory(
                 "Distribute",
@@ -76,7 +75,7 @@ public class NodeLibrary {
         ));
 
         this.categories.add(new NodeLibraryCategory(
-                "Pseudo-3D",
+                "Shading",
                 new NodeLibraryNode("P3DNormalMapNode", "Normal Map", "none", P3DNormalMapNode::new)
         ));
     }

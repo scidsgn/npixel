@@ -7,10 +7,12 @@ import com.npixel.base.node.NodeSocketType;
 import com.npixel.base.tree.NodeConnection;
 import com.npixel.base.tree.NodeTree;
 import com.npixel.base.tree.NodeTreeEvent;
+import com.npixel.gui.icons.Icons;
 import com.npixel.gui.utils.TransparencyGrid;
 import com.npixel.nodelibrary.NodeLibrary;
 import com.npixel.nodelibrary.NodeLibraryCategory;
 import com.npixel.nodelibrary.NodeLibraryNode;
+import com.npixel.nodelibrary.source.SourceBitmapNode;
 import javafx.geometry.Bounds;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
@@ -111,7 +113,23 @@ public class NodeEditor extends Canvas {
             render();
         });
 
-        selectedNodeMenu.getItems().addAll(deleteItem, disconnectItem);
+        MenuItem convertToBitmap = new MenuItem(
+                "Convert to Pixel Layer", new ImageView(Icons.getIcon("sourcebitmap"))
+        );
+        ((ImageView)convertToBitmap.getGraphic()).setFitWidth(16);
+        ((ImageView)convertToBitmap.getGraphic()).setFitHeight(16);
+        convertToBitmap.setOnAction(event -> {
+            Node bitmapNode = SourceBitmapNode.createFromNode(tree.getActiveNode());
+            tree.setActiveNode(bitmapNode);
+
+            render();
+        });
+
+        selectedNodeMenu.getItems().addAll(
+                deleteItem, disconnectItem,
+                new SeparatorMenuItem(),
+                convertToBitmap
+        );
     }
 
     private MenuItem createNodeMenuItem(NodeLibraryNode node) {

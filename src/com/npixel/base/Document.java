@@ -5,6 +5,7 @@ import com.npixel.base.events.SimpleEventEmitter;
 import com.npixel.base.palette.NStopPalette;
 import com.npixel.base.palette.Palette;
 import com.npixel.base.tree.NodeTree;
+import com.npixel.nodelibrary.source.SourceBitmapNode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -70,6 +71,11 @@ public class Document extends SimpleEventEmitter<DocumentEvent, Document> {
 
     public void initNewDocument() {
         generatePalettes();
+
+        SourceBitmapNode bitmapNode = new SourceBitmapNode(tree);
+        bitmapNode.setX(50);
+        bitmapNode.setY(50);
+        tree.addNode(bitmapNode);
     }
 
     private void generatePalettes() {

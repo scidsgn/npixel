@@ -121,7 +121,7 @@ public class NodeTree extends SimpleEventEmitter<NodeTreeEvent, Node> {
         return null;
     }
 
-    private List<NodeConnection> findConnectionsFrom(NodeSocket outputSocket) {
+    public List<NodeConnection> findConnectionsFrom(NodeSocket outputSocket) {
         List<NodeConnection> list = new ArrayList<>();
 
         for (NodeConnection conn : connections) {

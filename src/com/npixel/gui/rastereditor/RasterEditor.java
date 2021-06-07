@@ -189,8 +189,6 @@ public class RasterEditor extends Canvas {
                     xOffset += bmp.getWidth() + 8;
                 }
             }
-        } else {
-            ctx.fillText("Null!", 50, 50);
         }
 
         ctx.restore();

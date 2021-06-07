@@ -35,37 +35,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Document doc = new Document(null);
-        doc.initNewDocument();
-
-        HBox root = new HBox();
+        AppView root = new AppView(primaryStage);
 
         tabPane = new TabPane();
         HBox.setHgrow(tabPane, Priority.ALWAYS);
-
-        VBox testButtons = new VBox();
-
-        Button testOpen = new Button("test open");
-        testOpen.setOnAction(actionEvent -> {
-            // TEST
-            try {
-                Document newDoc = new Document(null);
-                newDoc.initNewDocument();
-
-                File file = new File("test.npxl");
-                FileInputStream fileIS = new FileInputStream(file);
-                DataInputStream stream = new DataInputStream(fileIS);
-
-                DocumentReader documentReader = new DocumentReader(stream);
-                documentReader.readDocument(newDoc);
-
-                stream.close();
-
-                tabPane.getTabs().add(getDocumentTab(newDoc));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
 
         Button testSave = new Button("test save");
         testSave.setOnAction(actionEvent -> {
@@ -77,7 +50,7 @@ public class Main extends Application {
                 DataOutputStream stream = new DataOutputStream(fileOS);
 
                 DocumentWriter documentWriter = new DocumentWriter(stream);
-                documentWriter.writeDocument(doc);
+                //documentWriter.writeDocument(doc);
 
                 stream.flush();
                 stream.close();
@@ -85,11 +58,6 @@ public class Main extends Application {
                 e.printStackTrace();
             }
         });
-
-        tabPane.getTabs().add(getDocumentTab(doc));
-
-        testButtons.getChildren().addAll(testOpen, testSave);
-        root.getChildren().addAll(tabPane, testButtons);
 
         Scene scene = new Scene(root, 1500, 940);
         scene.getStylesheets().add(getClass().getResource("styles.css").toString());
