@@ -20,6 +20,10 @@ public class DocumentView extends VBox {
         prepareLayout();
     }
 
+    public Document getDocument() {
+        return doc;
+    }
+
     private void prepareLayout() {
         SplitPane splitPane = new SplitPane();
         splitPane.setOrientation(Orientation.HORIZONTAL);
@@ -37,5 +41,6 @@ public class DocumentView extends VBox {
         splitPane.getItems().addAll(splitPane2, sidePanel);
 
         getChildren().add(splitPane);
+        getStyleClass().add("document-view");
     }
 }

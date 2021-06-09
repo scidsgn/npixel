@@ -2,7 +2,6 @@ package com.npixel.gui;
 
 import com.npixel.base.Document;
 import com.npixel.base.DocumentEvent;
-import com.npixel.io.DocumentReader;
 import com.npixel.io.DocumentWriter;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -11,7 +10,6 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -25,7 +23,7 @@ public class Main extends Application {
 
         tab.setContent(new DocumentView(doc));
 
-        doc.on(DocumentEvent.VIEWPORTSCALEUPDATED, d -> {
+        doc.on(DocumentEvent.NAMEUPDATED, d -> {
             tab.setText(doc.getTabName());
             return null;
         });

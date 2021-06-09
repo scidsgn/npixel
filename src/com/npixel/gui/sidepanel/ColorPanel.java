@@ -54,7 +54,10 @@ public class ColorPanel extends VBox {
 
         scrollPane.setContent(tilePane);
 
-        getChildren().addAll(colorBar, palettePicker, scrollPane);
+        getChildren().addAll(
+                new Label("Foreground & background:"), colorBar,
+                palettePicker, scrollPane
+        );
     }
 
     private void updatePane(Palette palette) {

@@ -1,16 +1,17 @@
 .root {
     -fx-font-size: 9pt;
-}
-
-.button {
     -fx-background-color: #eee;
 }
 
-.button:hover {
+.button, .combo-box-base {
+    -fx-background-color: #eee;
+}
+
+.button:hover, .combo-box-base:hover {
     -fx-background-color: #ddd;
 }
 
-.button:pressed {
+.button:pressed, .combo-box-base:pressed {
     -fx-background-color: #ccc;
 }
 
@@ -18,8 +19,9 @@
     -fx-background-color: #7fbaf5;
 }
 
-.tool-bar {
-    -fx-background-color: #fff;
+.tool-bar,
+.tab-pane .tab-header-background {
+    -fx-background-color: #eee;
 }
 
 .document-side-panel {
@@ -78,11 +80,39 @@
     -fx-padding: 1px;
 }
 
-.tooltip {
+.tooltip{
     -fx-background-color: #fff;
     -fx-text-fill: #000;
 
     -fx-font-size: 9pt;
 
     -fx-border-color: #aaa;
+}
+
+.document-view .tool-bar {
+    -fx-background-color: #fff;
+}
+
+.tab-pane .tab {
+    -fx-background-color: #eee;
+
+    -fx-padding: 4px 12px;
+}
+
+.tab-pane .tab:hover {
+    -fx-background-color: #ddd;
+}
+
+.tab-pane .tab:selected {
+    -fx-background-color: #fff;
+}
+
+.tab-pane .tab-header-area {
+    -fx-border-color: transparent;
+    -fx-border-style: hidden;
+}
+
+.tab-pane .tab-content-area {
+    -fx-border-color: transparent;
+    -fx-border-style: hidden;
 }

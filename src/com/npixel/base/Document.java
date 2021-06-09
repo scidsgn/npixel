@@ -5,13 +5,18 @@ import com.npixel.base.events.SimpleEventEmitter;
 import com.npixel.base.palette.NStopPalette;
 import com.npixel.base.palette.Palette;
 import com.npixel.base.tree.NodeTree;
+import com.npixel.base.tree.NodeTreeEvent;
 import com.npixel.nodelibrary.source.SourceBitmapNode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class Document extends SimpleEventEmitter<DocumentEvent, Document> {
-    private String fileName;
+    private String filePath;
     private NodeTree tree;
+    private boolean modified = false;
 
     private Color foregroundColor = new Color();
     private Color backgroundColor = new Color(1, 1, 1);
@@ -20,27 +25,48 @@ public class Document extends SimpleEventEmitter<DocumentEvent, Document> {
 
     private final ViewportCoordinates coordinates;
 
-    public Document(String fileName) {
-        this.fileName = fileName;
+    public Document(String filePath) {
+        this.filePath = filePath;
 
         tree = new NodeTree(this);
+        tree.on(NodeTreeEvent.NODEUPDATED, node -> {
+            modified = true;
+            emit(DocumentEvent.NAMEUPDATED, this);
+            return null;
+        });
+
         palettes = FXCollections.observableArrayList();
         coordinates = new ViewportCoordinates(32, 40, 1);
-        coordinates.on(DocumentEvent.VIEWPORTSCALEUPDATED, coordinates -> {
-            emit(DocumentEvent.VIEWPORTSCALEUPDATED, this);
+        coordinates.on(DocumentEvent.NAMEUPDATED, coordinates -> {
+            emit(DocumentEvent.NAMEUPDATED, this);
             return null;
         });
     }
 
-    public String getFileName() {
-        return fileName;
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+        modified = false;
+        emit(DocumentEvent.NAMEUPDATED, this);
     }
 
     public String getShortName() {
-        if (fileName == null) {
-            return "Untitled";
+        String name;
+        if (filePath == null) {
+            name = "Untitled";
+        } else {
+            Path path = Paths.get(filePath);
+            name = path.getFileName().toString();
         }
-        return fileName;
+
+        if (modified) {
+            name = "*" + name;
+        }
+
+        return name;
     }
 
     public NodeTree getTree() {
@@ -73,8 +99,10 @@ public class Document extends SimpleEventEmitter<DocumentEvent, Document> {
         generatePalettes();
 
         SourceBitmapNode bitmapNode = new SourceBitmapNode(tree);
+        bitmapNode.setName("Pixel Layer");
         bitmapNode.setX(50);
         bitmapNode.setY(50);
+
         tree.addNode(bitmapNode);
     }
 

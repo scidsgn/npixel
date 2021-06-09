@@ -4,19 +4,14 @@ import com.npixel.base.Document;
 import com.npixel.base.DocumentEvent;
 import com.npixel.gui.icons.Icons;
 import com.npixel.io.DocumentReader;
+import com.npixel.io.DocumentWriter;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
 
 public class AppView extends VBox {
     private final Stage stage;
@@ -57,12 +52,23 @@ public class AppView extends VBox {
 
         tab.setContent(new DocumentView(doc));
 
-        doc.on(DocumentEvent.VIEWPORTSCALEUPDATED, d -> {
+        doc.on(DocumentEvent.NAMEUPDATED, d -> {
             tab.setText(doc.getTabName());
             return null;
         });
 
         return tab;
+    }
+
+    private Document getCurrentDocument() {
+        Tab activeTab = tabPane.getSelectionModel().getSelectedItem();
+        if (activeTab == null) {
+            return null;
+        }
+
+        DocumentView documentView = (DocumentView)activeTab.getContent();
+
+        return documentView.getDocument();
     }
 
     private void createNewDocument() {
@@ -106,7 +112,45 @@ public class AppView extends VBox {
         }
     }
 
-    private void saveDocument() {
+    private void saveDocumentToFile(Document doc, String path) {
+        try {
+            File file = new File(path);
+            file.createNewFile();
 
+            FileOutputStream fileOS = new FileOutputStream(file, false);
+            DataOutputStream stream = new DataOutputStream(fileOS);
+
+            DocumentWriter documentWriter = new DocumentWriter(stream);
+            documentWriter.writeDocument(doc);
+
+            stream.flush();
+            stream.close();
+
+            doc.setFilePath(path);
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Couldn't save the document.");
+            alert.showAndWait();
+        }
+    }
+
+    private void saveDocument() {
+        Document doc = getCurrentDocument();
+
+        if (doc != null) {
+            if (doc.getFilePath() == null) {
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Save NPIXEL Document");
+                fileChooser.getExtensionFilters().add(
+                        new FileChooser.ExtensionFilter("NPIXEL Documents", "*.npxl")
+                );
+                File selectedFile = fileChooser.showSaveDialog(stage);
+
+                if (selectedFile != null) {
+                    saveDocumentToFile(doc, selectedFile.getAbsolutePath());
+                }
+            } else {
+                saveDocumentToFile(doc, doc.getFilePath());
+            }
+        }
     }
 }

@@ -1,5 +1,5 @@
 package com.npixel.base;
 
 public enum DocumentEvent {
-    COLORSUPDATED, VIEWPORTSCALEUPDATED
+    COLORSUPDATED, NAMEUPDATED
 }

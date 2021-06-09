@@ -38,7 +38,7 @@ public class ViewportCoordinates extends SimpleEventEmitter<DocumentEvent, Viewp
 
     public void setScaleFactor(double scaleFactor) {
         this.scaleFactor = scaleFactor;
-        emit(DocumentEvent.VIEWPORTSCALEUPDATED, this);
+        emit(DocumentEvent.NAMEUPDATED, this);
     }
 
     public void translate(double dx, double dy) {
@@ -56,7 +56,7 @@ public class ViewportCoordinates extends SimpleEventEmitter<DocumentEvent, Viewp
         this.dy += scaleFactor * oy - newScale * oy;
 
         this.scaleFactor = newScale;
-        emit(DocumentEvent.VIEWPORTSCALEUPDATED, this);
+        emit(DocumentEvent.NAMEUPDATED, this);
     }
 
     public void scale(double factor, double ox, double oy) {
