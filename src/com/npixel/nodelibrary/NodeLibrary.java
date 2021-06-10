@@ -6,6 +6,7 @@ import com.npixel.nodelibrary.channel.*;
 import com.npixel.nodelibrary.color.*;
 import com.npixel.nodelibrary.composite.*;
 import com.npixel.nodelibrary.distribute.*;
+import com.npixel.nodelibrary.fill.*;
 import com.npixel.nodelibrary.filter.*;
 import com.npixel.nodelibrary.grade.*;
 import com.npixel.nodelibrary.p3d.*;
@@ -33,6 +34,12 @@ public class NodeLibrary {
                 new NodeLibraryNode("ShapeEllipse", "Ellipse", "shapeellipse", ShapeEllipseNode::new),
                 new NodeLibraryNode("ShapeRectangle", "Rectangle", "shaperectangle", ShapeRectangleNode::new),
                 new NodeLibraryNode("ShapeRegPolygon", "Regular Polygon", "shaperegpolygon", ShapeRegPolygonNode::new)
+        ));
+
+        this.categories.add(new NodeLibraryCategory(
+                "Fill",
+                new NodeLibraryNode("FillSolid", "Solid color", "none", FillSolidNode::new),
+                new NodeLibraryNode("FillGradient", "Gradient", "none", FillGradientNode::new)
         ));
         this.categories.add(new NodeLibraryCategory(
                 "Distribute",
