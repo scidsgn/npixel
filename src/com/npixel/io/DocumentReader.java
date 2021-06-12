@@ -55,14 +55,6 @@ public class DocumentReader {
         );
     }
 
-    private Vector readVector() throws IOException {
-        return new Vector(
-                stream.readDouble(),
-                stream.readDouble(),
-                stream.readDouble()
-        );
-    }
-
     private Bitmap readBitmap() throws IOException {
         int width = stream.readInt();
         int height = stream.readInt();
@@ -112,8 +104,6 @@ public class DocumentReader {
             ((OptionProperty) property).setValue(stream.readByte());
         } else if (property instanceof ColorProperty) {
             ((ColorProperty) property).setValue(readColor());
-        } else if (property instanceof VectorProperty) {
-            ((VectorProperty) property).setValue(readVector());
         }
     }
 
@@ -185,27 +175,36 @@ public class DocumentReader {
             throw new IOException("Incorrect header");
         }
 
+        label:
         while (true) {
             String tablePrefix = readBytes(4);
 
-            if (tablePrefix.equals("VPRT")) {
-                readViewportCoordinates(doc);
-            } else if (tablePrefix.equals("NODE")) {
-                readNode(doc);
-            } else if (tablePrefix.equals("NPRP")) {
-                readNodeProperty(doc);
-            } else if (tablePrefix.equals("TPRP")) {
-                readToolProperty(doc);
-            } else if (tablePrefix.equals("NBMP")) {
-                readNodeBitmap(doc);
-            } else if (tablePrefix.equals("NCON")) {
-                readNodeConnection(doc);
-            } else if (tablePrefix.equals("PALT")) {
-                readPalette(doc);
-            } else if (tablePrefix.equals("FIN.")) {
-                break;
-            } else {
-                throw new IOException("Unknown table ID");
+            switch (tablePrefix) {
+                case "VPRT":
+                    readViewportCoordinates(doc);
+                    break;
+                case "NODE":
+                    readNode(doc);
+                    break;
+                case "NPRP":
+                    readNodeProperty(doc);
+                    break;
+                case "TPRP":
+                    readToolProperty(doc);
+                    break;
+                case "NBMP":
+                    readNodeBitmap(doc);
+                    break;
+                case "NCON":
+                    readNodeConnection(doc);
+                    break;
+                case "PALT":
+                    readPalette(doc);
+                    break;
+                case "FIN.":
+                    break label;
+                default:
+                    throw new IOException("Unknown table ID");
             }
         }
     }

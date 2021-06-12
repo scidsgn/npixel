@@ -56,7 +56,7 @@ public class ColorPanel extends VBox {
 
         getChildren().addAll(
                 new Label("Foreground & background:"), colorBar,
-                palettePicker, scrollPane
+                new Label("Palettes:"), palettePicker, scrollPane
         );
     }
 

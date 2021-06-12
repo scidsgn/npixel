@@ -41,12 +41,6 @@ public class DocumentWriter {
         stream.writeByte(color.getByteAlpha());
     }
 
-    private void writeVector(Vector vector) throws IOException {
-        stream.writeDouble(vector.getX());
-        stream.writeDouble(vector.getY());
-        stream.writeDouble(vector.getZ());
-    }
-
     private void writeBitmap(Bitmap bitmap) throws IOException {
         stream.writeInt((int)bitmap.getWidth());
         stream.writeInt((int)bitmap.getHeight());
@@ -90,8 +84,6 @@ public class DocumentWriter {
             stream.writeByte(((OptionProperty) property).getValue());
         } else if (property instanceof ColorProperty) {
             writeColor(((ColorProperty) property).getValue());
-        } else if (property instanceof VectorProperty) {
-            writeVector(((VectorProperty) property).getValue());
         }
     }
 

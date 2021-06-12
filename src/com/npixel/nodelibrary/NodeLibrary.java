@@ -38,12 +38,12 @@ public class NodeLibrary {
 
         this.categories.add(new NodeLibraryCategory(
                 "Fill",
-                new NodeLibraryNode("FillSolid", "Solid color", "none", FillSolidNode::new),
-                new NodeLibraryNode("FillGradient", "Gradient", "none", FillGradientNode::new)
+                new NodeLibraryNode("FillSolid", "Solid color", "fillsolid", FillSolidNode::new),
+                new NodeLibraryNode("FillGradient", "Gradient", "fillgradient", FillGradientNode::new)
         ));
         this.categories.add(new NodeLibraryCategory(
                 "Distribute",
-                new NodeLibraryNode("DistributeScatter", "Scatter", "none", DistributeScatterNode::new)
+                new NodeLibraryNode("DistributeScatter", "Scatter", "distributescatter", DistributeScatterNode::new)
         ));
         this.categories.add(new NodeLibraryCategory(
                 "Composite", true,
@@ -54,36 +54,31 @@ public class NodeLibrary {
 
         this.categories.add(new NodeLibraryCategory(
                 "Color",
-                new NodeLibraryNode("ColorGrayscale", "Grayscale", "none", ColorGrayscaleNode::new),
-                new NodeLibraryNode("ColorInvert", "Invert", "none", ColorInvertNode::new),
-                new NodeLibraryNode("ColorThreshold", "Threshold", "none", ColorThresholdNode::new),
-                new NodeLibraryNode("ColorDuotone", "Duotone", "none", ColorDuotoneNode::new),
-                new NodeLibraryNode("ColorTritone", "Tritone", "none", ColorTritoneNode::new)
+                new NodeLibraryNode("ColorGrayscale", "Grayscale", "colorgrayscale", ColorGrayscaleNode::new),
+                new NodeLibraryNode("ColorInvert", "Invert", "colorinvert", ColorInvertNode::new),
+                new NodeLibraryNode("ColorThreshold", "Threshold", "colorthreshold", ColorThresholdNode::new),
+                new NodeLibraryNode("ColorDuotone", "Duotone", "colorduotone", ColorDuotoneNode::new),
+                new NodeLibraryNode("ColorTritone", "Tritone", "colortritone", ColorTritoneNode::new)
         ));
         this.categories.add(new NodeLibraryCategory(
                 "Grade",
-                new NodeLibraryNode("GradeLevels", "Levels", "none", GradeLevelsNode::new),
-                new NodeLibraryNode("GradeBrightContrast", "Brightness & Contrast", "none", GradeBrightContrastNode::new)
+                new NodeLibraryNode("GradeLevels", "Levels", "gradelevels", GradeLevelsNode::new),
+                new NodeLibraryNode("GradeBrightContrast", "Brightness & Contrast", "gradebrightcontrast", GradeBrightContrastNode::new)
         ));
         this.categories.add(new NodeLibraryCategory(
                 "Channel", true,
-                new NodeLibraryNode("ChannelSeparate", "Separate RGB", "none", ChannelSeparateNode::new)
+                new NodeLibraryNode("ChannelSeparate", "Separate RGB", "channelseparate", ChannelSeparateNode::new)
         ));
 
         this.categories.add(new NodeLibraryCategory(
                 "Filter",
-                new NodeLibraryNode("FilterEdgeDetect", "Edge Detection", "none", FilterEdgeDetectionNode::new),
-                new NodeLibraryNode("FilterSoften", "Soften", "none", FilterSoftenNode::new)
+                new NodeLibraryNode("FilterEdgeDetect", "Edge Detection", "filteredgedetect", FilterEdgeDetectionNode::new),
+                new NodeLibraryNode("FilterSoften", "Soften", "filtersoften", FilterSoftenNode::new)
         ));
         this.categories.add(new NodeLibraryCategory(
-                "Texture", true,
+                "Texture",
                 new NodeLibraryNode("TextureXOR", "XOR Texture", "texturexor", TextureXORNode::new),
-                new NodeLibraryNode("TextureNoise", "White Noise Texture", "none", TextureNoiseNode::new)
-        ));
-
-        this.categories.add(new NodeLibraryCategory(
-                "Shading",
-                new NodeLibraryNode("P3DNormalMapNode", "Normal Map", "none", P3DNormalMapNode::new)
+                new NodeLibraryNode("TextureNoise", "White Noise Texture", "texturenoise", TextureNoiseNode::new)
         ));
     }
 
