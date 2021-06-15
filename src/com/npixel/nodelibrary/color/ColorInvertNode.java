@@ -13,7 +13,7 @@ public class ColorInvertNode extends Node {
         super(tree);
 
         typeString = "ColorInvert";
-        icon = Icons.getIcon("none");
+        icon = Icons.getIcon("colorinvert");
 
         inputs.add(new NodeSocket(this, "in", NodeSocketType.INPUT, "Input", new Bitmap(1, 1)));
         outputs.add(new NodeSocket(this, "out", NodeSocketType.OUTPUT, "Output", new Bitmap(1, 1)));

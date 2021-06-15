@@ -17,7 +17,7 @@ public class ShapeEllipseNode extends Node {
         typeString = "ShapeEllipse";
         icon = Icons.getIcon("shapeellipse");
 
-        propertyGroups.add(new SizePropertyGroup(this, "size", "Size", 32, 32, 1, 500));
+        propertyGroups.add(new SizePropertyGroup(this, "size", "Size", 32, 32, 1, 512));
         propertyGroups.add(new PropertyGroup(
                 "shape", "Shape",
                 new BooleanProperty(this, "uniform", "Uniform shape (use only Horizontal exponent)", false),

@@ -14,7 +14,7 @@ public class FillGradientNode extends Node {
         super(tree);
 
         typeString = "FillGradient";
-        icon = Icons.getIcon("none");
+        icon = Icons.getIcon("fillgradient");
 
 
         propertyGroups.add(new PropertyGroup(
@@ -25,7 +25,7 @@ public class FillGradientNode extends Node {
                         "Radial", "Angle"
                 ),
                 new DoubleProperty(this, "shift", "Shift", 0, 0, 1),
-                new DoubleProperty(this, "repeat", "Repeat", 1, 1, 6),
+                new DoubleProperty(this, "repeat", "Repeat", 1, 1, 20),
                 new BooleanProperty(this, "reverse", "Reverse", false),
                 new BooleanProperty(this, "pingpong", "Ping-pong", false)
         ));

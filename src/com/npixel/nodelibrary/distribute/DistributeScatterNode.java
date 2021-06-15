@@ -22,9 +22,9 @@ public class DistributeScatterNode extends Node {
         super(tree);
 
         typeString = "DistributeScatter";
-        icon = Icons.getIcon("none");
+        icon = Icons.getIcon("distributescatter");
 
-        propertyGroups.add(new SizePropertyGroup(this, "size", "Size", 100, 100, 1, 500));
+        propertyGroups.add(new SizePropertyGroup(this, "size", "Size", 100, 100, 1, 512));
         propertyGroups.add(new DistributeBasicPropertyGroup(this, "basic", "Basic settings", 10, 0));
         propertyGroups.add(new DistributeSortPropertyGroup(this, "sort", "Sorting", 0, 0));
 

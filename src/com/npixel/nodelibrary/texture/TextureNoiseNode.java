@@ -23,7 +23,7 @@ public class TextureNoiseNode extends Node {
         super(tree);
 
         typeString = "TextureNoise";
-        icon = Icons.getIcon("none");
+        icon = Icons.getIcon("texturenoise");
 
         propertyGroups.add(new SizePropertyGroup(this, "size", "Size", 32, 32, 1, 512));
         propertyGroups.add(new PropertyGroup(

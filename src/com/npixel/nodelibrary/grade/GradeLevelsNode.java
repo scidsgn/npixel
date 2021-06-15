@@ -15,7 +15,7 @@ public class GradeLevelsNode extends Node {
         super(tree);
 
         typeString = "GradeLevels";
-        icon = Icons.getIcon("none");
+        icon = Icons.getIcon("gradelevels");
 
         propertyGroups.add(new PropertyGroup(
                 "levels", "Levels",

@@ -15,7 +15,7 @@ public class FilterSoftenNode extends Node {
         super(nodeTree);
 
         typeString = "FilterSoften";
-        icon = Icons.getIcon("none");
+        icon = Icons.getIcon("filtersoften");
 
         filter = new ConvolutionFilter(3, true);
         filter.setData(1, 1, 1, 1, 1, 1, 1, 1, 1);

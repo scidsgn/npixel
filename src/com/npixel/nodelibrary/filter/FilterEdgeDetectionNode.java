@@ -15,7 +15,7 @@ public class FilterEdgeDetectionNode extends Node {
         super(nodeTree);
 
         typeString = "FilterEdgeDetect";
-        icon = Icons.getIcon("none");
+        icon = Icons.getIcon("filteredgedetect");
 
         filter = new ConvolutionFilter(3, false);
         filter.setData(0, -1, 0, -1, 0, 1, 0, 1, 0);

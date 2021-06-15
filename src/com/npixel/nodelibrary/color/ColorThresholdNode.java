@@ -14,7 +14,7 @@ public class ColorThresholdNode extends Node {
         super(tree);
 
         typeString = "ColorThreshold";
-        icon = Icons.getIcon("none");
+        icon = Icons.getIcon("colorthreshold");
 
         propertyGroups.add(new PropertyGroup(
                 "threshold", "Threshold",

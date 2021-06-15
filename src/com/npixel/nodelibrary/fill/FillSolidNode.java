@@ -14,7 +14,7 @@ public class FillSolidNode extends Node {
         super(tree);
 
         typeString = "FillSolid";
-        icon = Icons.getIcon("none");
+        icon = Icons.getIcon("fillsolid");
         propertyGroups.add(new PropertyGroup(
                 "fill", "Fill",
                 new ColorProperty(this, "color", "Color", new Color()),

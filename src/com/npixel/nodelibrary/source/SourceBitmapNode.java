@@ -22,7 +22,7 @@ public class SourceBitmapNode extends Node {
         typeString = "SourceBitmap";
         icon = Icons.getIcon("sourcebitmap");
 
-        propertyGroups.add(new SizePropertyGroup(this, "size", "Size", 100, 100, 1, 500));
+        propertyGroups.add(new SizePropertyGroup(this, "size", "Size", 100, 100, 1, 512));
 
         outputs.add(new NodeSocket(this, "out", NodeSocketType.OUTPUT, getName(), new Bitmap(100, 100)));
 

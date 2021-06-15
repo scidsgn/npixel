@@ -17,7 +17,7 @@ public class ShapeRegPolygonNode extends Node {
         typeString = "ShapeRegPolygon";
         icon = Icons.getIcon("shaperegpolygon");
 
-        propertyGroups.add(new SizePropertyGroup(this, "size", "Size", 32, 32, 1, 500));
+        propertyGroups.add(new SizePropertyGroup(this, "size", "Size", 32, 32, 1, 512));
         propertyGroups.add(new PropertyGroup(
                 "shape", "Shape",
                 new IntProperty(this, "sides", "Sides", 3, 3, 20),

@@ -15,7 +15,7 @@ public class ColorGrayscaleNode extends Node {
         super(tree);
 
         typeString = "ColorGrayscale";
-        icon = Icons.getIcon("none");
+        icon = Icons.getIcon("colorgrayscale");
 
         propertyGroups.add(new PropertyGroup(
                 "bw", "Grayscale",

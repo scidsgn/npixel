@@ -17,7 +17,7 @@ public class GradeBrightContrastNode extends Node {
         super(tree);
 
         typeString = "GradeBrightContrast";
-        icon = Icons.getIcon("none");
+        icon = Icons.getIcon("gradebrightcontrast");
 
         propertyGroups.add(new PropertyGroup(
                 "bc", "Brightness & Contrast",

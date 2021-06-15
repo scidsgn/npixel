@@ -2,17 +2,17 @@ package com.npixel.nodelibrary;
 
 import com.npixel.base.node.Node;
 import com.npixel.base.tree.NodeTree;
-import com.npixel.nodelibrary.channel.*;
 import com.npixel.nodelibrary.color.*;
 import com.npixel.nodelibrary.composite.*;
+import com.npixel.nodelibrary.distort.*;
 import com.npixel.nodelibrary.distribute.*;
 import com.npixel.nodelibrary.fill.*;
 import com.npixel.nodelibrary.filter.*;
 import com.npixel.nodelibrary.grade.*;
-import com.npixel.nodelibrary.p3d.*;
 import com.npixel.nodelibrary.shape.*;
 import com.npixel.nodelibrary.source.*;
 import com.npixel.nodelibrary.texture.*;
+import com.npixel.nodelibrary.transform.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +42,12 @@ public class NodeLibrary {
                 new NodeLibraryNode("FillGradient", "Gradient", "fillgradient", FillGradientNode::new)
         ));
         this.categories.add(new NodeLibraryCategory(
+                "Transform", true,
+                new NodeLibraryNode("TransformCropExpand", "Crop/Expand", "transformcropexpand", TransformCropExpandNode::new),
+                new NodeLibraryNode("TransformFlip", "Flip", "transformflip", TransformFlipNode::new)
+        ));
+
+        this.categories.add(new NodeLibraryCategory(
                 "Distribute",
                 new NodeLibraryNode("DistributeScatter", "Scatter", "distributescatter", DistributeScatterNode::new)
         ));
@@ -61,13 +67,9 @@ public class NodeLibrary {
                 new NodeLibraryNode("ColorTritone", "Tritone", "colortritone", ColorTritoneNode::new)
         ));
         this.categories.add(new NodeLibraryCategory(
-                "Grade",
+                "Grade", true,
                 new NodeLibraryNode("GradeLevels", "Levels", "gradelevels", GradeLevelsNode::new),
                 new NodeLibraryNode("GradeBrightContrast", "Brightness & Contrast", "gradebrightcontrast", GradeBrightContrastNode::new)
-        ));
-        this.categories.add(new NodeLibraryCategory(
-                "Channel", true,
-                new NodeLibraryNode("ChannelSeparate", "Separate RGB", "channelseparate", ChannelSeparateNode::new)
         ));
 
         this.categories.add(new NodeLibraryCategory(
@@ -76,9 +78,14 @@ public class NodeLibrary {
                 new NodeLibraryNode("FilterSoften", "Soften", "filtersoften", FilterSoftenNode::new)
         ));
         this.categories.add(new NodeLibraryCategory(
-                "Texture",
+                "Texture", true,
                 new NodeLibraryNode("TextureXOR", "XOR Texture", "texturexor", TextureXORNode::new),
                 new NodeLibraryNode("TextureNoise", "White Noise Texture", "texturenoise", TextureNoiseNode::new)
+        ));
+
+        this.categories.add(new NodeLibraryCategory(
+                "Distort",
+                new NodeLibraryNode("DistortMap", "Distort Map", "distortmap", DistortMapNode::new)
         ));
     }
 

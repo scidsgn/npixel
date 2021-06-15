@@ -17,7 +17,7 @@ public class ColorDuotoneNode extends Node {
         super(tree);
 
         typeString = "ColorDuotone";
-        icon = Icons.getIcon("none");
+        icon = Icons.getIcon("colorduotone");
 
         propertyGroups.add(new PropertyGroup(
                 "duotone", "Duotone",

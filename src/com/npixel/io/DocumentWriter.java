@@ -13,6 +13,7 @@ import com.npixel.base.properties.*;
 import com.npixel.base.tool.ITool;
 import com.npixel.base.tree.NodeConnection;
 import com.npixel.base.tree.NodeTree;
+import com.npixel.nodelibrary.source.SourceBitmapNode;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -127,8 +128,10 @@ public class DocumentWriter {
             }
         }
 
-        for (NodeSocket output : node.getOutputs()) {
-            writeNodeOutput(nodeIndex, output);
+        if (node instanceof SourceBitmapNode) {
+            for (NodeSocket output : node.getOutputs()) {
+                writeNodeOutput(nodeIndex, output);
+            }
         }
 
         for (ITool tool : node.getTools()) {

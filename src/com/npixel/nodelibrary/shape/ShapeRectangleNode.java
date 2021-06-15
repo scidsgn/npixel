@@ -17,7 +17,7 @@ public class ShapeRectangleNode extends Node {
         typeString = "ShapeRectangle";
         icon = Icons.getIcon("shaperectangle");
 
-        propertyGroups.add(new SizePropertyGroup(this, "size", "Size", 32, 32, 1, 500));
+        propertyGroups.add(new SizePropertyGroup(this, "size", "Size", 32, 32, 1, 512));
         propertyGroups.add(new PropertyGroup(
                 "fill", "Fill",
                 new ColorProperty(this, "color", "Color", new Color())
