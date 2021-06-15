@@ -13,20 +13,23 @@ import com.npixel.nodelibrary.NodeLibrary;
 import com.npixel.nodelibrary.NodeLibraryCategory;
 import com.npixel.nodelibrary.NodeLibraryNode;
 import com.npixel.nodelibrary.source.SourceBitmapNode;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Bounds;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.FileChooser;
+
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
 
 public class NodeEditor extends Canvas {
     private final NodeTree tree;
@@ -125,10 +128,37 @@ public class NodeEditor extends Canvas {
             render();
         });
 
+        MenuItem exportPNG = new MenuItem("Export to PNG");
+        exportPNG.setOnAction(event -> {
+            Node node = tree.getActiveNode();
+
+            if (node.getOutputs().size() > 0) {
+                Bitmap bmp = (Bitmap)node.getOutputs().get(0).getValue();
+
+
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Save PNG");
+                fileChooser.getExtensionFilters().add(
+                        new FileChooser.ExtensionFilter("PNG", "*.png")
+                );
+                File selectedFile = fileChooser.showSaveDialog(null);
+
+                if (selectedFile != null) {
+                    try {
+                        ImageIO.write(SwingFXUtils.fromFXImage(bmp, null), "png", selectedFile);
+                    } catch (IOException e) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR, "Couldn't export the image.");
+                        alert.showAndWait();
+                    }
+                }
+            }
+        });
+
         selectedNodeMenu.getItems().addAll(
                 deleteItem, disconnectItem,
                 new SeparatorMenuItem(),
-                convertToBitmap
+                convertToBitmap,
+                exportPNG
         );
     }
 
